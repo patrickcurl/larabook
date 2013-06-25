@@ -1,6 +1,6 @@
 <?php
 
-class HomeController extends BaseController {
+class BookController extends BaseController {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -14,11 +14,16 @@ class HomeController extends BaseController {
 	|	Route::get('/', 'HomeController@showWelcome');
 	|
 	*/
+	public function __construct(){
+		$this->beforeFilter('csrf', array('on' => 'post'));
+	}
+	
 	protected $layout = 'layouts.master';
-	public function showWelcome()
+
+	public function postLookup()
 	{
-                          
-		return View::make('hello');
+    $book = Book::find_or_create(Input::get('isbn'));
+		return View::make('lookup', array('book' => $book));
 	}
 
 	

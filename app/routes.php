@@ -12,7 +12,17 @@
 */
 
 Route::get('home', 'HomeController@showWelcome');
+// Route::get('lookup', 'HomeController@showLookup');
 Route::get('/', function(){
 
 	return View::make('hello');
 });
+
+// Route::post('lookup', function(){
+
+// 	return View::make('lookup');
+// });
+
+Route::post('lookup', 'BookController@postLookup');
+Route::get('lookup', 'BookController@showLookup');
+

@@ -16,7 +16,7 @@ class Book extends Eloquent {
 	if ($book){
 			return $book;
 		} else {
-			$bookData = self::getBookData($isbn);
+			$bookData = self::getBookData($isbn, $amazon);
 			$book = new Book();
 			$book->isbn10 = $bookData['isbn10'];
  			$book->isbn13 = $bookData['isbn13'];
@@ -37,7 +37,7 @@ class Book extends Eloquent {
 		
 	}
 
-	protected static function amazonXML($isbn){
+public static function amazonXML($isbn){
 		$public_key = "AKIAI6SCW67W5JGC6KHQ";
 		$private_key = "ZsS5CQfdoNgMrV/PLlE/aS7c/ff/EimPoI6yj7ir";
 		$region = "com";
@@ -68,29 +68,33 @@ class Book extends Eloquent {
 	}
 
 private static function ordinalize($int){ 
-			if(in_array(($int % 100),range(11,13))){ 
+			if(is_int($int)){
+				if(in_array(($int % 100),range(11,13))){ 
 					return $int . "th"; } 
-			else { 
-				switch(($int % 10)){ 
-					case 1: 
-						return $int . "st"; 
-						break; 
-					case 2: 
-						return $int . "nd"; 
-						break; 
-					case 3: 
-						return $int . "rd"; 
-						break; 
-					default: 
-						return $int . "th"; 
-						break; 
-				}
-		  } 
+				else { 
+					switch(($int % 10)){ 
+						case 1: 
+							return $int . "st"; 
+							break; 
+						case 2: 
+							return $int . "nd"; 
+							break; 
+						case 3: 
+							return $int . "rd"; 
+							break; 
+						default: 
+							return $int . "th"; 
+							break; 
+					}
+		  	} 
+			} else {
+				return $int;
+			}
 		} 
 
 
-	protected static function getBookData($isbn){
-		$xml = self::amazonXML($isbn);
+	protected static function getBookData($isbn, $xml){
+		//$xml = amazonXML($isbn);
 		$xml->registerXpathNamespace("xmlns", "http://webservices.amazon.com/AWSECommerceService/2011-08-01"); 
 		$edition = self::amazonParse('//xmlns:ItemAttributes/xmlns:Edition', $xml);
 		$bookdata = array(
