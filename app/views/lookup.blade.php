@@ -35,8 +35,27 @@
               <div class="large-12 columns">
                 <div class="panel">
                   <h5>Prices</h5>
-                <h6 class="subheader">Praesent placerat dui tincidunt elit suscipit sed.</h6>
-                <a href="#" class="small button">BUTTON TIME!</a>
+                  <div class="row">
+
+                  <div class="small-2 columns">Seller</div>
+                  <div class="small-2 columns">Used</div>
+                  <div class="small-2 columns">New</div>
+                  <div class="small-2 columns">Rental <br /></div>
+                  <div class="small-2 columns">Ebook</div>
+                  <div class="small-2 columns">Buy Back Offer</div>
+
+
+
+
+                  <div class="small-2 columns"><img src="{{ $prices['new']['amazon']['logo_url'] }}" /></div>
+                  <div class="small-2 columns">{{ $prices['new']['amazon']['price']  }}</div>
+                  <div class="small-2 columns">{{ $prices['new']['amazon']['price']  }}</div>
+                  <div class="small-2 columns">{{ $prices['new']['amazon']['price']  }}</div>
+                  <div class="small-2 columns">{{ $prices['new']['amazon']['price']  }}</div>
+                  <div class="small-2 columns">{{ $prices['new']['amazon']['price']  }}</div>
+             
+                 </div>
+                
                 </div>
               </div>
           </div>

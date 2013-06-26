@@ -5,15 +5,188 @@ require_once('amazon_api.php');
 class Price extends Eloquent {
 
 	protected $table = 'prices';
-	protected $fillable = array('book_id', 'merchant_id', 'amount', 'buy_url', 'condition');
+	protected $fillable = array('book_id', 'merchant_id', 'amount', 'buy_url', 'condition', 'type');
 
 	public static function getPrices($isbn){
-		$amazon = amazonXML($isbn);
-		$biggerbooks = simplexml_load_string(file_get_contents("http://www.biggerbooks.com/botpricexml?isbn=$isbn"));
+		$amazonXML = amazonXML($isbn);
+		$amazonXML->registerXpathNamespace("xmlns", "http://webservices.amazon.com/AWSECommerceService/2011-08-01"); 
+		$biggerbooksXML = simplexml_load_string(file_get_contents("http://www.biggerbooks.com/botpricexml?isbn=$isbn"));
+		$valorebooksXML = simplexml_load_string(file_get_contents("http://prices.valorebooks.com/lookup-multiple-categories?SiteID=s1pI8Z&ProductCode=$isbn"));
+		$ecampusXML = simplexml_load_string(file_get_contents("http://www.ecampus.com/botpricexml.asp?isbn=$isbn"));
+
+
+		//return $ecampusXML;
+
+
+		$merchant_objects = DB::table('merchants')->get();
+
+		$merchants = array();
+		foreach($merchant_objects as $merchant_obj){
+			//$merchant = DB::table('merchants')->where('slug', '=', $merchant_slug)->first();
+			$merchant_values = array('slug' => $merchant_obj->slug, 'id' => $merchant_obj->id, 'image'=> $merchant_obj->logo_url, 'description' => $merchant_obj->description);
+			$merchants[$merchant_obj->slug] = $merchant_values; 
+
+			// 
+			//$$merchant = DB::table('merchants')->where('slug', '=', $merchant)->first();
+
+		}
+
+
+
+		$book_prices = array(
+				'new' 		=> 
+						array(
+										'amazon' 			=> 
+												array(
+																"price" => "$" . number_format((xmlParse('//xmlns:OfferSummary/xmlns:LowestNewPrice/xmlns:Amount', $amazonXML) / 100), 2),
+																"description" => $merchants['amazon']['description'],
+																"logo_url" => $merchants['amazon']['image'],
+																"url" => xmlParse('//xmlns:OfferSummary/xmlns:LowestNewPrice/xmlns:Amount', $amazonXML)
+												), 
+										'biggerbooks' =>
+												array(
+																"price" => $biggerbooksXML->NewPrice[0],
+																"description" => $merchants['biggerbooks']['description'],
+																"logo_url" => $merchants['biggerbooks']['image'],
+																"url" => "http://www.jdoqocy.com/click-7171865-9467039?ISBN=" . $isbn
+												),
+
+												
+										'ecampus' 		=> 
+												array(
+																"price" => $ecampusXML->NewPrice[0],
+																"description" => $merchants['ecampus']['description'],
+																"logo_url" => $merchants['ecampus']['image'],
+																"url" => "http://www.tkqlhce.com/click-7171865-5029466?ISBN=" . $isbn
+												),
+
+										'valorebooks' => 
+												array(
+																"price" => $valorebooksXML->NewPrice[0],
+																"description" => $merchants['valorebooks']['description'],
+																"logo_url" => $merchants['valorebooks']['image'],
+																"url" => $valorebooksXML->xpath('//sale-offer/link')
+												),
+											
+									), 
+				'used' 		=> array(
+					
+					), 
+				'rental'	=> array(),
+				'ebook'		=> array(),
+				'buyback' => array(),
+
+
+			);
+/*
+		// E.G. $book_prices[--condition--][--merchant--][--price--];
+		$book_prices['new']['']['price']
+		$book_prices['new']['']['description']
+		$book_prices['new']['']['logo_url']
+		$book_prices['new']['']['price']
+		$book_prices['new']['']['url']
+
+		$book_prices['new']['']['price']
+		$book_prices['new']['']['description']
+		$book_prices['new']['']['logo_url']
+		$book_prices['new']['']['price']
+		$book_prices['new']['']['url']
+
+		$book_prices['amazon']['new']['price'] = xmlParse('//xmlns:OfferSummary/xmlns:LowestNewPrice/xmlns:Amount', $amazonXML);
+		$book_prices['amazon']['new']['url'] = xmlParse('', $amazonXML);
+		$book_prices['amazon']['new']
+*/		/* $book_prices['amazon']['used']['price'] = xmlParse('', $amazonXML);
+		$book_prices['amazon']['used']['url'] = xmlParse('', $amazonXML);
+		$book_prices['amazon']['rental']['price'] = xmlParse('', $amazonXML);
+		$book_prices['amazon']['rental']['url'] = xmlParse('', $amazonXML);
+		$book_prices['amazon']['buyback'] = xmlParse('', $amazonXML);
+		$book_prices['amazon']['buyback'] = xmlParse('', $amazonXML);
+		
+		$book_prices['biggerbooks']['new']['price'] = '';
+		$book_prices['biggerbooks']['new']['url'] = '';
+		$book_prices['biggerbooks']['used']['price'] = '';
+		$book_prices['biggerbooks']['used']['url'] = '';
+		$book_prices['biggerbooks']['ebook']['price'] = '';
+		$book_prices['biggerbooks']['ebook']['url'] = '';
+
+		$book_prices['ecampus']['new']['price'] = '';
+		$book_prices['ecampus']['new']['url'] = '';
+		$book_prices['ecampus']['used']['price'] = '';
+		$book_prices['ecampus']['used']['url'] = '';
+		$book_prices['ecampus']['ebook']['price'] = '';
+		$book_prices['ecampus']['ebook']['url'] = '';
+
+		$book_prices['valorebooks']['new']['price'] = '';
+		$book_prices['valorebooks']['new']['url'] = '';
+		$book_prices['valorebooks']['rental']['price'] = '';
+		$book_prices['valorebooks']['rental']['url'] = '';
+		$book_prices['valorebooks']['buyback']['price'] = '';
+		$book_prices['valorebooks']['buyback']['url'] = '';
+		*/
+
+		
 		//$valorebooks = self::valorebooksXML($isbn);
-		$ecampus = simplexml_load_string(file_get_contents("http://www.ecampus.com/botpricexml.asp?isbn=$isbn"));
-		$title = $biggerbooks->NewPrice[0];
-			return $title;
+		//$ecampusXML = simplexml_load_string(file_get_contents("http://www.ecampus.com/botpricexml.asp?isbn=$isbn"));
+		//$title = $biggerbooks->NewPrice[0];
+		//	return $title;
+		//$merchants = array("abebooks","amazon","biggerbooks","bn","bookbyte","bookrenter","bookstores","campusbookrentals","chegg","coursesmart","ebay","ecampus","half","knetbooks","textbooksrus","textbookx","valorebooks");
+		//$amazon = DB::table('merchants')->where('slug', '=', $merchant_slug)->first();
+	return $book_prices;
+		//$amazon = DB::table('merchants')->();
+
+/*		$book_prices = array(
+			"amazon" => array("type" => "buy", 
+																	array(  
+																	"new" => array(
+																			"price" => "",
+																			"type" => "buy",
+																			"book_id" => "",
+																			"merchant_id" => "",
+																			"buy_url" => ""
+
+
+																					 ), 
+																	"used" => array(
+																			"price" => "",
+ 																			"type" => "buy",
+																			"book_id" => "",
+																			"merchant_id" => "",
+																			"buy_url" => ""
+
+
+
+																					 ), 
+																	"rental" => array(
+																			"price" => "",
+																			"type" => "buy",
+																			"book_id" => "",
+																			"merchant_id" => "",
+																			"buy_url" => ""
+
+
+																					 ), 
+																	"INTL" => array(
+
+
+																					 ), 
+																	"Ebook" => array(
+
+
+																					 )
+																	)
+																			"price" => "",
+																			"type" => "buy",
+																			"book_id" => "",
+																			"merchant_id" => "",
+																			"buy_url" => ""
+
+				)
+
+
+			);
+
+return $merchants; */
+
 	}
 /*
 	

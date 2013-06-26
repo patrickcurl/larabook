@@ -23,7 +23,8 @@ class BookController extends BaseController {
 	public function postLookup()
 	{
     $book = Book::find_or_create(Input::get('isbn'));
-		return View::make('lookup', array('book' => $book));
+    $prices = Price::getPrices(Input::get('isbn'));
+		return View::make('lookup', array('book' => $book, 'prices' => $prices));
 	}
 
 	

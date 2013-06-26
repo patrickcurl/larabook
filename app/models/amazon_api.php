@@ -26,4 +26,46 @@ function amazonXML($isbn){
 	return $amazonXML;
 }
 
+
+function xmlParse($xpath, $xml){
+	if($xml){
+			if($xpath){
+				$bookmeta = $xml->xpath($xpath);
+				$bookmeta = $bookmeta[0];
+			return $bookmeta;
+			}
+			
+	} else {
+		return 0;
+	}
+
+	
+}
+
+function ordinalize($int){ 
+			if(is_int($int)){
+				if(in_array(($int % 100),range(11,13))){ 
+					return $int . "th"; } 
+				else { 
+					switch(($int % 10)){ 
+						case 1: 
+							return $int . "st"; 
+							break; 
+						case 2: 
+							return $int . "nd"; 
+							break; 
+						case 3: 
+							return $int . "rd"; 
+							break; 
+						default: 
+							return $int . "th"; 
+							break; 
+					}
+		  	} 
+			} else {
+				return $int;
+			}
+		} 
+
+
 ?>

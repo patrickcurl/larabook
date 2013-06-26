@@ -16,6 +16,7 @@ class CreatePricesTable extends Migration {
 		{
 			$t->increments('id');
 			$t->string('condition');
+			$t->string('type'); //buying or selling
 			$t->integer('book_id')->unsigned();
 			$t->integer('merchant_id')->unsigned();
 			$t->float('amount');

@@ -16,10 +16,11 @@ class CreateMerchantsTable extends Migration {
 		{
 			$t->increments('id');
 			$t->string('name');
+			$t->string('slug');
 			$t->string('logo_url');
 			$t->string('aff_login_url');
 			$t->string('aff_code');
-			$t->string('description');
+			$t->text('description');
 			$t->timestamps();
 		});
 	}
