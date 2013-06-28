@@ -79,5 +79,6 @@ App::down(function()
 | definitions instead of putting them all in the main routes file.
 |
 */
-
+date_default_timezone_set('America/New_York');
 require app_path().'/filters.php';
+//require app_path().'/listeners.php';

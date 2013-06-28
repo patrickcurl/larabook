@@ -15,12 +15,11 @@ class CreatePricesTable extends Migration {
 		Schema::create('prices', function(Blueprint $t)
 		{
 			$t->increments('id');
-			$t->string('condition');
-			$t->string('type'); //buying or selling
 			$t->integer('book_id')->unsigned();
 			$t->integer('merchant_id')->unsigned();
 			$t->float('amount');
 			$t->string('buy_url');
+			$t->string('type')->nullable(); //
 			$t->timestamps();
 			$t->foreign('book_id')->references('id')->on('books');
 			$t->foreign('merchant_id')->references('id')->on('merchants');

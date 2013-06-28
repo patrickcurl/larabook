@@ -10,11 +10,11 @@
             <img src="{{ $book->image_url }}"><br />
             <strong>ISBN 10:</strong> {{ $book->isbn10 }} <br />
             <strong>ISBN 13:</strong> {{ $book->isbn13 }} <br />
-            <strong>Author:</strong> {{ $book->author }} <br />
-            <strong>Publisher:</strong> {{ $book->publisher }} <br />
-            <strong>Edition:</strong> {{ $book->edition }} <br />
+            <strong>Author:</strong> {{  $book->author }} <br />
+            <strong>Publisher:</strong> {{  $book->publisher }} <br />
+            <strong>Edition:</strong> {{  $book->edition }} <br />
             <strong>Number of Pages:</strong> {{ $book->num_of_pages }} <br />
-            <strong>List Price</strong> ${{ number_format($book->list_price/100, 2) }} <br />
+            <strong>List Price</strong> ${{  number_format($book->list_price/100, 2) }} <br />
             <a href="{{ $book->amazon_url }}" target="_blank">View Book Details on Amazon</a>
      
           </div>
@@ -47,13 +47,15 @@
 
 
 
-                  <div class="small-2 columns"><img src="{{ $prices['new']['amazon']['logo_url'] }}" /></div>
-                  <div class="small-2 columns">{{ $prices['new']['amazon']['price']  }}</div>
-                  <div class="small-2 columns">{{ $prices['new']['amazon']['price']  }}</div>
-                  <div class="small-2 columns">{{ $prices['new']['amazon']['price']  }}</div>
-                  <div class="small-2 columns">{{ $prices['new']['amazon']['price']  }}</div>
-                  <div class="small-2 columns">{{ $prices['new']['amazon']['price']  }}</div>
-             
+                  <div class="small-2 columns"><img src="{{-- $prices['new']['amazon']['logo_url'] --}}" /></div>
+                  <div class="small-2 columns">{{-- $prices['new']['amazon']['price']  --}}</div>
+                  <div class="small-2 columns">{{-- $prices['new']['amazon']['price']  --}}</div>
+                  <div class="small-2 columns">{{-- $prices['new']['amazon']['price']  --}}</div>
+                  <div class="small-2 columns">{{-- $prices['new']['amazon']['price']  --}}</div>
+                  <div class="small-2 columns">{{-- $prices['new']['amazon']['price']  --}}</div>
+                  
+
+          
                  </div>
                 
                 </div>
@@ -160,4 +162,8 @@
             </div>
         </div>
       </footer>
+      @foreach ($prices as $price)
+        {{ $price->id }}
+      @endforeach
+      <pre>{{var_dump($prices)}}</pre> 
 @stop
