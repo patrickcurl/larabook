@@ -24,5 +24,5 @@ Route::get('/', function(){
 // });
 
 Route::post('lookup', 'BookController@postLookup');
-Route::get('lookup', 'BookController@showLookup');
+Route::get('lookup', 'BookController@getLookup');
 

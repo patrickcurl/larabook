@@ -1,12 +1,9 @@
 <?php 
-// require_once('aws_signed_request.php');
-// require_once('simple_html_dom.php');
-// require_once('functions.php');
 
 class Price extends Eloquent {
 
 	protected $table = 'prices';
-	protected $fillable = array('book_id', 'merchant_id', 'amount', 'buy_url', 'condition', 'type');
+	protected $fillable = array('book_id', 'merchant_id', 'amount_new', 'amount_used', 'amount_rental', 'amount_ebook', 'amount_buyback', 'url_new', 'url_used', 'url_rental', 'url_ebook', 'url_buyback');
 
   public function book(){
     return $this->belongsTo('Book');

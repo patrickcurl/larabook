@@ -26,45 +26,30 @@
  
             <div class="panel">
               <h4 class="hide-for-small">Compare Textbook Prices:<hr/></h4>
-            <h5 class="subheader">I don't have to tell you how expensive college text-books can be, that's why we created this nifty thrifty college textbook pricing tool. <br /><br />
-            Get up-to-the-minute price quotes on thousands of text-books simply enter the ISBN# below! Our mission is to help more people go to college, buy lowering the costs, we can show you how you can save hundreds by price-comparing at EVERY major text-book supplier on the market! <br /><br />Don't buy a textbook till you check TopBookPrices.com!</h5>
-            </div>
- 
-          <div class="row">
-            
-              <div class="large-12 columns">
-                <div class="panel">
-                  <h5>Prices</h5>
-                  <div class="row">
-
-                  <div class="small-2 columns">Seller</div>
+                <div class="small-2 columns">Seller</div>
                   <div class="small-2 columns">Used</div>
                   <div class="small-2 columns">New</div>
                   <div class="small-2 columns">Rental <br /></div>
                   <div class="small-2 columns">Ebook</div>
-                  <div class="small-2 columns">Buy Back Offer</div>
-
-
-
-
-                  <div class="small-2 columns"><img src="{{-- $prices['new']['amazon']['logo_url'] --}}" /></div>
-                  <div class="small-2 columns">{{-- $prices['new']['amazon']['price']  --}}</div>
-                  <div class="small-2 columns">{{-- $prices['new']['amazon']['price']  --}}</div>
-                  <div class="small-2 columns">{{-- $prices['new']['amazon']['price']  --}}</div>
-                  <div class="small-2 columns">{{-- $prices['new']['amazon']['price']  --}}</div>
-                  <div class="small-2 columns">{{-- $prices['new']['amazon']['price']  --}}</div>
-                  
-
-          
-                 </div>
+                  <div class="small-2 columns">Buy Back</div>
+            <hr />
+              @foreach ($prices as $price)
                 
-                </div>
-              </div>
-          </div>
+                  <div class="small-2 large-2 columns"><img src="{{ $price->merchant->logo_url }}" /></div>
+                  <div class="small-2 large-2 columns">{{ number_format($price->amount_used, 2) }}<br /><a href="">Buy Now</a></div>
+                  <div class="small-2 large-2 columns">{{ number_format($price->amount_new, 2)  }}</div>
+                  <div class="small-2 large-2 columns">{{ number_format($price->amount_rental, 2) }}</div>
+                  <div class="small-2 large-2 columns">{{ number_format($price->amount_ebook, 2)  }}</div>
+                  <div class="small-2 large-2 columns">{{ number_format($price->amount_buyback, 2) }}</div>
+
+                
+             @endforeach   
+<br />
+              
  
           </div>
  
-        </div>
+      
  
       <!-- End Header Content -->
  
@@ -76,7 +61,8 @@
           <div class="large-12 columns">
             <div class="radius panel">
  
-            
+            {{ Form::open(array('action' => 'BookController@getLookup', 'method' => 'get')) }}
+              {{ Form::token() }} 
               <div class="row collapse">
  
                 <div class="large-10 small-8 columns">
@@ -162,8 +148,6 @@
             </div>
         </div>
       </footer>
-      @foreach ($prices as $price)
-        {{ $price->id }}
-      @endforeach
-      <pre>{{var_dump($prices)}}</pre> 
+
+ 
 @stop

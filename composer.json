@@ -13,6 +13,11 @@
 			"app/database/migrations",
 			"app/database/seeds",
 			"app/tests/TestCase.php"
+		],
+		"files": [
+			"/lib/aws_signed_request.php",
+			"/lib/functions.php",
+			"/lib/simple_html_dom.php"
 		]
 	},
 	"scripts": {

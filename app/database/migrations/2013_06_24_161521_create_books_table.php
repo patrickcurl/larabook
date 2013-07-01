@@ -24,7 +24,7 @@ class CreateBooksTable extends Migration {
 			$t->string('amazon_url')->nullable();
 			$t->string('edition')->nullable();
 			$t->integer('num_of_pages')->nullable();
-			$t->float('list_price');
+			$t->float('list_price')->nullable();
 			$t->timestamps();
 			
 		});

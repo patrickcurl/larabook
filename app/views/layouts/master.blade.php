@@ -12,7 +12,8 @@
 
     <link href="{{{ asset('css/normalize.css') }}}" rel="stylesheet">
     <link href="{{{ asset('css/foundation.css') }}}" rel="stylesheet">
-    
+    <link href="{{{ asset('css/responsive-tables.css') }}}" rel="stylesheet" media="screen" type="text/css">
+    <script type="text/javascript" src="{{{ asset('responsive-tables.js') }}}"></script>
     <script src="{{{ asset('js/vendor/custom.modernizr.js') }}}"></script>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -23,7 +24,7 @@
 
 <body>
 
-	<div class="fixed"><nav class="top-bar" >
+	<div class=""><nav class="top-bar" >
 		<ul class="title-area">
 			<li class="name"><h1><a href="{{{ URL::to('') }}}">home</a></h1></li>
 			<li class="toggle-topbar menu-icon">

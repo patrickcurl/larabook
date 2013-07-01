@@ -20,12 +20,18 @@ class BookController extends BaseController {
 	
 	protected $layout = 'layouts.master';
 
-	public function postLookup()
+	public function getLookup()
 	{
-    $book = Book::find_or_create(Input::get('isbn'));
-    $prices = Book::getPrices($book);
-    //$test = Book::testAmazon();
-		return View::make('lookup', array('book' => $book, 'prices' => $prices));
+		
+		if(Input::has('isbn')){
+			$book = Book::find_or_create(Input::get('isbn'));
+    	$prices = Book::getPrices($book);
+    // $prices = 
+    // $test = Book::testAmazon();
+			return View::make('lookup', array('book' => $book, 'prices' => $prices));
+		} else {
+			return View::make('hello'); 
+		} 
 	}
 
 	

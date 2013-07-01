@@ -52,7 +52,7 @@
             <div class="radius panel">
  
            <!-- <form method="get" action="lookup.php"> -->
-              {{ Form::open(array('action' => 'BookController@postLookup')) }}
+              {{ Form::open(array('action' => 'BookController@getLookup', 'method' => 'get')) }}
               {{ Form::token() }} 
               <div class="row collapse">
  
