@@ -71,7 +71,7 @@ class MerchantsTableSeeder extends Seeder {
 							'logo_url' => 'http://www.campusbooks.com/images/markets/TextBookXlogo.gif',
 							'description' => 'TextbookX.com offers new, used, and digital textbooks as well as rentals. Free shipping on most non-marketplace orders over $49.'),
 				array('name' => 'ValoreBooks', 
-							'slug' => 'valorebooks', 
+							'slug' => 'valore', 
 							'logo_url' => 'http://www.campusbooks.com/images/markets/valoremarketplace.gif',
 							'description' => 'Valore rental books are an affordable and eco-friendly option. Valore offers expedited shipping to you when you need books ASAP and they pay for the return shipping when you are done with the books. ')
 		);

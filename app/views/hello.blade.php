@@ -1,83 +1,58 @@
 @extends('layouts.master')
 @section('content')
-  <div class="row">
+ <div class="jumbotron">
+        <h2>Compare TextBook Prices</h2>
+        <p style="text-align:left;">I don't have to tell you how expensive college text-books can be, that's why we created this nifty thrifty college textbook pricing tool.</p> 
+<p style="text-align:left;">Get up-to-the-minute price quotes on thousands of text-books simply enter the ISBN# below! Our mission is to help more people go to college, buy lowering the costs, we can show you how you can save hundreds by price-comparing at EVERY major text-book supplier on the market!</p> 
+<p style="text-align:left;">Don't buy a textbook till you check TopBookPrices.com!</p>
+             {{ Form::open(array('action' => 'BookController@getLookup', 'method' => 'get', 'class' => 'form-search')) }}
+             {{ Form::token() }} 
+             
+                  <div class='input-append'>
+                    <input type="text" name="isbn" placeholder="Enter your ISBN #" class="span4 search-query" />
+                    <button type="submit" class="btn">Get Prices</button>
+                  </div>
+
+                  {{ Form::close() }}
  
-          <div class="large-6 columns">
- 
-            <img src="/img/buysellrentcollegetextbooks.jpg"><br>
- 
-          </div>
- 
- 
-          <div class="large-6 columns">
- 
-            <h3 class="show-for-small">Buy, Sell, Rent Textbooks!<hr/></h3>
- 
-            <div class="panel">
-              <h4 class="hide-for-small">Buy, Sell, Rent Textbooks!<hr/></h4>
-            <h5 class="subheader">I don't have to tell you how expensive college text-books can be, that's why we created this nifty thrifty college textbook pricing tool. <br /><br />
-            Get up-to-the-minute price quotes on thousands of text-books simply enter the ISBN# below! Our mission is to help more people go to college, buy lowering the costs, we can show you how you can save hundreds by price-comparing at EVERY major text-book supplier on the market! <br /><br />Don't buy a textbook till you check TopBookPrices.com!</h5>
-            </div>
- 
-          <div class="row">
-              <div class="large-6 small-6 columns">
-                <div class="panel">
-                  <h5>Header</h5>
-                <h6 class="subheader">Praesent placerat dui tincidunt elit suscipit sed.</h6>
-                <a href="#" class="small button">BUTTON TIME!</a>
-                </div>
-              </div>
- 
-              <div class="large-6 small-6 columns">
-                <div class="panel">
-                  <h5>Header</h5>
-                <h6 class="subheader">Praesent placerat dui tincidunt elit suscipit sed.</h6>
-                <a href="#" class="small button">BUTTON TIME!</a>
-                </div>
-              </div>
-          </div>
- 
-          </div>
- 
+      </div>
+
+      <hr>
+
+      <!-- Example row of columns -->
+      <div class="row-fluid">
+        <div class="span4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
- 
+        <div class="span4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+       </div>
+        <div class="span4">
+          <h2>Heading</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+      </div>
+        
+             
+
       <!-- End Header Content -->
  
  
       <!-- Search Bar -->
  
-        <div class="row">
- 
-          <div class="large-12 columns">
-            <div class="radius panel">
- 
-           <!-- <form method="get" action="lookup.php"> -->
-              {{ Form::open(array('action' => 'BookController@getLookup', 'method' => 'get')) }}
-              {{ Form::token() }} 
-              <div class="row collapse">
- 
-                <div class="large-10 small-8 columns">
-                  <input type="text" name="isbn" placeholder="Enter your ISBN #" />
-                </div>
- 
-                <div class="large-2 small-3 columns">
-                  <input type="submit" class="postfix button expand" value="Get Prices" />
-               
-                </div>
- 
-              </div>
-            {{ Form::close() }}
- 
-          </div>
-          </div>
- 
-        </div>
+       
  
       <!-- End Search Bar -->
  
  
       <!-- Thumbnails -->
  
+        <!-- 
         <div class="row">
  
           <div class="large-12 show-for-small columns">
@@ -113,11 +88,11 @@
           </div>
  
         </div>
- 
+    -->
       <!-- End Thumbnails -->
  
  
-      <!-- Footer -->
+      <!-- Footer 
  
         <footer class="row">
         <div class="large-12 columns"><hr />
@@ -138,5 +113,5 @@
  
             </div>
         </div>
-      </footer>
+      </footer> -->
 @stop

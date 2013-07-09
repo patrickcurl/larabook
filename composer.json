@@ -3,7 +3,8 @@
 	"description": "The Laravel Framework.",
 	"keywords": ["framework", "laravel"],
 	"require": {
-		"laravel/framework": "4.0.*"
+		"laravel/framework": "4.0.*",
+		"gloudemans/shoppingcart": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
@@ -15,9 +16,9 @@
 			"app/tests/TestCase.php"
 		],
 		"files": [
-			"/lib/aws_signed_request.php",
-			"/lib/functions.php",
-			"/lib/simple_html_dom.php"
+			"lib/aws_signed_request.php",
+			"lib/functions.php",
+			"lib/simple_html_dom.php"
 		]
 	},
 	"scripts": {

@@ -25,4 +25,15 @@ Route::get('/', function(){
 
 Route::post('lookup', 'BookController@postLookup');
 Route::get('lookup', 'BookController@getLookup');
-
+Route::post('addCartItem', 'BookController@addCartItem');
+Route::get('removeCartItem', 'BookController@removeCartItem');
+Route::get('cart', 'BookController@viewCart');
+Route::post('update_cart', 'BookController@updateCart');
+Route::get('empty_cart', 'BookController@emptyCart');
+Route::get('checkout', 'BookController@checkout');
+//Route::get('login', array('as' => 'login', function(){}))->before('guest');
+Route::post('login', 'BookController@login');
+Route::get('logout', array('as' => 'logout', function(){}))->before('auth');
+Route::get('profile', array('as' => 'profile', function(){}))->before('auth');
+Route::get('edit_profile', 'BookController@editprofile');
+Route::post('update_profile', 'BookController@updateprofile');
