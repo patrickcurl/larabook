@@ -10,6 +10,9 @@ class Book extends Eloquent {
 		
 	}
 
+	public function lineitems(){
+		return $this->belongsToMany('LineItems', 'lineitems', 'book_id');
+	}
 
 
 	public function merchants(){
@@ -48,7 +51,7 @@ class Book extends Eloquent {
 
 			// $response = simplexml_load_file(amazonURL($isbn));
 			$response = self::cache_xml($isbn, 'amazon', amazonURL($isbn));
-			var_dump($response->Items->Item->ItemAttributes->ListPrice->FormattedPrice);
+			//var_dump($response->Items->Item->ItemAttributes->ListPrice->FormattedPrice);
 
 			$book = new Book();
 			$book->isbn10 = $response->Items->Item->ASIN;

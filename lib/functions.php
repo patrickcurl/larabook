@@ -95,6 +95,8 @@ function ordinalize($int){
 			}
 		} 
 
+
+
 // Get Amazon Price Data
 
 ?>

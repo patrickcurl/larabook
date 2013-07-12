@@ -33,6 +33,7 @@ ClassLoader::addDirectories(array(
 
 $logFile = 'log-'.php_sapi_name().'.txt';
 
+
 Log::useDailyFiles(storage_path().'/logs/'.$logFile);
 
 /*
@@ -82,3 +83,4 @@ App::down(function()
 date_default_timezone_set('America/New_York');
 require app_path().'/filters.php';
 //require app_path().'/listeners.php';
+

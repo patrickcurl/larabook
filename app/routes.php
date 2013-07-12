@@ -23,17 +23,34 @@ Route::get('/', function(){
 // 	return View::make('lookup');
 // });
 
-Route::post('lookup', 'BookController@postLookup');
-Route::get('lookup', 'BookController@getLookup');
-Route::post('addCartItem', 'BookController@addCartItem');
-Route::get('removeCartItem', 'BookController@removeCartItem');
-Route::get('cart', 'BookController@viewCart');
-Route::post('update_cart', 'BookController@updateCart');
-Route::get('empty_cart', 'BookController@emptyCart');
-Route::get('checkout', 'BookController@checkout');
+
+//-- Books Contoller Methods -- //
+Route::post('lookup', 'BooksController@postLookup');
+Route::get('lookup', 'BooksController@getLookup');
+
+
+
+//-- Cart Controller Methods --//
+Route::get('cart', 'CartController@viewCart');
+Route::post('addCartItem', 'CartController@addCartItem');
+Route::get('removeCartItem', 'CartController@removeCartItem');
+Route::post('update_cart', 'CartController@updateCart');
+Route::get('empty_cart', 'CartController@emptyCart');
+Route::get('checkout', 'CartController@checkout');
+Route::get('checkout_complete', 'CartController@checkout_complete');
+
+
+
 //Route::get('login', array('as' => 'login', function(){}))->before('guest');
-Route::post('login', 'BookController@login');
-Route::get('logout', array('as' => 'logout', function(){}))->before('auth');
-Route::get('profile', array('as' => 'profile', function(){}))->before('auth');
-Route::get('edit_profile', 'BookController@editprofile');
-Route::post('update_profile', 'BookController@updateprofile');
+//-- UsersController --//
+Route::post('register', 'UsersController@postRegister');
+Route::post('login', 'UsersController@postLogin');
+Route::get('login', 'UsersController@getLogin');
+Route::get('logout', 'UsersController@getLogout')->before('auth');
+Route::get('profile', 'UsersController@getProfile');
+Route::get('edit_profile', 'UsersController@getEditProfile');
+Route::post('update_profile', 'UsersController@postUpdateProfile');
+
+//-- OrdersController --//
+Route::get('view_orders', 'OrdersController@view_orders');
+Route::get('print_label', 'OrdersController@print_label');

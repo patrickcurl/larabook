@@ -5,9 +5,14 @@ Top TextBook Price : {{ $book->title }}
 @section('content')
 
 <div class="row-fluid">
-  <div class="span11 offset1"><h2>{{ $book->title }}</h2></div>
+  @if (strlen($book->title) > 110)
+  <div class="span12"><h2>{{ substr($book->title, 0, 110) }}...</h2></div>
+  @else
+  <div class="span12"><h2>{{ $book->title }}</h2></div>
+  
+  @endif
   <div class="span4 muted">
-    <img src="{{ $book->image_url }}"><br />
+    <img src="{{ $book->image_url }}" width="300"><br />
 
   </div>
   <div class="span6">
@@ -21,6 +26,7 @@ Top TextBook Price : {{ $book->title }}
     <dt>ISBN:</dt><dd>{{ $book->isbn10 }} / {{ $book->isbn13 }} <br />
     <a href="{{ $book->amazon_url }}" target="_blank">View Book Details on Amazon</a>
   </div>
+
   <div class="span7">
     <ul class="nav nav-tabs" id="myTab">
       <li class="active"><a href="#buy">Buy / Rent Textbooks</a></li>
@@ -87,7 +93,7 @@ Top TextBook Price : {{ $book->title }}
  <div class="span3 offset1"><h3>${{ $buyback }}</h3></div>
  <div class="span7">
              
-                 {{ Form::open(array('action' => 'BookController@addCartItem', 'method' => 'post')) }}
+                 {{ Form::open(array('action' => 'CartController@addCartItem', 'method' => 'post')) }}
                  {{ Form::token() }}
                  <input type="hidden" name="id" value="{{ $book->id }}" />
                  <input type="hidden" name="price" value="{{ $buyback }}" />
