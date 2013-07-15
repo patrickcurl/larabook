@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
 
-	{{ var_dump($errors->has('email')) }}
+
 	<div class="row-fluid">
 
 		<div class="span6">
@@ -26,19 +26,19 @@
 			  <div class="control-group <?php if($errors->has('email')){echo "error";} ?>" >
 			   	<label class="control-label" for="email">Email</label>
 			   	<div class="controls">
-			   		
-			   			
-			     			<input type="text" id="email" name="email" placeholder="Email"> 
+
+
+			     			<input type="text" id="email" name="email" placeholder="Email">
 			     		@foreach($errors->get('email') as $message)
 			     		<p class="text-error">{{$message}}</p>
 			     		@endforeach
-  					
-  					
-  						
-						
+
+
+
+
 			   	</div>
 			  </div>
-							  		  
+
 			  <div class="control-group <?php if($errors->has('password')){echo "error";} ?>">
 			   	<label class="control-label" for="password">Password</label>
 			   	<div class="controls">
@@ -108,7 +108,7 @@
 			   			<input type="radio" name="payment_method" name="payment_method" value="Check" />Check
 						</label>
 						<label class="radio inline">
-			   			<input type="radio" name="payment_method" name="payment_method" value="Paypal" />Paypal	
+			   			<input type="radio" name="payment_method" name="payment_method" value="Paypal" />Paypal
 						</label>
 					</div>
 			  </div>
@@ -130,7 +130,7 @@
 			<h2 style="text-align:center">Login</h2>
 			<br />
 			{{ Form::open(array('action' => 'UsersController@postLogin', 'method' => 'POST', 'class' => 'form-horizontal')) }}
-			<form class="form-horizontal">
+
 			  <div class="control-group">
 			   	<label class="control-label" for="email">Email</label>
 			   	<div class="controls">
@@ -152,6 +152,22 @@
 			   	</div>
 			  </div>
 			{{ Form::close() }}
+
+			@if (Session::has('error'))
+    {{ trans(Session::get('reason')) }}
+@elseif (Session::has('success'))
+    An e-mail with the password reset has been sent.
+@endif
+			<h2 style="text-align:right">Password Reset</h2>
+				{{ Form::open(array('action' => 'UsersController@postPasswordReset', 'method' => 'POST', 'class' => 'form-horizontal')) }}
+				<div class="control-group">
+					<label class="control-label" for="email">Email</label>
+					<div class="controls">
+						<input type="text" name="email"><br /><br />
+						<button type="submit" class="btn">Reset Password</button>
+					</div>
+				</div>
+
 		</div>
 
 	</div>

@@ -1,3 +1,4 @@
+<div style="padding-top:10px;">
 @if (count($errors->all()) > 0)
 
 <div class="alert alert-error alert-block">
@@ -11,7 +12,7 @@
 <div data-alert class="alert alert-success">
 <a class="close" data-dismiss="alert">x</a>
   {{{ $message }}}
-  
+
 </div>
 @endif
 
@@ -19,7 +20,7 @@
 <div data-alert class="alert alert-error">
 <a class="close" data-dismiss="alert">x</a>
   {{{ $message }}}
-  
+
 </div>
 @endif
 
@@ -27,7 +28,7 @@
 <div data-alert class="alert alert-block">
 <a class="close" data-dismiss="alert">x</a>
   {{{ $message }}}
-  
+
 </div>
 @endif
 
@@ -35,7 +36,7 @@
 <div data-alert class="alert alert-info">
 <a class="close" data-dismiss="alert">x</a>
   {{{ $message }}}
-  
+
 </div>
 @endif
 
@@ -43,7 +44,8 @@
   <div data-alert class="alert alert-info">
   <a class="close" data-dismiss="alert">x</a>
     {{ $message }}
-    
+
   </div>
 @endif
+</div>
 

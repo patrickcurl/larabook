@@ -15,7 +15,7 @@ Route::get('home', 'HomeController@showWelcome');
 // Route::get('lookup', 'HomeController@showLookup');
 Route::get('/', function(){
 
-	return View::make('hello');
+	return View::make('home');
 });
 
 // Route::post('lookup', function(){
@@ -50,6 +50,19 @@ Route::get('logout', 'UsersController@getLogout')->before('auth');
 Route::get('profile', 'UsersController@getProfile');
 Route::get('edit_profile', 'UsersController@getEditProfile');
 Route::post('update_profile', 'UsersController@postUpdateProfile');
+Route::post('forgot_password', 'UsersController@postForgotPassword');
+Route::get('password_reset', 'UsersController@getPasswordReset');
+Route::post('password_reset', 'UsersController@postPasswordReset');
+/* Route::get('password_reset/{token}', function($token)
+	{
+		return View::make('user.password_reset')->with('token', $token);
+	});
+*/
+Route::get('forgot_password', 'UsersController@getForgotPassword');
+//	public function getPasswordReset(){
+//		return Redirect::to('login')->with('message', 'Reset Password Email Sent, check e-mail.');
+//	}
+Route::post('change_pass', 'UsersController@postChangePass');
 
 //-- OrdersController --//
 Route::get('view_orders', 'OrdersController@view_orders');

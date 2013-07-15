@@ -39,18 +39,19 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->password;
 	}
 
-	public static function validate($input, $id){
+	public static function validate($input){
 		//var_dump($this->id);
+		var_dump(Auth::user()->id);
 		$rules = array(
 							#validation rules.
 
-							"email" => "Required|Between:3,255|Email|unique:users,email,$id",
+							"email" => "Required|Between:3,255|Email|unique:users,email,{Auth::user()->id}",
 							"password" => "Required|Between:5,25|Confirmed",
 							"password_confirmation" => "Required|Between:5,25"
 			);
 
 		return Validator::make($input, $rules);
-		
+
 	}
 
 	/**

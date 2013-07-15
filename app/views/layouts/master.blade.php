@@ -9,7 +9,7 @@
     	@show
     </title>
      <link href="css/bootstrap.min.css" rel="stylesheet">
-     
+
  <style type="text/css">
       body {
         padding-top: 20px;
@@ -118,7 +118,7 @@
 
 		<section class="top-bar-section">
 			<ul class="right">
-				 
+
 				@if (Auth::check())
 				<li><a href="{{{ URL::to('account') }}}">Account</a></li>
 				<li><a href="{{{ URL::to('account/logout') }}}">Logout</a></li>
@@ -128,7 +128,7 @@
 				<li class="divider"></li>
 				<li class="{{{ (Request::is('account/register') ? 'active' : '') }}}"><a href="{{{ URL::to('account/register') }}}">Register</a></li>
 				@endif
-			
+
 			</ul>
 		</section>
 	</nav>
@@ -138,7 +138,7 @@
 	<!-- <div class="row" style="margin-top:50px;">
 		<div class="large-12">
 			<img src="{{{ asset('img/topbookprices.png') }}}" />
-	    
+
 		</div>
 	</div>
 -->
@@ -156,7 +156,7 @@
                       <li class="active"><a href="{{ URL::to('/') }}">Home</a></li>
                       <li><a href="#">Link</a></li>
                       <li><a href="#">Link</a></li>
-                      
+
                     </ul>
 
                     <ul class="nav pull-right">
@@ -181,13 +181,13 @@
                             <li class="divider"></li>
                             <li><a href="{{ URL::to('/register') }}" >Register</a></li>
                           @endif
-                          
+
                         </ul>
                       </li>
                       <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Book Bag({{Cart::count() }})<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                         
+
                           <li><a href="{{ URL::to('/cart') }}">View Cart</a></li>
                           <li><a href="{{ URL::to('/empty_cart') }}">Empty Cart</a></li>
                           <li><a href="{{ URL::to('/checkout') }}">Checkout</a></li>
@@ -196,7 +196,7 @@
                         </ul>
                       </li>
                       {{ Form::open(array('action'=>'BooksController@getLookup', 'method' => 'get', 'class' =>'navbar-search input-append pull-right')) }}
-                      
+
                         <input class="span2" name="isbn" placeholder="Enter ISBN #" id="appendedInputButton" type="text">
                         <button class="btn" type="submit">Get Prices</button>
                     {{ Form::close() }}
@@ -207,9 +207,9 @@
               </div><!-- /navbar-inner -->
             </div>
   <div class="container">
-	  
+
       <div class="masthead">
-      	
+
         <img src="{{{ asset('img/topbookprices.png') }}}" />
         <div class="navbar navbar-custom2">
           <div class="navbar-inner navbar-custom1">
@@ -225,10 +225,12 @@
         </div><!-- /.navbar -->
       </div>
 			@include('notifications')
-
+      @if (Session::has('error'))
+    {{ trans(Session::get('reason')) }}
+@endif
 	    @yield('content')
       <!-- Jumbotron -->
-     
+
 
       <hr>
 

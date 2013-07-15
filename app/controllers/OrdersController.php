@@ -1,10 +1,12 @@
-<?php 
+<?php
 class OrdersController extends BaseController {
 
 
 public function view_orders(){
-		if(Auth::check()){
-				$orders = Order::where('user_id','=',Auth::user()->id)->get();
+		if(!Auth::check()){
+			return Redirect::to('login')->with('message', 'Must be logged in to view page.');
+		} else {
+			$orders = Order::where('user_id','=',Auth::user()->id)->get();
 				$orderArray = array();
 				$i = 0;
 				foreach($orders as $order){
@@ -30,10 +32,10 @@ public function view_orders(){
 					// var_dump($orderArray);
 					$i++;
 				}
+				return View::make('user.view_orders', array('orders' => $orderArray));
+		}
 
-			 	return View::make('view_orders', array('orders' => $orderArray));
-		} else {Redirect::to('/login')->with('message', 'Must be logged in to see that page.');}
-		
+
 
 	}
 
