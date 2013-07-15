@@ -6,6 +6,7 @@
 <p style="text-align:left;">Get up-to-the-minute price quotes on thousands of text-books simply enter the ISBN# below! Our mission is to help more people go to college, buy lowering the costs, we can show you how you can save hundreds by price-comparing at EVERY major text-book supplier on the market!</p>
 <p style="text-align:left;">Don't buy a textbook till you check TopBookPrices.com!</p>
              {{ Form::open(array('action' => 'BooksController@getLookup', 'method' => 'get', 'class' => 'form-search')) }}
+
              {{ Form::token() }}
 
                   <div class='input-append'>

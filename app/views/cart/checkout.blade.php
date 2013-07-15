@@ -191,7 +191,7 @@
 		<div class="span4">
 			<h2 style="text-align:center">Login</h2>
 			<br />
-			{{ Form::open(array('action' => 'BookController@login', 'method' => 'POST', 'class' => 'form-horizontal')) }}
+			{{ Form::open(array('action' => 'UsersController@postLogin', 'method' => 'POST', 'class' => 'form-horizontal')) }}
 			<form class="form-horizontal">
 			  <div class="control-group">
 			   	<label class="control-label" for="email">Email</label>
