@@ -31,7 +31,7 @@ public function view_orders(){
 					$i++;
 				}
 
-			 	return View::make('view_orders', array('orders' => $orderArray));
+			 	return View::make('user.view_orders', array('orders' => $orderArray));
 		} else {Redirect::to('/login')->with('message', 'Must be logged in to see that page.');}
 		
 

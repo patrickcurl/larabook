@@ -15,7 +15,7 @@ Route::get('home', 'HomeController@showWelcome');
 // Route::get('lookup', 'HomeController@showLookup');
 Route::get('/', function(){
 
-	return View::make('hello');
+	return View::make('home');
 });
 
 // Route::post('lookup', function(){
