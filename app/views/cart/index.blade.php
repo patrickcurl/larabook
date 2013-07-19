@@ -17,8 +17,8 @@
     <tr><td>
             <div class="row-fluid">
             <div class="span3"><img src="{{ $item->options->image_url }}" width="175" /></div>
-            <div class="span5">
-              @if (strlen($item->options->Title) > 70) 
+            <div class="span7">
+              @if (strlen($item->options->Title) > 70)
               <strong>{{ substr($item->options->Title, 0, 70) }}...</strong>
               @else
               <strong>{{ $item->options->Title }}</strong>
@@ -27,6 +27,7 @@
               Author: {{ $item->options->Author }}<br />
               Publisher: {{ $item->options->Publisher }}<br />
               Edition: {{ $item->options->Edition }}<br />
+              Weight: {{ number_format($item->options->Weight,2) }}<br />
               ISBN: {{ $item->options->ISBN10 }} / {{ $item->options->ISBN13 }}</div>
             </div>
             </td>
@@ -35,7 +36,7 @@
             <td><input class="input-mini" type="text" name="items[{{$count}}][qty]" value="{{ $item->qty }}" /></td>
             <td>${{ number_format($item->subtotal, 2) }}</td>
             <td> <a href="{{ URL::to('removeCartItem')}}?itemId={{$item->rowid}}"><img src="img/cross.png" /></a>
-             
+
           </tr>
           <?php $count++; ?>
     @endforeach

@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.mandrillapp.com',
+	'host' => Config::get('env_vars.email_host'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'patrickwcurl@gmail.com', 'name' => 'Patrick Curl'),
+	'from' => array('address' => Config::get('env_vars.email_from_address'), 'name' => Config::get('env_vars.email_from_name')),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => 'patrickwcurl@gmail.com',
+	'username' => Config::get('env_vars.mandrill_user'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => '14a0826b-b86a-481f-be63-6dc6cc3ba706',
+	'password' => Config::get('env_vars.mandrill_password'),
 
 	/*
 	|--------------------------------------------------------------------------

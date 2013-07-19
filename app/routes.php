@@ -58,6 +58,7 @@ Route::post('password_reset', 'UsersController@postPasswordReset');
 		return View::make('user.password_reset')->with('token', $token);
 	});
 */
+
 Route::get('forgot_password', 'UsersController@getForgotPassword');
 //	public function getPasswordReset(){
 //		return Redirect::to('login')->with('message', 'Reset Password Email Sent, check e-mail.');
@@ -67,3 +68,7 @@ Route::post('change_pass', 'UsersController@postChangePass');
 //-- OrdersController --//
 Route::get('view_orders', 'OrdersController@view_orders');
 Route::get('print_label', 'OrdersController@print_label');
+
+Route::get('test', function(){
+	return View::make('test');
+});

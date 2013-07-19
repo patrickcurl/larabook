@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration {
 			$table->increments('id');
 			$table->integer('user_id')->unsigned();
 			$table->string('tracking_number')->nullable();
+			$table->text('ups_label')->nullable();
 			$table->float('total_amount');
 			$table->date('shipment_received')->nullable();
 			$table->date('payment_sent')->nullable();

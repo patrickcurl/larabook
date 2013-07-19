@@ -56,6 +56,8 @@ return array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
 			'database'  => 'larabook',
+			'username'  => Config::get('env_vars.dbUser'),
+			'password'  => Config::get('env_vars.dbPass'),
 			'username'  => 'root',
 			'password'  => '',
 			'charset'   => 'utf8',

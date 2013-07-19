@@ -9,7 +9,7 @@ Top TextBook Price : {{ $book->title }}
   <div class="span12"><h2>{{ substr($book->title, 0, 110) }}...</h2></div>
   @else
   <div class="span12"><h2>{{ $book->title }}</h2></div>
-  
+
   @endif
   <div class="span4 muted">
     <img src="{{ $book->image_url }}" width="300"><br />
@@ -22,8 +22,10 @@ Top TextBook Price : {{ $book->title }}
     <dt>Publisher:</dt><dd>{{  $book->publisher }} <br /></h4>
     <dt>Edition:</dt><dd>{{  $book->edition }} <br />
     <dt>Number of Pages:</dt><dd>{{ $book->num_of_pages }} <br />
+    <dt>Weight:</dt><dd>{{ $book->weight }}<br />
     <dt>List Price:</dt><dd>${{  number_format($book->list_price/100, 2) }} <br />
     <dt>ISBN:</dt><dd>{{ $book->isbn10 }} / {{ $book->isbn13 }} <br />
+
     <a href="{{ $book->amazon_url }}" target="_blank">View Book Details on Amazon</a>
   </div>
 
@@ -37,39 +39,39 @@ Top TextBook Price : {{ $book->title }}
       <div class="tab-pane active" id="buy">
         <table class="table table-striped">
           <tr>
-            <td>  
-              @if (Input::get('orderby')=='merchant_id' && Input::get('dir')=='ASC') 
-                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=merchant_id&dir=DESC">Seller</a>  
-              @else 
-                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=merchant_id&dir=ASC">Seller</a> 
-              @endif
-            </td>
-            <td>  
-              @if (Input::get('orderby')=='amount_used' && Input::get('dir')=='ASC') 
-                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_used&dir=DESC">Used</a>  
-              @else 
-                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_useddir=ASC">Used</a> 
-              @endif
-            </td>
-            <td>  
-              @if (Input::get('orderby')=='amount_new' && Input::get('dir')=='ASC') 
-                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_new&dir=DESC">New</a>  
+            <td>
+              @if (Input::get('orderby')=='merchant_id' && Input::get('dir')=='ASC')
+                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=merchant_id&dir=DESC">Seller</a>
               @else
-                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_new&dir=ASC">New</a> 
+                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=merchant_id&dir=ASC">Seller</a>
               @endif
             </td>
-            <td>  
-              @if (Input::get('orderby')=='amount_rental' && Input::get('dir')=='ASC') 
-                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_ebook&dir=DESC">Rental</a>  
-              @else 
-                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_ebook&dir=ASC">Rental</a> 
+            <td>
+              @if (Input::get('orderby')=='amount_used' && Input::get('dir')=='ASC')
+                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_used&dir=DESC">Used</a>
+              @else
+                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_useddir=ASC">Used</a>
               @endif
             </td>
-            <td>  
-              @if (Input::get('orderby')=='amount_ebook' && Input::get('dir')=='ASC') 
-                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=merchant_id&dir=DESC">eBook</a>  
-              @else 
-                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=merchant_id&dir=ASC">eBook</a> 
+            <td>
+              @if (Input::get('orderby')=='amount_new' && Input::get('dir')=='ASC')
+                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_new&dir=DESC">New</a>
+              @else
+                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_new&dir=ASC">New</a>
+              @endif
+            </td>
+            <td>
+              @if (Input::get('orderby')=='amount_rental' && Input::get('dir')=='ASC')
+                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_ebook&dir=DESC">Rental</a>
+              @else
+                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=amount_ebook&dir=ASC">Rental</a>
+              @endif
+            </td>
+            <td>
+              @if (Input::get('orderby')=='amount_ebook' && Input::get('dir')=='ASC')
+                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=merchant_id&dir=DESC">eBook</a>
+              @else
+                <a href="{{ URL::current() }}?isbn={{Input::get('isbn')}}&orderby=merchant_id&dir=ASC">eBook</a>
               @endif
             </td>
           </tr>
@@ -86,18 +88,19 @@ Top TextBook Price : {{ $book->title }}
         </table>
       </div>
       <div class="tab-pane" id="sell">
-   @if ($buyback > 0.01)     
+   @if ($buyback > 0.01)
  <h2 style="text-align:center">Current Buyback Price</h2>
  <br />
 
  <div class="span3 offset1"><h3>${{ $buyback }}</h3></div>
  <div class="span7">
-             
+
                  {{ Form::open(array('action' => 'CartController@addCartItem', 'method' => 'post')) }}
                  {{ Form::token() }}
                  <input type="hidden" name="id" value="{{ $book->id }}" />
                  <input type="hidden" name="price" value="{{ $buyback }}" />
                  <input type="hidden" name="name" value="{{ $book->title }}" />
+                 <input type="hidden" name="weight" value="{{ $book->weight }}" />
                  <input type="hidden" name="qty" value="1" />
                  <input type="hidden" name="image_url" value="{{ $book->image_url }}" />
                  <input type="hidden" name="author" value="{{ $book->author }}" />
@@ -107,7 +110,7 @@ Top TextBook Price : {{ $book->title }}
                  <input type="hidden" name="isbn13" value="{{ $book->isbn13 }}" />
                  <input type="image" src="img/addtocart.png" name="addToCart" />
                  {{ Form::close() }}
-            
+
       </div>
         @else
                 <h3>Currently, we are not buying this book.</h3>
@@ -137,7 +140,7 @@ Top TextBook Price : {{ $book->title }}
 
         </div>
       </div>
-   
+
   @endforeach
 </table>
 </div>

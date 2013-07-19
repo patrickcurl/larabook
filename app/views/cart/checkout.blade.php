@@ -2,7 +2,6 @@
 @section('content')
 	<h3>Checkout</h3>
 	<br />
-	@if(Auth::check())
 	Welcome : {{ Auth::user()->first_name }}
 	<div class="row-fluid">
 		<div class="span8">
@@ -17,8 +16,8 @@
 					@foreach($cart as $item)
 					<tr>
 						<td>
-						<div class="row-fluid">	
-						
+						<div class="row-fluid">
+
 						<div class="span3"><img src="{{ $item->options->image_url }}" width="175" /></div>
             <div class="span9">
               <strong>{{ $item->options->Title }}</strong><br />
@@ -86,136 +85,12 @@
 						<td>{{ Auth::user()->paypal_email }}</td>
 					</tr>
 				</tbody>
-	
+
 			 </table>
 
 		</div>
 
 	</div>
 
-	@else
-	<div class="row-fluid">
 
-		<div class="span5">
-			<h2>Register</h2>
-			<br />
-			<form class="form-horizontal">
-				
-				<div class="control-group">
-			   	<label class="control-label" for="inputFirstName">First Name</label>
-			   	<div class="controls">
-			     	<input type="text" id="inputFirstName" name="inputFirstName" placeholder="First Name">
-			   	</div>
-			  </div>
-
-			  <div class="control-group">
-			   	<label class="control-label" for="inputLastName">Last Name</label>
-			   	<div class="controls">
-			     	<input type="text" id="inputLastName" name="inputFirstName" placeholder="Last Name">
-			   	</div>
-			  </div>
-
-			  <div class="control-group">
-			   	<label class="control-label" for="inputEmail">Email</label>
-			   	<div class="controls">
-			     	<input type="text" id="inputEmail" placeholder="Email">
-			   	</div>
-			  </div>
-			  
-			  <div class="control-group">
-			   	<label class="control-label" for="inputPassword">Password</label>
-			   	<div class="controls">
-			     	<input type="password" id="inputPassword" placeholder="Password">
-			   	</div>
-			  </div>
-
-			  <div class="control-group">
-			   	<label class="control-label" for="inputPhone">Phone</label>
-			   	<div class="controls">
-			     	<input type="text" id="inputPhone" name="inputPhone" placeholder="Phone">
-			   	</div>
-			  </div>
-
-			  <div class="control-group">
-			   	<label class="control-label" for="inputAddress">Address</label>
-			   	<div class="controls">
-			     	<input type="text" id="inputAddress" name="inputAddress" placeholder="Address">
-			   	</div>
-			  </div>
-
-			  <div class="control-group">
-			   	<label class="control-label" for="inputCity">City</label>
-			   	<div class="controls">
-			     	<input type="text" id="inputCity" name="inputCity" placeholder="City">
-			   	</div>
-			  </div>
-
-			  <div class="control-group">
-			   	<label class="control-label" for="inputState">State</label>
-			   	<div class="controls">
-			     	<select name="inputState">
-			     		@foreach ($states as $name => $abbr )
-			     		<option value="{{ $abbr }}">{{ $name }}</option>
-			     		@endforeach
-			     	</select>
-			   	</div>
-			  </div>
-
-			  <div class="control-group">
-			   	<label class="control-label" for="inputZip">Zip Code</label>
-			   	<div class="controls">
-			     	<input type="text" id="inputZip" name="inputZip" placeholder="Zip Code">
-			   	</div>
-			  </div>
-
-			  <div class="control-group">
-			  	<label class="control-label" for="inputPaymentMethod">Payment Method</label>
-			  	<div class="controls">
-			   		<label class="radio inline">
-			   			<input type="radio" name="inputPaymentMethod" name="inputPaymentMethod" value="Check" />Check
-						</label>
-						<label class="radio inline">
-			   			<input type="radio" name="inputPaymentMethod" name="inputPaymentMethod" value="Paypal" />Paypal	
-						</label>
-					</div>
-			  </div>
-			  <div class="control-group">
-			   	<label class="control-label" for="inputPaypalEmail">Paypal Email Address</label>
-			   	<div class="controls">
-			     	<input type="text" id="inputPaypalEmail" placeholder="Paypal Email Address">
-			   	</div>
-			  </div>
-			</form>
-		</div>
-
-		<div class="span4">
-			<h2 style="text-align:center">Login</h2>
-			<br />
-			{{ Form::open(array('action' => 'UsersController@postLogin', 'method' => 'POST', 'class' => 'form-horizontal')) }}
-			<form class="form-horizontal">
-			  <div class="control-group">
-			   	<label class="control-label" for="email">Email</label>
-			   	<div class="controls">
-			     	<input type="text" id="email" name="email" placeholder="Email">
-			   	</div>
-			  </div>
-			  <div class="control-group">
-			   	<label class="control-label" for="password">Password</label>
-			   	<div class="controls">
-			     	<input type="password" id="password" name="password" placeholder="Password">
-			   	</div>
-			  </div>
-			  <div class="control-group">
-			   	<div class="controls">
-			     	<label class="checkbox">
-			       	<input type="checkbox"> Remember me
-			     	</label>
-			     	<button type="submit" class="btn">Sign in</button>
-			   	</div>
-			  </div>
-			{{ Form::close() }}
-		</div>
-
-	</div>
-	@endif
 @stop

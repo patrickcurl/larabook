@@ -72,15 +72,8 @@
 		<div class="control-group span5">
 			<label class="control-label" for="state">State</label>
 			<div class="controls">
-				<select name="state">
-					@foreach ($state_list as $name => $abbr )
-						@if (Auth::user()->state == $abbr)
-							<option value="{{ $abbr }}" selected="selected">{{ $name }}</option>
-						@else
-							<option value="{{ $abbr }}">{{ $name }}</option>
-						@endif
-					@endforeach
-				</select>
+				
+				{{ Form::select('state', $state_list, Auth::user()->state) }}
 			</div>
 		</div>
 		<div class="control-group span5">

@@ -23,9 +23,8 @@
       <!-- Example row of columns -->
       <div class="row-fluid">
         <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
+<a href="http://www.tkqlhce.com/click-7171865-11398628" target="_top">
+<img src="http://www.ftjcfx.com/image-7171865-11398628" width="300" height="250" alt="" border="0"/></a>
         </div>
         <div class="span4">
           <h2>Heading</h2>

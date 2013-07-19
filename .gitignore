@@ -2,4 +2,5 @@
 /vendor
 composer.phar
 composer.lock
+/app/config/env_vars.php
 .DS_Store

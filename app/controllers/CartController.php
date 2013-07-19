@@ -1,10 +1,10 @@
-<?php 
+<?php
 class CartController extends BaseController {
-	
+
 
 		public function viewCart()
 	{
-	
+
 		$cart = Cart::content();
 
 		return View::make('cart.index', array('cart' => $cart));
@@ -17,12 +17,13 @@ class CartController extends BaseController {
 	//	if ($id) {
 	//		$book = Book::find($id)->first();
 	//	}
-		
+
 		$qty = Input::get('qty');
 		$price = Input::get('price');
 		$options = array(
 										"book_id" => Input::get('id'),
 										"Title" => Input::get('name'),
+										"Weight" => Input::get('weight'),
 										"ISBN10" => Input::get('isbn10'),
 										"ISBN13" => Input::get('isbn13'),
 										"image_url" => Input::get('image_url'),
@@ -61,19 +62,27 @@ class CartController extends BaseController {
 
 	public function checkout(){
 		$cart = Cart::content();
-		$state_list = array('Alabama'=>"AL", 'Alaska'=>"AK", 'Arizona'=>"AZ", 'Arkansas'=>"AR", 'California'=>"CA", 'Colorado'=>"CO", 'Connecticut'=>"CT", 'Delaware'=>"DE", 'District Of Columbia'=>"DC", 'Florida'=>"FL", 'Georgia'=>"GA", 'Hawaii'=>"HI", 'Idaho'=>"ID", 'Illinois'=>"IL", 'Indiana'=>"IN", 'Iowa'=>"IA", 'Kansas'=>"KS", 'Kentucky'=>"KY", 'Louisiana'=>"LA", 'Maine'=>"ME", 'Maryland'=>"MD", 'Massachusetts'=>"MA", 'Michigan'=>"MI", 'Minnesota'=>"MN", 'Mississippi'=>"MS", 'Missouri'=>"MO", 'Montana'=>"MT", 'Nebraska'=>"NE", 'Nevada'=>"NV", 'New Hampshire'=>"NH", 'New Jersey'=>"NJ", 'New Mexico'=>"NM", 'New York'=>"NY", 'North Carolina'=>"NC", 'North Dakota'=>"ND", 'Ohio'=>"OH", 'Oklahoma'=>"OK", 'Oregon'=>"OR", 'Pennsylvania'=>"PA", 'Rhode Island'=>"RI", 'South Carolina'=>"SC", 'South Dakota'=>"SD", 'Tennessee'=>"TN", 'Texas'=>"TX", 'Utah'=>"UT", 'Vermont'=>"VT", 'Virginia'=>"VA", 'Washington'=>"WA", 'West Virginia'=>"WV", 'Wisconsin'=>"WI", 'Wyoming'=>"WY");
-		return View::make('cart.checkout', array('states' => $state_list, 'cart' => $cart));
+
+		if (Auth::check()){
+			return View::make('cart.checkout', array('cart' => $cart));
+
+		} else {
+			return View::make('user.login');
+		}
+
 	}
 
 		public function checkout_complete(){
+		$user = Auth::user();
 
 		$order = new Order;
 		$order->user_id = Auth::user()->id;
 		$order->total_amount = Cart::total();
 		$order->save();
 
-		$cart = Cart::content();
 
+		$cart = Cart::content();
+		$weight = 0.0;
 		foreach($cart as $item){
 			$lineitem = new LineItem;
 			$lineitem->book_id = $item->id;
@@ -81,7 +90,10 @@ class CartController extends BaseController {
 			$lineitem->price = $item->price;
 			$lineitem->order_id = $order->id;
 			$lineitem->save();
+			$weight += number_format($item->options->Weight,2);
 		}
+		$order->ups_label = getLabel($user, $weight);
+		$order->save();
 		Cart::destroy();
 		return Redirect::to('view_orders');
 

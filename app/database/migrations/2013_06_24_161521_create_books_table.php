@@ -25,8 +25,9 @@ class CreateBooksTable extends Migration {
 			$t->string('edition')->nullable();
 			$t->integer('num_of_pages')->nullable();
 			$t->float('list_price')->nullable();
+			$t->float('weight')->nullable();
 			$t->timestamps();
-			
+
 		});
 	}
 

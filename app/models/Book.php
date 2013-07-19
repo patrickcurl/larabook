@@ -7,7 +7,7 @@ class Book extends Eloquent {
 
 	public function prices(){
 		return $this->hasMany('Price');
-		
+
 	}
 
 	public function lineitems(){
@@ -33,7 +33,7 @@ class Book extends Eloquent {
 			} else {
 				return NULL;
 			}
-			
+
 		}
 
 	}
@@ -47,7 +47,7 @@ class Book extends Eloquent {
 	if ($book){
 			return $book;
 		} else {
-		
+
 
 			// $response = simplexml_load_file(amazonURL($isbn));
 			$response = self::cache_xml($isbn, 'amazon', amazonURL($isbn));
@@ -64,15 +64,15 @@ class Book extends Eloquent {
 			$book->amazon_url = $response->Items->Item->DetailPageURL;
 			$book->num_of_pages = $response->Items->Item->ItemAttributes->NumberOfPages;
 			$book->list_price = number_format($response->Items->Item->ItemAttributes->ListPrice->FormattedPrice / 100, 2) ;
-
+			$book->weight = number_format($response->Items->Item->ItemAttributes->ItemDimensions->Weight /100, 2);
 			$book->save();
 			return $book;
-			
+
 		}
 
-		
-	
-		
+
+
+
 	}
 
 
@@ -82,7 +82,7 @@ class Book extends Eloquent {
 		//function to update or add new price.
 		$price = Price::where('merchant_id','=',$merchant->id)->where('book_id','=',$book->id)->first();
 		// grabs price object for current book/merchant pairing if exists.
-		
+
 		if ($price) {
 			// if price exists update the db w/ the new price depending on the $type variable using switch case.
 				switch($type){
@@ -108,9 +108,9 @@ class Book extends Eloquent {
 						break;
 				}
 				$price->save();
-		 
+
 		} else {
-			// if price doesn't exist do same as above, only instead create a new price row in db, 
+			// if price doesn't exist do same as above, only instead create a new price row in db,
 			// choose field to update based on $type.
 			$price = new Price(array('book_id' => $book->id, 'merchant_id' => $merchant->id));
 			switch($type){
@@ -137,13 +137,13 @@ class Book extends Eloquent {
 			}
 			$price->save(); // save the changes to db.
  			}
-		
+
 		$priceArr = array(
 			'price' => number_format($amount / 100, 2),
 			'url' => $buy_url
 			);
 		return $priceArr; // returns the price/url as an array for display to user.
-		
+
 	}
 
 	public static function getPrices($book, $orderby, $dir){
@@ -161,11 +161,11 @@ class Book extends Eloquent {
 	//	var_dump($xml_bookrenter);
 		//var_dump($response);
 		//$amazonXML = amazonXML($isbn);
-		//$amazonXML->registerXpathNamespace("xmlns", "http://webservices.amazon.com/AWSECommerceService/2011-08-01"); 
+		//$amazonXML->registerXpathNamespace("xmlns", "http://webservices.amazon.com/AWSECommerceService/2011-08-01");
 		# $biggerbooksXML = simplexml_load_string(file_get_contents("http://www.biggerbooks.com/botpricexml?isbn=$isbn"));
 		# $valorebooksXML = simplexml_load_string(file_get_contents("http://prices.valorebooks.com/lookup-multiple-categories?SiteID=s1pI8Z&ProductCode=$isbn"));
-		
-		
+
+
 		// $valore = Cache::remember("valore{$isbn}", 360, function(){
 		//	$valoreXML = @simplexml_load_file("http://prices.valorebooks.com/lookup-multiple-categories?SiteID=s1pI8Z&ProductCode=$isbn")->asXML();
 		//	return $valoreXML;
@@ -189,12 +189,12 @@ class Book extends Eloquent {
 
 		$merchants = Merchant::all();
 
-		$merchant = array(); 
+		$merchant = array();
 		foreach($merchants as $m){
 			$merchant[$m->slug] = $m;
 			}
 
-	
+
 	if ($xml_amazon){
 		self::newPrice($book, $merchant['amazon'], 'new', $xml_amazon->Items->Item->DetailPageURL, number_format($xml_amazon->Items->Item->OfferSummary->LowestNewPrice->Amount/100,2));
 		self::newPrice($book, $merchant['amazon'], 'used', $xml_amazon->Items->Item->Offers->MoreOffersUrl, number_format($xml_amazon->Items->Item->OfferSummary->LowestUsedPrice->Amount/100,2));
@@ -227,15 +227,15 @@ class Book extends Eloquent {
 				self::newPrice($book, $merchant['bookrenter'], 'rental', $br_link, $br_rental_price);
 			}
 
-			
+
 		}
-		
-		
-		
-		
+
+
+
+
 		//Commission Junction baseurl: http://www.dpbolvw.net/click-7171865-10920299?url=
-		
-		
+
+
 
 	}
 
@@ -260,7 +260,7 @@ class Book extends Eloquent {
 		//return $ecampusXML;
 
   //  $book = Book::find_or_create($isbn);
-    
+
   //  return $book;
 		//	$prices = Price::where('book_id','=',$book->id)->orderBy('amount', 'asc')->get();
 		//	return $prices;
@@ -274,7 +274,7 @@ class Book extends Eloquent {
   	$price = $price->amount_buyback;
   	$price = number_format($price, 2);
   	return $price;
-  
+
   }
 
 

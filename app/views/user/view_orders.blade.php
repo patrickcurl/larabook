@@ -71,10 +71,10 @@
 				<td>
 					@foreach($order['items'] as $i => $item)
 					<table class="table table-hover table-condensed">
-						
 
-						
-						
+
+
+
 						<tr><td colspan="3">{{ $item['title'] }}</td>
 						<tr>
 							<td></td>
@@ -90,17 +90,18 @@
 								<br />Price: ${{ number_format($item['price'],2) }}
 							</td>
 						</tr>
-					
+
 						@endforeach
 
 					</table>
 				</td>
 					<td>
-					
+
 							Order Date: {{$order['created_at']->format("n/d/Y") }}
 							<br />Received Date: @if($order['shipment_received']) {{ date("n/d/Y", strtotime($order['shipment_received'])) }} @else Pending @endif
 							<br />Payment Date:  @if($order['payment_sent']) {{ date("n/d/Y", strtotime($order['payment_sent'])) }} @else Pending @endif
-
+              <br /><a href="{{URL::to('/print_label') }}/?order_id={{$order['id']}}">Print Shipping Label</a>
+              <br ?
 						<br />{{ $order['comments'] }}</td>
 		</tr>
 	</tbody>

@@ -6,17 +6,22 @@ public function view_orders(){
 		if(!Auth::check()){
 			return Redirect::to('login')->with('message', 'Must be logged in to view page.');
 		} else {
-			$orders = Order::where('user_id','=',Auth::user()->id)->get();
+
+			$orders = Order::where('user_id','=',Auth::user()->id)->get(); // find all orders from currently logged in user.
 			$orderArray = array();
 			$i = 0;
+			//Put all orders into arrays for easy enumeration.
 			foreach($orders as $order){
 				$lineitems = DB::table('lineitems')->join('books', function($join){$join->on('books.id', '=', 'lineitems.book_id');})->where('order_id','=',$order->id)->get();
+				$orderArray[$i]['id'] = $order->id;
 				$orderArray[$i]['total_amount'] = $order->total_amount;
 				$orderArray[$i]['created_at'] = $order->created_at;
 				$orderArray[$i]['shipment_received'] = $order->shipment_received;
 				$orderArray[$i]['payment_sent'] = $order->payment_sent;
 				$orderArray[$i]['comments'] = $order->comments;
+				//$orderArray[$i]['ups_label'] = $order->ups_label;
 				$j = 0;
+					// attach all lineitems to an order
 				foreach($lineitems as $item){
 					$orderArray[$i]['items'][$j]['qty'] = $item->qty;
 					$orderArray[$i]['items'][$j]['price'] = $item->price;
@@ -29,7 +34,7 @@ public function view_orders(){
 					$orderArray[$i]['items'][$j]['isbn13'] = $item->isbn13;
 				$j++;
 				}
-					// var_dump($orderArray);
+
 					$i++;
 			}
 				return View::make('user.view_orders', array('orders' => $orderArray));
@@ -37,7 +42,9 @@ public function view_orders(){
 }
 
 	public function print_label(){
-		return View::make('print_label');
+		$order = Order::find(Input::get('order_id'))->first();
+
+		return View::make('user.print_label', array('ups_label' => $order->ups_label));
 	}
 
 }

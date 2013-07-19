@@ -15,8 +15,8 @@ return array(
 	|
 	*/
 
-	'driver' => 'eloquent',
-
+	//'driver' => 'eloquent',
+		'driver' => 'verify',
 	/*
 	|--------------------------------------------------------------------------
 	| Authentication Model
