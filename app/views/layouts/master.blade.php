@@ -8,11 +8,11 @@
     	Top Book Prices :: Get the Best Price for TextBooks
     	@show
     </title>
-     <link href="css/bootstrap.min.css" rel="stylesheet">
+     <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
  <style type="text/css">
       body {
-        padding-top: 20px;
+        padding-top: 40px;
         padding-bottom: 60px;
       }
 
@@ -104,7 +104,8 @@
     @show
 </head>
 
-<body >
+<body @section('body')
+      @show >
 
 	<!-- <div class=""><nav class="top-bar" >
 		<ul class="title-area">
@@ -142,6 +143,7 @@
 		</div>
 	</div>
 -->
+
 <div class="navbar navbar-fixed-top">
               <div class="navbar-inner">
                 <div class="container">
@@ -155,21 +157,23 @@
                     <ul class="nav ">
                       <li class="active"><a href="{{ URL::to('/') }}">Home</a></li>
                       <li><a href="#">Link</a></li>
-                      <li><a href="#">Link</a></li>
+
 
                     </ul>
 
-                    <ul class="nav pull-right">
-                      <li><a href="#">Link</a></li>
+                    <ul class="nav ">
+
                       <li class="divider-vertical"></li>
                       <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
                         <ul class="dropdown-menu" style="padding-left:20px; padding-right:20px; padding: 5px 20px 20px 20px">
-                        	@if (Auth::check())
-                          <li><a href="{{ URL::to('/edit_profile') }}">Edit Profile</a></li>
-                          <li><a href="{{ URL::to('/view_orders') }}">View Orders</a></li>
+                        	@if (Sentry::check())
+                          <?php $currentUser = Sentry::getUser(); ?>
+
+                          <li><a href="{{ URL::to('/users/edit/' . $currentUser->id) }}">Edit Profile</a></li>
+                          <li><a href="{{ URL::to('/users/orders/' . $currentUser->id) }}">View Orders</a></li>
                           <li class="divider"></li>
-                          <li><a href="{{ URL::to('/logout') }}">Logout</a></li>
+                          <li><a href="{{ URL::to('/users/logout') }}">Logout</a></li>
                           @else
                           <li class="nav-header">Login</li>
                           <li class="divider"></li>
@@ -200,8 +204,15 @@
                         <input class="span2" name="isbn" placeholder="Enter ISBN #" id="appendedInputButton" type="text">
                         <button class="btn" type="submit">Get Prices</button>
                     {{ Form::close() }}
-                    </ul>
+                    <li class="divider"></li>
 
+                    </ul>
+                    @if (Sentry::check())
+                      <?php $currentUser = Sentry::getUser(); ?>
+                    @if ($currentUser->hasAccess('admin'))
+                    <ul class="nav"><li><a href="{{ URL::to('/admin') }}"><strong>Admin</strong></a></li></ul>
+                    @endif
+                    @endif
                   </div><!-- /.nav-collapse -->
                 </div>
               </div><!-- /navbar-inner -->
@@ -210,19 +221,11 @@
 
       <div class="masthead">
 
-        <img src="{{{ asset('img/topbookprices.png') }}}" />
-        <div class="navbar navbar-custom2">
-          <div class="navbar-inner navbar-custom1">
-            <div class="container">
-              <ul class="nav nav_custom3">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact</a></li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- /.navbar -->
+        <img src="{{{ asset('img/topbookprices.png') }}}"
+                    @section('logo')
+                    @show
+                    />
+
       </div>
 			@include('notifications')
       @if (Session::has('error'))
@@ -243,8 +246,8 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/vendor/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
+    <script src="{{ URL::asset('js/vendor/jquery.js') }}"></script>
+    <script src="{{ URL::asset('js/bootstrap.js') }}"></script>
     <script>
 $('#myTab a').click(function (e) {
   e.preventDefault();

@@ -41,10 +41,18 @@ public function view_orders(){
 		}
 }
 
-	public function print_label(){
-		$order = Order::find(Input::get('order_id'))->first();
+	public function getLabel($id){
+		$order = Order::find($id)->first();
 
-		return View::make('user.print_label', array('ups_label' => $order->ups_label));
+		return View::make('orders.label', array('ups_label' => $order->ups_label));
+	}
+
+	public function getPackingSlip($id){
+		$order = Order::find($id);
+		$items = DB::table('lineitems')->join('books', function($join){$join->on('books.id', '=', 'lineitems.book_id');})->where('order_id','=',$id)->get();
+
+		return View::make('orders.packingslip', array('items' => $items, 'orderTotal' => $order->total_amount));
 	}
 
 }
+

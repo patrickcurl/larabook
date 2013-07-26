@@ -7,8 +7,9 @@
 
 
 <div class="row-fluid">
-	{{ Form::open(array('action' => 'UsersController@postUpdateProfile', 'method' => 'POST', 'class' => 'form-horizontal')) }}
-		<input type="hidden" name="id" value="{{ Auth::user()->id }}" />
+	<form class="form-horizontal" action="{{ URL::to('users/edit') }}/{{ $user->id }}" method="post">
+		{{ Form::token() }}
+		<input type="hidden" name="id" value="{{-- Auth::user()->id --}}" />
 		<div class="control-group span5">
 			<label class="control-label" for="first_name">First Name</label>
 			<div class="controls">
@@ -72,7 +73,7 @@
 		<div class="control-group span5">
 			<label class="control-label" for="state">State</label>
 			<div class="controls">
-				
+
 				{{ Form::select('state', $state_list, Auth::user()->state) }}
 			</div>
 		</div>

@@ -2,7 +2,8 @@
 @section('content')
 	<h3>Checkout</h3>
 	<br />
-	Welcome : {{ Auth::user()->first_name }}
+	<?
+	Welcome : {{ $currentUser->first_name }}
 	<div class="row-fluid">
 		<div class="span8">
 			<table class="table">
@@ -50,39 +51,39 @@
 				<tbody>
 					<tr>
 						<td>Name</td>
-						<td>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</td>
+						<td>{{ $currentUser->first_name }} {{ $currentUser->last_name }}</td>
 					</tr>
 					<tr>
 						<td>Email</td>
-						<td>{{ Auth::user()->email }}</td>
+						<td>{{ $currentUser->email }}</td>
 					</tr>
 					<tr>
 						<td>Phone</td>
-						<td>{{ Auth::user()->phone }}</td>
+						<td>{{ $currentUser->phone }}</td>
 					</tr>
 					<tr>
 						<td>Address</td>
-						<td>{{ Auth::user()->address }}</td>
+						<td>{{ $currentUser->address }}</td>
 					</tr>
 					<tr>
 						<td>City</td>
-						<td>{{ Auth::user()->city }}</td>
+						<td>{{ $currentUser->city }}</td>
 					</tr>
 					<tr>
 						<td>State</td>
-						<td>{{ Auth::user()->state }}</td>
+						<td>{{ $currentUser->state }}</td>
 					</tr>
 					<tr>
 						<td>Zip</td>
-						<td>{{ Auth::user()->zip }}</td>
+						<td>{{ $currentUser->zip }}</td>
 					</tr>
 					<tr>
 						<td>Payment Method</td>
-						<td>{{ Auth::user()->payment_method }}</td>
+						<td>{{ $currentUser->payment_method }}</td>
 					</tr>
 					<tr>
 						<td>Paypal Email</td>
-						<td>{{ Auth::user()->paypal_email }}</td>
+						<td>{{ $currentUser->paypal_email }}</td>
 					</tr>
 				</tbody>
 

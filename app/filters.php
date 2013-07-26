@@ -35,7 +35,8 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+	//if (Auth::guest()) return Redirect::guest('login');
+	if (!Sentry::check()) return Redirect::to('users/login');
 });
 
 
@@ -44,6 +45,27 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
+Route::filter('admin-auth', function(){
+  $user = Sentry::getUser();
+  if(!$user->hasAccess('admin')){
+    return Redirect::to('/login')->with("message", "You are not authorized to view this.");
+  }
+});
+
+Route::filter('admin_auth', function()
+{
+	if (!Sentry::check())
+	{
+		// if not logged in, redirect to login
+		return Redirect::to('users/login');
+	}
+
+	if (!Sentry::getUser()->hasAccess('admin'))
+	{
+		// has no access
+		return Response::make('Access Forbidden', '403');
+	}
+});
 /*
 |--------------------------------------------------------------------------
 | Guest Filter
@@ -75,8 +97,8 @@ Route::filter('csrf', function()
 {
 	if (Session::token() != Input::get('_token'))
 	{
-		$url = URL::full();	
-		var_dump($url);
+		//$url = URL::full();
+		//var_dump($url);
 		return Redirect::back()->with('message', 'Token expired, please try again.');
 	}
 });

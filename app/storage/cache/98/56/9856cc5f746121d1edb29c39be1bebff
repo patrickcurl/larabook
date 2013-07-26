@@ -1,0 +1,39 @@
+1374876661s:1105:"<?xml version="1.0" encoding="UTF-8"?>
+<product>
+ <product-code>9780133061819</product-code>
+ 
+ <rental-offer>
+ <condition>Very Good</condition>
+ <ninty-day-price>81.00</ninty-day-price> 
+ <alternate-edition>false</alternate-edition>
+ <quantity>101</quantity>
+ <semester-price>87.10</semester-price>
+ <link>http://www.valorebooks.com/rental-listing?product_id=34477238&amp;listing_id=514490890&amp;site_id=s1pI8Z</link>
+ <shipping-options>
+ <shipping>
+ <method>Standard</method>
+ <price-first>3.95</price-first>
+ </shipping>
+ </shipping-options>
+ </rental-offer>
+ 
+ <sale-offer>
+ <price>20.90</price>
+ <condition>New</condition>
+ <alternate-edition>true</alternate-edition>
+ <link>http://www.valorebooks.com/listing?product_id=34477238&amp;sellerMarket_id=1096058836&amp;a_listing=false&amp;site_id=s1pI8Z</link>
+ <quantity>10</quantity>
+ <shipping-options>
+ <shipping>
+ <method>Standard</method>
+ <price-first>3.95</price-first>
+ </shipping>
+ </shipping-options>
+ </sale-offer>
+ 
+ <buy-offer>
+ <item-price>105.54</item-price>
+ <condition>Good</condition>
+ <quantity>25</quantity>
+ </buy-offer></product>
+";

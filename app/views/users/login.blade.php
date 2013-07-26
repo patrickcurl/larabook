@@ -174,7 +174,7 @@
     An e-mail with the password reset has been sent.
 @endif
 			<h2 style="text-align:right">Password Reset</h2>
-				{{ Form::open(array('action' => 'UsersController@postPasswordReset', 'method' => 'POST', 'class' => 'form-horizontal')) }}
+				{{ Form::open(array('action' => 'UsersController@postResetPassword', 'method' => 'POST', 'class' => 'form-horizontal')) }}
 				<div class="control-group">
 					<label class="control-label" for="email">Email</label>
 					<div class="controls">

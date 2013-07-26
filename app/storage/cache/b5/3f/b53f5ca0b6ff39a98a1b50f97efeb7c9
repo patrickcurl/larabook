@@ -1,0 +1,47 @@
+1374876700s:1306:"<?xml version="1.0" encoding="UTF-8"?>
+<product>
+ <product-code>9780137033706</product-code>
+ 
+ <rental-offer>
+ <condition>Good</condition>
+ <ninty-day-price>28.75</ninty-day-price> 
+ <alternate-edition>false</alternate-edition>
+ <quantity>1</quantity>
+ <semester-price>30.65</semester-price>
+ <link>http://www.valorebooks.com/rental-listing?product_id=20817827&amp;listing_id=298869052&amp;site_id=s1pI8Z&amp;sellerMarket_id=1069082861</link>
+ <shipping-options>
+ <shipping>
+ <method>Standard</method>
+ <price-first>3.95</price-first>
+ </shipping>
+ <shipping>
+ <method>Expedited</method>
+ <price-first>6.95</price-first>
+ </shipping>
+ </shipping-options>
+ </rental-offer>
+ 
+ <sale-offer>
+ <price>91.90</price>
+ <condition>Acceptable</condition>
+ <alternate-edition>false</alternate-edition>
+ <link>http://www.valorebooks.com/listing?product_id=20817827&amp;sellerMarket_id=1096164197&amp;a_listing=false&amp;site_id=s1pI8Z</link>
+ <quantity>3</quantity>
+ <shipping-options>
+ <shipping>
+ <method>Standard</method>
+ <price-first>3.95</price-first>
+ </shipping>
+ <shipping>
+ <method>Expedited</method>
+ <price-first>6.95</price-first>
+ </shipping>
+ </shipping-options>
+ </sale-offer>
+ 
+ <buy-offer>
+ <item-price>70.00</item-price>
+ <condition>Good</condition>
+ <quantity>1</quantity>
+ </buy-offer></product>
+";

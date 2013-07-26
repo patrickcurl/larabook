@@ -49,9 +49,7 @@ class Book extends Eloquent {
 		} else {
 
 
-			// $response = simplexml_load_file(amazonURL($isbn));
 			$response = self::cache_xml($isbn, 'amazon', amazonURL($isbn));
-			//var_dump($response->Items->Item->ItemAttributes->ListPrice->FormattedPrice);
 
 			$book = new Book();
 			$book->isbn10 = $response->Items->Item->ASIN;
@@ -148,45 +146,15 @@ class Book extends Eloquent {
 
 	public static function getPrices($book, $orderby, $dir){
     $isbn = $book->isbn13;
-
-
-		//$isbn = Input::get('isbn');
 		$xml_valore = self::cache_xml($isbn, "valore", "http://prices.valorebooks.com/lookup-multiple-categories?SiteID=s1pI8Z&ProductCode=$isbn");
 		$xml_amazon = self::cache_xml($isbn, "amazon", amazonURL($isbn));
 		$xml_bookrenter = self::cache_xml($isbn, 'bookrenter', "http://www.bookrenter.com/api/fetch_book_info?developer_key=QDz1rdEMKgvnuqIvD1hsRhparmZ6L0Z8&version=2011-02-01&isbn=$isbn");
 		$xml_biggerbooks = self::cache_xml($isbn, 'biggerbooks', "http://www.biggerbooks.com/botpricexml?isbn=$isbn");
 		$xml_ecampus = self::cache_xml($isbn, 'ecampus', "http://www.ecampus.com/botpricexml.asp?isbn=$isbn");
 		$xml_recycleabook = self::cache_xml($isbn, 'recycleabook', "http://www.recycleabook.com/search_isbn.php?isbn=$isbn");
-		//echo "<h1>" . $node[0] . "</h1>";
-	//	var_dump($xml_bookrenter);
-		//var_dump($response);
-		//$amazonXML = amazonXML($isbn);
-		//$amazonXML->registerXpathNamespace("xmlns", "http://webservices.amazon.com/AWSECommerceService/2011-08-01");
-		# $biggerbooksXML = simplexml_load_string(file_get_contents("http://www.biggerbooks.com/botpricexml?isbn=$isbn"));
-		# $valorebooksXML = simplexml_load_string(file_get_contents("http://prices.valorebooks.com/lookup-multiple-categories?SiteID=s1pI8Z&ProductCode=$isbn"));
-
-
-		// $valore = Cache::remember("valore{$isbn}", 360, function(){
-		//	$valoreXML = @simplexml_load_file("http://prices.valorebooks.com/lookup-multiple-categories?SiteID=s1pI8Z&ProductCode=$isbn")->asXML();
-		//	return $valoreXML;
-		// });
-/*	if(Cache::has("valore{$isbn}")){
-			$valore = Cache::get("valore{$isbn}");
-			$valoreXML = new SimpleXMLElement($valore);
-			echo var_dump($valoreXML) . "<br />";
-			echo "<br /><br /><br /><br />TEST<br /><br />" . var_dump($valoreXML->{'sale-offer'}->price);
-		} else {
-			var_dump($test);
-			$valoreXML = @simplexml_load_file("http://prices.valorebooks.com/lookup-multiple-categories?SiteID=s1pI8Z&ProductCode=$isbn");
-			$valoreXML = $valoreXML->asXML();
-			Cache::add("valore{$isbn}", $valoreXML, 400);
-			echo var_dump($valoreXML);
-		}
-*/
-		//var_dump($valoreXML);
-
-		# $ecampusXML = simplexml_load_string(file_get_contents("http://www.ecampus.com/botpricexml.asp?isbn=$isbn"));
-
+		//	$xml_campusbookrentals = self::cache_xml($isbn, 'campusbookrentals', "http://services.campusbookrentals.com/RentPrice/$isbn?responseformat=XML&apikey=4b2764ec-f471-4948-964b-864401fc3e7e")
+		$xml_chegg = self::cache_xml($isbn, 'chegg', "http://api.chegg.com/rent.svc?KEY=4df15ef34c0834a6eb0f6bae902d5bc8&PW=9514815&R=XML&V=2.0&isbn=$isbn&with_pids=1");
+		//$xml_betterworldbooks = self::cache_xml($isbn, 'betterworldbooks');
 		$merchants = Merchant::all();
 
 		$merchant = array();
@@ -247,24 +215,23 @@ class Book extends Eloquent {
 		self::newPrice($book, $merchant['biggerbooks'], 'new', $bb_url, $bb_new);
 		self::newPrice($book, $merchant['biggerbooks'], 'used', $bb_url, $bb_used);
 		self::newPrice($book, $merchant['biggerbooks'], 'ebook', $bb_url, $bb_ebook);
-		//self::newPrice($book, $merchant['biggerbooks'], 'buyback', $bb_url, $xml_biggerbooks->BuyBackPrice);
-		// var_dump($xml_biggerbooks->NewPrice);
-//http://www.dpbolvw.net/click-7171865-9467039?isbn=9780131367739
 	}
-//self::newPrice($book, $merchant['valore'], 'buyback', $xml_amazon->Items->Item->DetailPageURL, number_format($xml_amazon->Items->Item->ItemAttributes->TradeInValue->Amount/100,2));
-//var_dump($xml_valore);
-		//self::newPrice($book, $merchant['amazon'], $amazonPrices)
- 	//	self::newPrice($book, $merchant['amazon'], 'new', $amazonPrices['new']['url'], $amazonPrices['new']['price']);
-	//	self::newPrice($book, $merchant['amazon'], 'used', $amazonPrices['used']['url'], $amazonPrices['used']['price']);
-	//	self::newPrice($book, $merchant['amazon'], 'buyback', $amazonPrices['buyback']['url'], $amazonPrices['buyback']['price']);
-		//return $ecampusXML;
 
-  //  $book = Book::find_or_create($isbn);
+//	if ($xml_campusbookrentals){
+//
+//	}
 
-  //  return $book;
-		//	$prices = Price::where('book_id','=',$book->id)->orderBy('amount', 'asc')->get();
-		//	return $prices;
-		//$prices = Book::find($book->id)->merchants()->get();
+		if ($xml_chegg){
+			$ref = "CJGATEWAY";
+			//$pid = $xml_chegg->
+			$nodes = $xml_chegg->xpath("//Terms/Term/Term[.='SEMESTER']/parent::*");
+			$result = $nodes[0];
+			$pid = $result->Pid;
+			$chegg_base_link = urlencode("http://www.chegg.com/?referrer=CJGATEWAY&&PID=7205117&AID=10692263&pids=$pid");
+			$chegg_aff_link = "http://www.jdoqocy.com/click-7205117-10692263?URL=$chegg_base_link";
+			$chegg_price = $result->Price;
+			self::newPrice($book, $merchant['chegg'], 'rental', $chegg_base_link, $chegg_price);
+		}
 		$prices = Book::find($book->id)->prices()->orderBy($orderby, $dir)->get();
 		return $prices;
   }

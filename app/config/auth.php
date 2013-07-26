@@ -15,8 +15,8 @@ return array(
 	|
 	*/
 
-	//'driver' => 'eloquent',
-		'driver' => 'verify',
+	'driver' => 'eloquent',
+	//	'driver' => 'verify',
 	/*
 	|--------------------------------------------------------------------------
 	| Authentication Model
@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'model' => 'User',
+	'model' => 'Cartalyst\Sentry\Users\Eloquent\User',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -57,7 +57,8 @@ return array(
 	'reminder' => array(
 
 		'email' => 'emails.auth.reminder', 'table' => 'password_reminders',
-
 	),
+
+
 
 );

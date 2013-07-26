@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => Config::get('env_vars.mandrill_user'),
+	'username' => Config::get('env_vars.email_user'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => Config::get('env_vars.mandrill_password'),
+	'password' => Config::get('env_vars.email_password'),
 
 	/*
 	|--------------------------------------------------------------------------

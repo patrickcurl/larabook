@@ -3,4 +3,7 @@
 
 
 Welcome to the dashboard.
+@foreach ($orders as $order)
+{{ $order->total_amount }}
+@endforeach
 @stop

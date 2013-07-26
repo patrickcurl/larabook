@@ -63,20 +63,20 @@ class CartController extends BaseController {
 	public function checkout(){
 		$cart = Cart::content();
 
-		if (Auth::check()){
-			return View::make('cart.checkout', array('cart' => $cart));
+		if (Sentry::check()){
+			return View::make('cart.checkout', array('cart' => $cart, 'currentUser' => Sentry::getUser()));
 
 		} else {
-			return View::make('user.login');
+			return View::make('users.login');
 		}
 
 	}
 
 		public function checkout_complete(){
-		$user = Auth::user();
+		$currentUser = Sentry::getUser();
 
 		$order = new Order;
-		$order->user_id = Auth::user()->id;
+		$order->user_id = $currentUser->id;
 		$order->total_amount = Cart::total();
 		$order->save();
 
@@ -92,10 +92,10 @@ class CartController extends BaseController {
 			$lineitem->save();
 			$weight += number_format($item->options->Weight,2);
 		}
-		$order->ups_label = getLabel($user, $weight);
+		$order->ups_label = getLabel($currentUser, $weight);
 		$order->save();
 		Cart::destroy();
-		return Redirect::to('view_orders');
+		return Redirect::to('/users/orders/' . $currentUser->getId());
 
 	}
 }

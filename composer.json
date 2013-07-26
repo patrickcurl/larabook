@@ -6,8 +6,9 @@
 		"laravel/framework": "4.0.*",
 		"gloudemans/shoppingcart": "dev-master",
 		"laravel/curl": "dev-master",
-		"toddish/verify": "2.0.*",
+		"cartalyst/sentry": "2.0.*",
 		"way/generators": "dev-master"
+
 	},
 	"autoload": {
 		"classmap": [
