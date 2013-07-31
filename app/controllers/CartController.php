@@ -84,7 +84,7 @@ class CartController extends BaseController {
 		$cart = Cart::content();
 		$weight = 0.0;
 		foreach($cart as $item){
-			$lineitem = new LineItem;
+			$lineitem = new Item;
 			$lineitem->book_id = $item->id;
 			$lineitem->qty = $item->qty;
 			$lineitem->price = $item->price;
@@ -92,7 +92,9 @@ class CartController extends BaseController {
 			$lineitem->save();
 			$weight += number_format($item->options->Weight,2);
 		}
-		$order->ups_label = getLabel($currentUser, $weight);
+    $ups = getLabel($currentUser, $weight);
+		$order->ups_label = $ups['label'];
+    $order->tracking_number = $ups['tracking_number'];
 		$order->save();
 		Cart::destroy();
 		return Redirect::to('/users/orders/' . $currentUser->getId());

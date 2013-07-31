@@ -39,7 +39,7 @@ return array(
 	|
 	*/
 
-	'timezone' => 'UTC',
+	'timezone' => 'America/New_York',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -116,6 +116,8 @@ return array(
 		'\Gloudemans\Shoppingcart\ShoppingcartServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
 		'Cartalyst\Sentry\SentryServiceProvider',
+		'Juy\Profiler\Providers\ProfilerServiceProvider',
+		'Cviebrock\EloquentSluggable\SluggableServiceProvider',
 
 	),
 
@@ -181,7 +183,9 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
-		'Sentry' => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
+		'Sentry'          => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
+		'Profiler'        => 'Juy\Profiler\Facades\Profiler',
+		'Sluggable' => 'Cviebrock\EloquentSluggable\Facades\Sluggable',
 
 
 	),

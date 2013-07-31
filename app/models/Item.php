@@ -1,11 +1,11 @@
-<?php 
-class LineItem extends Eloquent {
+<?php
+class Item extends Eloquent {
 
-	protected $table = 'lineitems';
+	protected $table = 'items';
 	protected $fillable = array('book_id', 'qty', 'price');
 
 	public function order(){
-		return $this->hasOne('Order');	
+		return $this->belongsTo('Order');
 	}
 
 	public function book(){

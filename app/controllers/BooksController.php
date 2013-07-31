@@ -3,7 +3,10 @@
 class BooksController extends BaseController {
 
 
-	
+	public function getBook($id){
+    $book = Book::where('slug', '=', $id); 
+    return var_dump($book);
+  }
 
 	public function getLookup()
 	{

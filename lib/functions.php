@@ -239,8 +239,10 @@ function ordinalize($int){
 	$curl->option('postfields', $ups_accept_request);
 	$curl->option('timeout',3600);
 	$ups_accept_response =  new SimpleXMLElement($curl->execute());
-	// return $ups_accept_response;
-	$data = $ups_accept_response->ShipmentResults->PackageResults->LabelImage->GraphicImage;
+	//return $ups_accept_response;
+  $tracking_number = $ups_accept_response->ShipmentResults->PackageResults->TrackingNumber;
+	$label = $ups_accept_response->ShipmentResults->PackageResults->LabelImage->GraphicImage;
+  $data = array('tracking_number' => $tracking_number, 'label' => $label);
 	return $data;
 	//return $customer['address'];
 

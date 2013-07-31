@@ -42,103 +42,105 @@ class UsersController extends BaseController {
 	}
 
 	public function postLogin(){
-
-		try {
-			$credentials = array(
-					'email' => Input::get('email'),
-					'password' => Input::get('password')
+		$email = Input::get('email');
+		$password = Input::get('password');
+		$input = array('email' => $email, 'password' => $password);
+		$rules = array(
+			#validation rules.
+			 	"email" => "Required|Between:3,255|Email",
+				"password" => "Required|Between:5,25"
 				);
-			$user = Sentry::authenticate($credentials, false);
+
+		$messages = array();
+		 $v = Validator::make($input, $rules, $messages);
+		if ($v->fails()){
+			return Redirect::to('users/login')->withErrors($v)->withInput();
+		} else {
+
+			try {
+
+			$user = Sentry::authenticate($input, false);
 			if ($user){
 				return Redirect::back()->with('success', 'You have logged in successfully.');
 			}
 		} catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
 {
-		return Redirect::back()->with('message', 'Login field is required.');
+		return Redirect::to('users/register')->with('message', 'Login field is required.');
     //return 'Login field is required.';
 }
 catch (Cartalyst\Sentry\Users\PasswordRequiredException $e)
 {
-		return Redirect::back()->with('message', 'Password field is required.');
+		return Redirect::to('users/register')->with('error', 'Password field is required.');
     //return 'Password field is required.';
 }
 catch (Cartalyst\Sentry\Users\WrongPasswordException $e)
 {
-		return Redirect::back()->with('message', 'Wrong password, try again.');
+		return Redirect::to('users/register')->with('error', 'Wrong password, try again.');
     //return 'Wrong password, try again.';
 }
 catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
 {
-		return Redirect::back()->with('message', 'User was not found.');
+		return Redirect::to('users/register')->with('error', 'User was not found.');
     //return 'User was not found.';
 }
 catch (Cartalyst\Sentry\Users\UserNotActivatedException $e)
 {
-		return Redirect::back()->with('message', 'User is not activated.');
+		return Redirect::to('users/register')->with('error', 'User is not activated.');
     //return 'User is not activated.';
 }
 
 // The following is only required if throttle is enabled
 catch (Cartalyst\Sentry\Throttling\UserSuspendedException $e)
 {
-		return Redirect::back()->with('message', 'User is suspended.');
+		return Redirect::to('users/register')->with('error', 'User is suspended.');
     //return 'User is suspended.';
 }
 catch (Cartalyst\Sentry\Throttling\UserBannedException $e)
 {
-		return Redirect::back()->with('message', 'User is banned.');
+		return Redirect::to('users/register')->with('error', 'User is banned.');
     //return 'User is banned.';
 }
-
-//		$user = User::where('email','=',$email)->first();
-
-//			if(Auth::attempt(array('email' => $email, 'password' => $password))){
-//				return Redirect::back()->with('success', 'You have logged in successfully.');
-//			}
-
-//		 else {
-
-//					if($user){ return Redirect::back()->with('warning', 'Wrong password, please try again.');} else{
-//						return Redirect::back()->with('message', 'User does not exist, please register.');
-//					}
-//				}
+		}
 
 
-//			return View::make('checkout', array('states' => $state_list, 'cart' => $cart));
-		//return Redirect::to('checkout')
+
 
 	}
 
 	public function postRegister(){
-		try
-	{
-    // Let's register a user.
-    $user = Sentry::register(array(
-        'email'    => 'john.doe@example.com',
-        'password' => 'test',
-        'phone' => '9372235538'
-    ));
+		$first_name = Input::get('first_name');
+		$last_name = Input::get('last_name');
+		$email = Input::get('email');
+		$password = Input::get('password');
+		$password_confirmation = Input::get('password_confirmation');
+		$phone = Input::get('phone');
+		$address = Input::get('address');
+		$city = Input::get('city');
+		$state = Input::get('state');
+		$zip = Input::get('zip');
+		$payment_method = Input::get('payment_method');
+		$paypal_email = Input::get('paypal_email');
+		$name_on_cheque = Input::get('name_on_cheque');
 
-    // Let's get the activation code
-    $activationCode = $user->getActivationCode();
-
-    // Send activation code to the user so he can activate the account
-}
-catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
-{
-    echo 'Login field is required.';
-}
-catch (Cartalyst\Sentry\Users\PasswordRequiredException $e)
-{
-    echo 'Password field is required.';
-}
-catch (Cartalyst\Sentry\Users\UserExistsException $e)
-{
-    echo 'User with this login already exists.';
-}
-/*
+		$input = array(
+				'first_name' => $first_name,
+				'last_name' => $last_name,
+				'email' => $email,
+				'password' => $password,
+				'password_confirmation' => $password_confirmation,
+				'phone' => $phone,
+				'address' => $address,
+				'city' => $city,
+				'state' => $state,
+				'zip' => $zip,
+				'payment_method' => $payment_method,
+				'paypal_email' => $paypal_email,
+				'name_on_cheque' => $name_on_cheque
+			);
 		$rules = array(
 			#validation rules.
+			  "first_name" => "Required",
+			  "last_name" => "Required",
 				"email" => "Required|Between:3,255|Email|unique:users,email",
 				"password" => "Required|Between:5,25|Confirmed",
 				"password_confirmation" => "Required|Between:5,25",
@@ -147,10 +149,11 @@ catch (Cartalyst\Sentry\Users\UserExistsException $e)
 				"city" => "Required",
 				"state" => "Required",
 				"zip" => "Required"
-
 				);
 
 		$messages = array(
+				'first_name.required' => 'First name is required.',
+				'last_name.required' => 'Last name is required.',
 				'password.between' => 'Password must be 5-25 chars.',
 				'password.confirmed' => 'Passwords do not match.',
 				'password_confirmation.between' => 'Password must be 5-25 chars.',
@@ -164,39 +167,57 @@ catch (Cartalyst\Sentry\Users\UserExistsException $e)
 				'zip.required' => 'Zip is required.'
 				);
 
-		$v = Validator::make(Input::all(), $rules, $messages);
+		$v = Validator::make($input, $rules, $messages);
 
-		if ($v->passes()){
-				$user = new User;
-				$user->first_name = Input::get('first_name');
-				$user->last_name = Input::get('last_name');
-				$user->email = Input::get('email');
-				$user->password = Hash::make(Input::get('password'));
-				$user->phone = Input::get('phone');
-				$user->address = Input::get('address');
-				$user->city = Input::get('city');
-				$user->state = Input::get('state');
-				$user->zip = Input::get('zip');
-				$user->payment_method = Input::get('payment_method');
-				$user->paypal_email = Input::get('paypal_email');
-				$user->save();
-				if($user){
-					Auth::login($user);
-					return Redirect::back()->with('message', 'Registration successful. You are now logged in!');
-				} else {
-					return Redirect::to('login')->with('message', 'Registration failed. Please try again.');
+			if ($v->fails()){
+
+				return Redirect::to('users/register')->withErrors($v)->withInput();
+			} else {
+				try {
+					$user = Sentry::register(array(
+							'first_name' => $first_name,
+							'last_name' => $last_name,
+							'email' => $email,
+							'password' => $password,
+							'phone' => $phone,
+							'address' => $address,
+							'city' => $city,
+							'state' => $state,
+							'zip' => $zip,
+							'payment_method' => $payment_method,
+							'paypal_email' => $paypal_email,
+							'name_on_cheque' => $name_on_cheque
+						), true);
+						$customerGroup = Sentry::getGroupProvider()->findByName('customers');
+						$user->addGroup($customerGroup);
+					$data['email'] = $email;
+
+					// Send Welcome Email
+
+					Mail::send('emails.auth.welcome', $data, function($m) use($data){
+						$m->to($data['email'])->subject('Welcome to TopBookPrices.com');
+
+					});
+
+					//Success!
+
+					Session::flash('success', 'Your account has been created.');
+					Sentry::loginAndRemember($user);
+					return Redirect::to('/');
 				}
-
-		} else {
-
-			$errors = $v->messages();
-
-			return Redirect::to('login')->withInput()->withErrors($v);
-		}
-		*/
-
+				catch (Cartalyst\Sentry\Users\LoginRequiredException $e){
+					Session::flash('error', 'Email is required.');
+					return Redirect::to('/users/register')->withErrors($v)->withInput();
+				}
+				catch (Cartalyst\Sentry\Users\UserExistsException $e){
+					Session::flash('error', 'User already exists.');
+					return Redirect::to('users/register')->withErrors($v)->withInput();
+				}
+			}
 	}
-
+	public function getRegister(){
+		return View::make('users.login');
+	}
 	public function getLogin(){
 		return View::make('users.login');
 	}
@@ -207,12 +228,13 @@ catch (Cartalyst\Sentry\Users\UserExistsException $e)
 		return Redirect::to('/')->with('message', 'Successfully Logged Out');
 	}
 
-public function getEdit($id)
+public function getEdit($id){
+	if (Sentry::check())
 	{
 		try
 		{
 		    //Get the current user's id.
-			Sentry::check();
+
 			$currentUser = Sentry::getUser();
 
 		   	//Do they have admin access?
@@ -240,6 +262,10 @@ public function getEdit($id)
 		    Session::flash('error', 'There was a problem accessing your account.');
 			return Redirect::to('/');
 		}
+	}	else {
+			Session::flash('error', 'You must be logged in to access this area.');
+		return Redirect::to('users/login');
+	}
 	}
 
 public function postEdit($id) {
@@ -375,24 +401,26 @@ public function postEdit($id) {
 		if (Sentry::check()){
 			$currentUser = Sentry::getUser();
 				if( $currentUser->hasAccess('admin') || $currentUser->getId()== $id){
+					Event::listen('laravel.query', function($sql) {
+    dd($sql);});
 					$orders = Order::where('user_id','=',$id)->get(); // find all orders from currently logged in user.
 					$orderArray = array();
 					$i = 0;
 
 
 					foreach($orders as $order){
-						$lineitems = DB::table('lineitems')->join('books', function($join){$join->on('books.id', '=', 'lineitems.book_id');})->where('order_id','=',$order->id)->get();
+						$items = DB::table('items')->join('books', function($join){$join->on('books.id', '=', 'items.book_id');})->where('order_id','=',$order->id)->get();
 						$orderArray[$i]['id'] = $order->id;
 						$orderArray[$i]['total_amount'] = $order->total_amount;
 						$orderArray[$i]['created_at'] = $order->created_at;
-						$orderArray[$i]['shipment_received'] = $order->shipment_received;
-						$orderArray[$i]['payment_sent'] = $order->payment_sent;
+						$orderArray[$i]['received_date'] = $order->received_date;
+						$orderArray[$i]['paid_date'] = $order->paid_date;
 						$orderArray[$i]['comments'] = $order->comments;
 						$orderArray[$i]['ups_label'] = $order->ups_label;
 						//$orderArray[$i]['ups_label'] = $order->ups_label;
 						$j = 0;
-							// attach all lineitems to an order
-						foreach($lineitems as $item){
+							// attach all items to an order
+						foreach($items as $item){
 							$orderArray[$i]['items'][$j]['qty'] = $item->qty;
 							$orderArray[$i]['items'][$j]['price'] = $item->price;
 							$orderArray[$i]['items'][$j]['title'] = $item->title;

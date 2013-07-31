@@ -3,7 +3,7 @@
   <div class="row-fluid">
     <h2>Your Cart</h2>
     {{ Form::open(array('action' => 'CartController@updateCart', 'method' => 'post')) }}
-                 {{ Form::token() }}
+
     <table class="table table-striped">
       <tr>
           <td>Book</td>

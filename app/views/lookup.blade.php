@@ -12,7 +12,7 @@ Top TextBook Price : {{ $book->title }}
 
   @endif
   <div class="span4 muted">
-    <img src="{{ $book->image_url }}" width="300"><br />
+    <img src="<?php if ($book->image_url) {echo $book->image_url; } else {echo URL::asset('img/no_image.png'); } ?>" width="300"><br />
 
   </div>
   <div class="span6">

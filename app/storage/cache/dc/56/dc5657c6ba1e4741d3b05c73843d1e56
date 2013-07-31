@@ -1,0 +1,22 @@
+1375227093s:606:"<?xml version="1.0" encoding="UTF-8"?>
+<product>
+ <product-code>9780205841066</product-code>
+ 
+ <sale-offer>
+ <price>59.99</price>
+ <condition>Good</condition>
+ <alternate-edition>false</alternate-edition>
+ <link>http://www.valorebooks.com/listing?product_id=22111439&amp;sellerMarket_id=1052273744&amp;a_listing=false&amp;site_id=s1pI8Z</link>
+ <quantity>1</quantity>
+ <shipping-options>
+ <shipping>
+ <method>Standard</method>
+ <price-first>3.95</price-first>
+ </shipping>
+ <shipping>
+ <method>Expedited</method>
+ <price-first>6.95</price-first>
+ </shipping>
+ </shipping-options>
+ </sale-offer></product>
+";

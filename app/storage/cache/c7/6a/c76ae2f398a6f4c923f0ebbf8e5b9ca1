@@ -1,0 +1,43 @@
+1375320787s:1226:"<?xml version="1.0" encoding="UTF-8"?>
+<product>
+ <product-code>9780963596406</product-code>
+ 
+ <rental-offer>
+ <condition>Very Good</condition>
+ <ninty-day-price>784.23</ninty-day-price> 
+ <alternate-edition>false</alternate-edition>
+ <quantity>1</quantity>
+ <semester-price>836.02</semester-price>
+ <link>http://www.valorebooks.com/rental-listing?product_id=4231298&amp;listing_id=497495593&amp;site_id=s1pI8Z&amp;sellerMarket_id=11790642160</link>
+ <shipping-options>
+ <shipping>
+ <method>Standard</method>
+ <price-first>3.95</price-first>
+ </shipping>
+ <shipping>
+ <method>Expedited</method>
+ <price-first>6.95</price-first>
+ </shipping>
+ </shipping-options>
+ </rental-offer>
+ 
+ <sale-offer>
+ <price>765.73</price>
+ <condition>Very Good</condition>
+ <alternate-edition>false</alternate-edition>
+ <link>http://www.valorebooks.com/listing?product_id=4231298&amp;sellerMarket_id=11790642160&amp;a_listing=true&amp;site_id=s1pI8Z</link>
+ <quantity>1</quantity>
+ <shipping-options>
+ <shipping>
+ <method>Standard</method>
+ <price-first>3.95</price-first>
+ </shipping>
+ </shipping-options>
+ </sale-offer>
+ 
+ <buy-offer>
+ <item-price>39.75</item-price>
+ <condition>Good</condition>
+ <quantity>5</quantity>
+ </buy-offer></product>
+";

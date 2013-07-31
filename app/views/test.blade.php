@@ -15,7 +15,7 @@ $user = User::find(2);
 //$label =  imagerotate($source, 90, 0);
 //echo imagejpeg($label);
 $label = getLabel($user, 2.5);
-
+echo var_dump($label);
 
 
 echo '<img src="data:image/gif;base64,' . $label . '" height="392" and width="651"/>';

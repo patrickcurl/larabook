@@ -10,14 +10,19 @@ class Book extends Eloquent {
 
 	}
 
-	public function lineitems(){
-		return $this->belongsToMany('LineItems', 'lineitems', 'book_id');
+	public function items(){
+		return $this->belongsToMany('Item', 'items', 'book_id');
 	}
 
 
 	public function merchants(){
 		return $this->belongsToMany('Merchant', 'prices');
 	}
+
+	public static $sluggable = array(
+        'build_from' => 'title',
+        'save_to'    => 'slug',
+    );
 
 	public static function cache_xml($isbn, $merch, $url){
 		if(Cache::has("{$merch}{$isbn}")){
@@ -225,12 +230,15 @@ class Book extends Eloquent {
 			$ref = "CJGATEWAY";
 			//$pid = $xml_chegg->
 			$nodes = $xml_chegg->xpath("//Terms/Term/Term[.='SEMESTER']/parent::*");
-			$result = $nodes[0];
-			$pid = $result->Pid;
-			$chegg_base_link = urlencode("http://www.chegg.com/?referrer=CJGATEWAY&&PID=7205117&AID=10692263&pids=$pid");
-			$chegg_aff_link = "http://www.jdoqocy.com/click-7205117-10692263?URL=$chegg_base_link";
-			$chegg_price = $result->Price;
+			if ($nodes){$result = $nodes[0];
+				$pid = $result->Pid;
+				$chegg_base_link = urlencode("http://www.chegg.com/?referrer=CJGATEWAY&&PID=7205117&AID=10692263&pids=$pid");
+				$chegg_aff_link = "http://www.jdoqocy.com/click-7205117-10692263?URL=$chegg_base_link";
+				$chegg_price = $result->Price;
 			self::newPrice($book, $merchant['chegg'], 'rental', $chegg_base_link, $chegg_price);
+			}
+
+
 		}
 		$prices = Book::find($book->id)->prices()->orderBy($orderby, $dir)->get();
 		return $prices;

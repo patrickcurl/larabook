@@ -96,8 +96,8 @@
           <td>
 
               Order Date: {{$order['created_at']->format("n/d/Y") }}
-              <br />Received Date: @if($order['shipment_received']) {{ date("n/d/Y", strtotime($order['shipment_received'])) }} @else Pending @endif
-              <br />Payment Date:  @if($order['payment_sent']) {{ date("n/d/Y", strtotime($order['payment_sent'])) }} @else Pending @endif
+              <br />Received Date: @if($order['received_date']) {{ date("n/d/Y", strtotime($order['received_date'])) }} @else Pending @endif
+              <br />Payment Date:  @if($order['paid_date']) {{ date("n/d/Y", strtotime($order['paid_date'])) }} @else Pending @endif
               <br /><a href="#" class="btn" onClick='document.getElementById("ifr").src="{{URL::to('/orders/label/' . $order['id']) }}";'>Print Shipping Label</a>
               <a href="#" class="btn" onClick='document.getElementById("ifr").src="{{URL::to('/orders/packing-slip/' . $order['id']) }}";'>Print Packing Slip</a>
               <iframe id='ifr' frameborder="0" scrolling="no" width="0" height="0" /></iframe>

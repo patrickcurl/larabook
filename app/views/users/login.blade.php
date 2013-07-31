@@ -28,27 +28,27 @@
 			   	</div>
 			  </div>
 
-			  <div class="control-group <?php if($errors->has('email')){echo "error";} ?>" >
+			  <div class="control-group <?php if($errors->has('email')  && Request::path()=="users/register"){echo "error";} ?>" >
 			   	<label class="control-label" for="email">Email</label>
 			   	<div class="controls">
 		     		{{ Form::email('email', Input::get('email'), array('id' => 'email', 'placeholder' => 'E-mail Address')) }}
-			     		@foreach($errors->get('email') as $message)
-			     		<p class="text-error">{{$message}}</p>
-			     		@endforeach
-
-
-
-
+			     		@if (Request::path()=="users/register")
+                @foreach($errors->get('email') as $message)
+  			     		<p class="text-error">{{$message}}</p>
+  			     		@endforeach
+              @endif
 			   	</div>
 			  </div>
 
-			  <div class="control-group <?php if($errors->has('password')){echo "error";} ?>">
+			  <div class="control-group <?php if($errors->has('password') && Request::path()=="users/register"){echo "error";} ?>">
 			   	<label class="control-label" for="password">Password</label>
 			   	<div class="controls">
 			     	{{ Form::password('password', Input::get('password'), array('id' => 'password', 'placeholder' => 'Password'))}}
-			     	@foreach($errors->get('password') as $message)
-			     		<p class="text-error">{{$message}}</p>
-			     		@endforeach
+            @if (Request::path()=="users/register")
+  			     	@foreach($errors->get('password') as $message)
+  			     		<p class="text-error">{{$message}}</p>
+  			     	@endforeach
+            @endif
 			   	</div>
 			  </div>
 
@@ -146,18 +146,28 @@
 			<br />
 			{{ Form::open(array('action' => 'UsersController@postLogin', 'method' => 'POST', 'class' => 'form-horizontal')) }}
 
-			  <div class="control-group">
-			   	<label class="control-label" for="email">Email</label>
-			   	<div class="controls">
-			     	<input type="text" id="email" name="email" placeholder="Email">
-			   	</div>
-			  </div>
-			  <div class="control-group">
-			   	<label class="control-label" for="password">Password</label>
-			   	<div class="controls">
-			     	<input type="password" id="password" name="password" placeholder="Password">
-			   	</div>
-			  </div>
+                <div class="control-group <?php if($errors->has('email')  && Request::path()=="users/login"){echo "error";} ?>" >
+          <label class="control-label" for="email">Email</label>
+          <div class="controls">
+            {{ Form::email('email', Input::get('email'), array('id' => 'email', 'placeholder' => 'E-mail Address')) }}
+              @if (Request::path()=="users/login")
+                @foreach($errors->get('email') as $message)
+                <p class="text-error" style="width:200px;">{{$message}}</p>
+                @endforeach
+              @endif
+          </div>
+        </div>
+			 <div class="control-group <?php if($errors->has('password') && Request::path()=="users/login"){echo "error";} ?>">
+          <label class="control-label" for="password">Password</label>
+          <div class="controls">
+            {{ Form::password('password', Input::get('password'), array('id' => 'password', 'placeholder' => 'Password'))}}
+            @if (Request::path()=="users/login")
+              @foreach($errors->get('password') as $message)
+                <p class="text-error" style="width:200px;">{{$message}}</p>
+              @endforeach
+            @endif
+          </div>
+        </div>
 			  <div class="control-group">
 			   	<div class="controls">
 			     	<label class="checkbox">
@@ -168,7 +178,7 @@
 			  </div>
 			{{ Form::close() }}
 
-			@if (Session::has('error'))
+	   @if (Session::has('error'))
     {{ trans(Session::get('reason')) }}
 @elseif (Session::has('success'))
     An e-mail with the password reset has been sent.

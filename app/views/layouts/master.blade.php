@@ -152,7 +152,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </a>
-                  <a class="brand" href="#">TopBookPrices.com</a>
+                  <a class="brand" href="{{ URL::to('/') }}">TopBookPrices.com</a>
                   <div class="nav-collapse collapse navbar-responsive-collapse">
                     <ul class="nav ">
                       <li class="active"><a href="{{ URL::to('/') }}">Home</a></li>
@@ -183,7 +183,7 @@
                             <button type="submit" class="btn btn-success">Sign in</button>
                           {{ Form::close() }}
                             <li class="divider"></li>
-                            <li><a href="{{ URL::to('/register') }}" >Register</a></li>
+                            <li><a href="{{ URL::to('users/register') }}" >Register</a></li>
                           @endif
 
                         </ul>
@@ -257,5 +257,7 @@ $('#myTab a').click(function (e) {
 $('#myTab a[href="#buy"]').tab('show');
 
   </script>
+  @section('footer')
+  @show
   </body>
 </html>

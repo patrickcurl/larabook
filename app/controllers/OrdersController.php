@@ -8,21 +8,21 @@ public function view_orders(){
 		} else {
 
 			$orders = Order::where('user_id','=',Auth::user()->id)->get(); // find all orders from currently logged in user.
-			$orderArray = array();
+			$orderArray = array(); // init order array
 			$i = 0;
 			//Put all orders into arrays for easy enumeration.
 			foreach($orders as $order){
-				$lineitems = DB::table('lineitems')->join('books', function($join){$join->on('books.id', '=', 'lineitems.book_id');})->where('order_id','=',$order->id)->get();
+				$items = DB::table('items')->join('books', function($join){$join->on('books.id', '=', 'items.book_id');})->where('order_id','=',$order->id)->get();
 				$orderArray[$i]['id'] = $order->id;
 				$orderArray[$i]['total_amount'] = $order->total_amount;
 				$orderArray[$i]['created_at'] = $order->created_at;
-				$orderArray[$i]['shipment_received'] = $order->shipment_received;
-				$orderArray[$i]['payment_sent'] = $order->payment_sent;
+				$orderArray[$i]['received_date'] = $order->received_date;
+				$orderArray[$i]['paid_date'] = $order->paid_date;
 				$orderArray[$i]['comments'] = $order->comments;
 				//$orderArray[$i]['ups_label'] = $order->ups_label;
 				$j = 0;
-					// attach all lineitems to an order
-				foreach($lineitems as $item){
+					// attach all items to an order
+				foreach($items as $item){
 					$orderArray[$i]['items'][$j]['qty'] = $item->qty;
 					$orderArray[$i]['items'][$j]['price'] = $item->price;
 					$orderArray[$i]['items'][$j]['title'] = $item->title;
@@ -49,7 +49,7 @@ public function view_orders(){
 
 	public function getPackingSlip($id){
 		$order = Order::find($id);
-		$items = DB::table('lineitems')->join('books', function($join){$join->on('books.id', '=', 'lineitems.book_id');})->where('order_id','=',$id)->get();
+		$items = DB::table('items')->join('books', function($join){$join->on('books.id', '=', 'items.book_id');})->where('order_id','=',$id)->get();
 
 		return View::make('orders.packingslip', array('items' => $items, 'orderTotal' => $order->total_amount));
 	}

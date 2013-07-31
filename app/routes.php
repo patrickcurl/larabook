@@ -57,7 +57,7 @@ Route::post('reset_password', 'UsersController@postResetPassword');
 */
 Route::controller('users', 'UsersController');
 Route::controller('orders', 'OrdersController');
-
+Route::controller('books', 'BooksController');
 /* Route::get('password_reset/{token}', function($token)
 	{
 		return View::make('user.password_reset')->with('token', $token);

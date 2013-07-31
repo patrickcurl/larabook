@@ -19,8 +19,8 @@ class CreateOrdersTable extends Migration {
 			$table->string('tracking_number')->nullable();
 			$table->text('ups_label')->nullable();
 			$table->float('total_amount');
-			$table->date('shipment_received')->nullable();
-			$table->date('payment_sent')->nullable();
+			$table->date('received_date')->nullable();
+			$table->date('paid_date')->nullable();
 			$table->text('comments')->nullable();
 			$table->timestamps();
 		});
