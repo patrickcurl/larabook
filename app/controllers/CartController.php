@@ -2,7 +2,7 @@
 class CartController extends BaseController {
 
 
-		public function viewCart()
+		public function getIndex()
 	{
 
 		$cart = Cart::content();
@@ -10,7 +10,7 @@ class CartController extends BaseController {
 		return View::make('cart.index', array('cart' => $cart));
 	}
 
-		public function addCartItem()
+		public function postAdd()
 	{
 		$id = Input::get('id');
 		$name = Input::get('name');
@@ -35,7 +35,7 @@ class CartController extends BaseController {
 		return Redirect::to('cart');
 	}
 
-	public function removeCartItem()
+	public function getRemove()
 	{
 		$itemId = Input::get('itemId');
 		if ($itemId) { Cart::remove($itemId); }
@@ -43,7 +43,7 @@ class CartController extends BaseController {
 
 	}
 
-	public function updateCart()
+	public function postUpdate()
 	{
 		$items = Input::get('items');
 		foreach($items as $item)
@@ -53,14 +53,14 @@ class CartController extends BaseController {
 
 		return Redirect::to('cart');
 	}
-	public function emptyCart()
+	public function getEmpty()
 	{
 		Cart::destroy();
 		Session::flash('message', '<strong>Cart has been emptied</strong>. Why not add something else?');
 		return Redirect::to('/');
 	}
 
-	public function checkout(){
+	public function getCheckout(){
 		$cart = Cart::content();
 
 		if (Sentry::check()){
@@ -72,7 +72,7 @@ class CartController extends BaseController {
 
 	}
 
-		public function checkout_complete(){
+		public function getCheckoutComplete(){
 		$currentUser = Sentry::getUser();
 
 		$order = new Order;

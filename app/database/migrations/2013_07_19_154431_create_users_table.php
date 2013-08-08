@@ -12,33 +12,37 @@ class CreateUsersTable extends Migration {
      */
     public function up()
     {
-        Schema::create('users', function(Blueprint $table) {
-            $table->increments('id');
-            $table->string('first_name', 50)->nullable();
-			$table->string('last_name', 50)->nullable();
-            $table->string('email', 255)->index();
-			$table->string('password');
-            $table->string('phone', 20);
-			$table->string('address', 50);
-			$table->string('city', 50);
-			$table->string('state', 10);
-			$table->string('zip', 10);
-			$table->string('payment_method', 20);
-			$table->string('paypal_email')->nullable();
-            $table->string('name_on_cheque')->nullable();
-			$table->text('permissions')->nullable();
-            $table->boolean('activated')->default(0);
-            $table->string('activation_code')->nullable();
-            $table->timestamp('activated_at')->nullable();
-            $table->timestamp('last_login')->nullable();
-            $table->string('persist_code')->nullable();
-            $table->string('reset_password_code')->nullable();
-            $table->timestamps();
+        Schema::create('users', function(Blueprint $t) {
+            // We'll need to ensure that MySQL uses the InnoDB engine to
+            // support the indexes, other engines aren't affected.
+            $t->engine = 'InnoDB';
+            $t->increments('id');
+            $t->string('first_name', 50)->nullable();
+			$t->string('last_name', 50)->nullable();
+            $t->string('email', 255)->index();
+			$t->string('password');
+            $t->string('phone', 20);
+			$t->string('address', 50);
+			$t->string('city', 50);
+			$t->string('state', 10);
+			$t->string('zip', 10);
+			$t->string('payment_method', 20);
+			$t->string('paypal_email')->nullable();
+            $t->string('name_on_cheque')->nullable();
+			$t->text('permissions')->nullable();
+            $t->boolean('activated')->default(0);
+            $t->string('activation_code')->nullable();
+            $t->timestamp('activated_at')->nullable();
+            $t->timestamp('last_login')->nullable();
+            $t->string('persist_code')->nullable();
+            $t->string('reset_password_code')->nullable();
+            $t->timestamps();
 
-            $table->engine = 'InnoDB';
-            $table->unique('email');
-            $table->index('activation_code');
-            $table->index('reset_password_code');
+            // Indexes
+            $t->unique('email');
+            $t->index('activation_code');
+            $t->index('reset_password_code');
+
         });
     }
 

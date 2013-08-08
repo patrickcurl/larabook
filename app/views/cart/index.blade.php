@@ -2,7 +2,7 @@
 @section('content')
   <div class="row-fluid">
     <h2>Your Cart</h2>
-    {{ Form::open(array('action' => 'CartController@updateCart', 'method' => 'post')) }}
+    {{ Form::open(array('url' => 'cart/update', 'method' => 'post')) }}
 
     <table class="table table-striped">
       <tr>
@@ -35,7 +35,7 @@
             <input type="hidden" name="items[{{$count}}][id]" value="{{ $item->rowid }}">
             <td><input class="input-mini" type="text" name="items[{{$count}}][qty]" value="{{ $item->qty }}" /></td>
             <td>${{ number_format($item->subtotal, 2) }}</td>
-            <td> <a href="{{ URL::to('removeCartItem')}}?itemId={{$item->rowid}}"><img src="img/cross.png" /></a>
+            <td> <a href="{{ URL::to('cart/remove')}}?itemId={{$item->rowid}}"><img src="img/cross.png" /></a>
 
           </tr>
           <?php $count++; ?>
@@ -46,8 +46,8 @@
       <td colspan="3">
         <button type="submit" name="update_cart" class="btn btn-primary">Update Cart</button>
         {{ form::close() }}
-        <a href="{{ URL::to('empty_cart') }}"><button type="button" name="empty_cart" class="btn btn-danger">Empty Cart</button></a>
-        <a href="{{ URL::to('checkout') }}"><button type="button" name="check_out" class="btn btn-success">Check Out</button></a>
+        <a href="{{ URL::to('cart/empty') }}"><button type="button" name="empty_cart" class="btn btn-danger">Empty Cart</button></a>
+        <a href="{{ URL::to('cart/checkout') }}"><button type="button" name="check_out" class="btn btn-success">Check Out</button></a>
         Total Price : ${{ number_format(Cart::total(), 2) }}
       </td>
     </tr>

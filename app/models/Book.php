@@ -49,34 +49,60 @@ class Book extends Eloquent {
 		$book = Book::where('isbn10', '=', $isbn)
 											->orWhere('isbn13', '=', $isbn)
 											->first();
-	if ($book){
+		if ($book){
 			return $book;
 		} else {
-
-
 			$response = self::cache_xml($isbn, 'amazon', amazonURL($isbn));
+			$response->registerXpathNamespace("xmlns", "http://webservices.amazon.com/AWSECommerceService/2011-08-01");
+			$n = $response->xpath('//xmlns:BrowseNode/xmlns:Name');
+			$a_error = $response->xpath('//xmlns:Errors/xmlns:Error');
+			if(empty($a_error)){
+				// return var_dump($a_error);
+				$book = new Book();
+				$book->isbn10 = $response->Items->Item->ASIN;
+				$book->isbn13 = $response->Items->Item->ItemAttributes->EAN;
+				$book->title = $response->Items->Item->ItemAttributes->Title;
+				$book->author = $response->Items->Item->ItemAttributes->Author;
+				$book->publisher = $response->Items->Item->ItemAttributes->Publisher;
+				$book->edition = $response->Items->Item->ItemAttributes->Edition;
+				$book->image_url = $response->Items->Item->LargeImage->URL;
+				$book->amazon_url = $response->Items->Item->DetailPageURL;
+				$book->num_of_pages = $response->Items->Item->ItemAttributes->NumberOfPages;
+				$book->list_price = $response->Items->Item->ItemAttributes->ListPrice->FormattedPrice;
+				$book->weight = number_format($response->Items->Item->ItemAttributes->ItemDimensions->Weight /100, 2);
+				$book->editorial_review = $response->Items->Item->EditorialReview->Content;
+				$book->customer_reviews = $response->Items->Item->CustomerReviews->IFrameURL;
+				$book->save();
 
-			$book = new Book();
-			$book->isbn10 = $response->Items->Item->ASIN;
-			$book->isbn13 = $response->Items->Item->ItemAttributes->EAN;
-			$book->title = $response->Items->Item->ItemAttributes->Title;
-			$book->author = $response->Items->Item->ItemAttributes->Author;
-			$book->publisher = $response->Items->Item->ItemAttributes->Publisher;
-			$book->edition = $response->Items->Item->ItemAttributes->Edition;
-			$book->image_url = $response->Items->Item->LargeImage->URL;
-			$book->amazon_url = $response->Items->Item->DetailPageURL;
-			$book->num_of_pages = $response->Items->Item->ItemAttributes->NumberOfPages;
-			$book->list_price = number_format($response->Items->Item->ItemAttributes->ListPrice->FormattedPrice / 100, 2) ;
-			$book->weight = number_format($response->Items->Item->ItemAttributes->ItemDimensions->Weight /100, 2);
-			$book->save();
-			return $book;
+				$categories = $response->xpath('//xmlns:BrowseNode/xmlns:Name');
+				$categories = array_unique($categories);
+				foreach($categories as $cat){
+					$category = Category::where('name', '=', $cat)->first();
+					if ($category){
+						// category already exists attach it to book.
+						DB::table('books_categories')->insert(
+								array('book_id' => $book->id, 'category_id' => $category->id)
+							);
+					} else {
+						// category doesn't exist, create it then attach it to book.
+						$category = new Category();
+						$category->name = $cat;
+						$category->save();
 
+						DB::table('books_categories')->insert(
+								array('book_id' => $book->id, 'category_id' => $category->id)
+							);
+					}
+			}
+			} else { return Null; }
 		}
-
-
-
-
+			if ($book){
+				return $book;
+			} else {
+				return Null;
+			}
 	}
+
 
 
 
@@ -149,7 +175,102 @@ class Book extends Eloquent {
 
 	}
 
-	public static function getPrices($book, $orderby, $dir){
+	public static function getPowells($isbn){
+		$curl = New Curl;
+		$curl->create("http://www.powells.com/search/linksearch?isbn=$isbn");
+		$curl->option('buffersize', 20);
+		$p_items = $curl->execute();
+		$p_items = str_replace("<HTML><BODY><PRE>\n", "", $p_items);
+		$p_items = str_replace("\n\n</PRE>", "", $p_items);
+		$p_items = str_replace("</PRE>", "", $p_items);
+		$p_items = str_replace("Notes:\n", "", $p_items);
+		if (empty($p_items)){return null;} else {
+	 		$p_items = explode("\n\n", strip_tags($p_items));
+			$items = array();
+			foreach($p_items as $key=>$value){
+			  $value = explode("\n", $value);
+
+			  foreach($value as $val){
+			    $parts = explode(": ", $val, 2);
+
+			    if (sizeof($parts > 1)){
+			     $items[$key][$parts[0]] = $parts[1];
+			    }
+			  }
+			}
+
+			foreach ($items as $t){
+			  if ($t['Class'] == "NEW"){
+			    if(!isset($newPrice)){
+			    	$newPrice = $t['Price'];
+			      $newBinding = str_replace(" ", "%20", $t['Binding']);
+			    } else {
+			      if ($t['Price'] < $newPrice){
+			        $newPrice = $t['Price'];
+			        $newBinding = str_replace(" ", "%20", $t['Binding']);
+			      }
+			    }
+			 }
+	    if ($t['Class'] == "USED"){
+	      if(!isset($usedPrice)){
+	        $usedPrice = $t['Price'];
+	      	$usedBinding = str_replace(" ", "%20", $t['Binding']);
+	      } else {
+	        if ($t['Price'] < $usedPrice){
+	          $usedPrice = $t['Price'];
+	          $usedBinding = str_replace(" ", "%20", $t['Binding']);
+	        }
+	      }
+	    }
+	  }
+
+	  $prices = array();
+		// example url : http://www.powells.com/cgi-bin/partner?partner_id=XXX&cgi=biblio&show=TRADE%20PAPER:NEW:0140237208:15.00
+		$aff_id = Config::get('env_vars.aff_id_powells');
+		if(isset($newPrice) && isset($newBinding)){$newUrl = 'http://www.powells.com/cgi-bin/partner?partner_id=' . $aff_id . '&cgi=biblio&show=' . $newBinding . ':NEW:' . $isbn . ':' . $newPrice;
+			$new = array('url' => $newUrl, 'price' => $newPrice, 'binding' => $newBinding);
+			$prices['new'] = $new;
+		}
+		if(isset($usedPrice) && isset($usedBinding)){$usedUrl = 'http://www.powells.com/cgi-bin/partner?partner_id=' . $aff_id . '&cgi=biblio&show=' . $usedBinding . ':NEW:' . $isbn . ':' . $usedPrice;
+			$used = array('url' => $usedUrl, 'price' => $usedPrice, 'binding' => $usedBinding);
+			$prices['used'] = $used;
+	}
+
+
+
+		//$prices = array("new" => $new, "used" => $used);
+		return $prices;
+ }
+}
+
+	public static function curlPrice($url, $pathStart, $pathEnd, $tag /*, $xpath, $options */){
+		$curl = New Curl;
+		$curl->create($url);
+		$curl->option('buffersize', 20);
+		$curl->option('timeout', 60);
+		$curl->option('returntransfer', true);
+		$html = $curl->execute();
+
+		$charBegin = stripos($html, $pathStart); // path= <p class="price"
+		if($charBegin){
+		  $htmlList = substr($html, $charBegin, strlen($html));
+		  $charLast = stripos($htmlList, $pathEnd);
+		  $htmlList=substr($htmlList, 0, $charLast+4);
+		  //return $htmlList;
+		  $o = @DomDocument::loadHTML($htmlList);
+		  $p = $o->getElementsByTagName($tag);
+		  $price = $p->item(0)->nodeValue;
+		  $price = str_replace('$', '', $price);
+		  return $price;
+		} else {
+			return Null;
+		}
+
+	}
+
+
+
+	public static function getPrices($book, $orderby="amount_used", $dir="DESC"){
     $isbn = $book->isbn13;
 		$xml_valore = self::cache_xml($isbn, "valore", "http://prices.valorebooks.com/lookup-multiple-categories?SiteID=s1pI8Z&ProductCode=$isbn");
 		$xml_amazon = self::cache_xml($isbn, "amazon", amazonURL($isbn));
@@ -157,8 +278,14 @@ class Book extends Eloquent {
 		$xml_biggerbooks = self::cache_xml($isbn, 'biggerbooks', "http://www.biggerbooks.com/botpricexml?isbn=$isbn");
 		$xml_ecampus = self::cache_xml($isbn, 'ecampus', "http://www.ecampus.com/botpricexml.asp?isbn=$isbn");
 		$xml_recycleabook = self::cache_xml($isbn, 'recycleabook', "http://www.recycleabook.com/search_isbn.php?isbn=$isbn");
-		//	$xml_campusbookrentals = self::cache_xml($isbn, 'campusbookrentals', "http://services.campusbookrentals.com/RentPrice/$isbn?responseformat=XML&apikey=4b2764ec-f471-4948-964b-864401fc3e7e")
+		$xml_campusbookrentals = self::cache_xml($isbn, 'campusbookrentals', "http://services.campusbookrentals.com/RentPrice/$isbn?responseformat=XML&apikey=4b2764ec-f471-4948-964b-864401fc3e7e");
+		// Example link: http://www.kqzyfj.com/click-7205117-10722272?url=http://www.campusbookrentals.com/textbook/9780073379203
 		$xml_chegg = self::cache_xml($isbn, 'chegg', "http://api.chegg.com/rent.svc?KEY=4df15ef34c0834a6eb0f6bae902d5bc8&PW=9514815&R=XML&V=2.0&isbn=$isbn&with_pids=1");
+
+
+		$powells = self::getPowells($isbn);
+		$sellbackbooks = self::curlPrice("http://www.sellbackbooks.com/bbsearchresult.aspx?ISBN=$isbn", "<p class=\"price\"", "</p>", "p");
+		$buyback101 = self::curlPrice("http://www.buyback101.com/bb101api.php?a=".Config::get('env_vars.bb101_aff')."&akey=".Config::get('env_vars.bb101_key')."&isbn=$isbn&view=price", "<price>", "</price>", "price");
 		//$xml_betterworldbooks = self::cache_xml($isbn, 'betterworldbooks');
 		$merchants = Merchant::all();
 
@@ -166,7 +293,18 @@ class Book extends Eloquent {
 		foreach($merchants as $m){
 			$merchant[$m->slug] = $m;
 			}
+	if ($xml_recycleabook){
+			self::newPrice($book, $merchant["recycleabook"], "buyback", "http://www.recycleabook.com/isbn-results/?isbn=9780131367739", $xml_recycleabook->details->buyback);
+	}
+	if ($buyback101) {
+		$bb101link = "http://www.buyback101.com/bb101api.php?a=".Config::get('env_vars.bb101_aff')."&akey=".Config::get('env_vars.bb101_key')."&isbn=$isbn&view=link";
+		self::newPrice($book, $merchant["buyback101"], "buyback",  $bb101link, number_format($buyback101, 2));
+	}
 
+	if ($sellbackbooks){
+		$sbbbuylink = "http://www.shareasale.com/r.cfm?B=186456&U=421178&M=13388&urllink=www.sellbackbooks.com/bbsearchresult.aspx?ISBN=$isbn";
+		self::newPrice($book, $merchant["sellbackbooks"], "buyback",  $sbbbuylink, number_format($sellbackbooks, 2));
+	}
 
 	if ($xml_amazon){
 		self::newPrice($book, $merchant['amazon'], 'new', $xml_amazon->Items->Item->DetailPageURL, number_format($xml_amazon->Items->Item->OfferSummary->LowestNewPrice->Amount/100,2));
@@ -189,7 +327,7 @@ class Book extends Eloquent {
 			}
 
 			$br_used_price = $xml_bookrenter->xpath("//purchase_price[contains(@condition, 'used')]");
-			if($br_used_price){
+			if(!empty($br_used_price[0])){
 				$br_used_price = floatval(ltrim($br_used_price[0], "$"));
 				self::newPrice($book, $merchant['bookrenter'], 'used', $br_link, $br_used_price);
 			}
@@ -212,6 +350,23 @@ class Book extends Eloquent {
 
 	}
 
+	if ($powells){
+		if(isset($powells['used'])){
+			if($powells['used']['price'] > 0.01){
+				if (!empty($powells['used']['url'])){
+					self::newPrice($book, $merchant['powells'], 'used', $powells['used']['url'], $powells['used']['price']);
+				}
+			}
+		}
+		if(isset($powells['new'])){
+			if($powells['new']['price'] > 0.01){
+				if (!empty($powells['new']['url'])){
+					self::newPrice($book, $merchant['powells'], 'new', $powells['new']['url'], $powells['new']['price']);
+				}
+			}
+		}
+	}
+
 	if ($xml_biggerbooks){
 		$bb_url = "http://www.dpbolvw.net/click-7171865-9467039?isbn=$isbn";
 		$bb_new = floatval(ltrim($xml_biggerbooks->NewPrice, "$"));
@@ -222,9 +377,11 @@ class Book extends Eloquent {
 		self::newPrice($book, $merchant['biggerbooks'], 'ebook', $bb_url, $bb_ebook);
 	}
 
-//	if ($xml_campusbookrentals){
-//
-//	}
+	if ($xml_campusbookrentals){
+		$cbr_url = urlencode("http://www.kqzyfj.com/click-7205117-10722272?url=http://www.campusbookrentals.com/textbook/$isbn");
+		$cbr_rental = ($xml_campusbookrentals->PriceResult->PriceSemester);
+		self::newPrice($book, $merchant['campusbookrentals'], 'rental', $cbr_url, $cbr_rental);
+	}
 
 		if ($xml_chegg){
 			$ref = "CJGATEWAY";
@@ -240,7 +397,11 @@ class Book extends Eloquent {
 
 
 		}
-		$prices = Book::find($book->id)->prices()->orderBy($orderby, $dir)->get();
+		//$prices = Book::find($book->id)->prices()->orderBy($orderby, $dir)->get();
+		$prices = DB::table('prices')
+                ->join('merchants', function($join){
+                  $join->on('prices.merchant_id', '=', 'merchants.id');
+                })->where('prices.book_id', '=', 1)->get();
 		return $prices;
   }
 

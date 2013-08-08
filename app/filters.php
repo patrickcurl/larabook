@@ -45,13 +45,14 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
-Route::filter('admin-auth', function(){
+/* Route::filter('admin-auth', function(){
   $user = Sentry::getUser();
-  if(!$user->hasAccess('admin')){
-    return Redirect::to('/login')->with("message", "You are not authorized to view this.");
-  }
-});
 
+  if($user){ if(!$user->hasAccess('admin')){
+    return Redirect::to('/login')->with("message", "You are not authorized to view this.");
+  } else {}
+});
+*/
 Route::filter('admin_auth', function()
 {
 	if (!Sentry::check())
@@ -63,7 +64,8 @@ Route::filter('admin_auth', function()
 	if (!Sentry::getUser()->hasAccess('admin'))
 	{
 		// has no access
-		return Response::make('Access Forbidden', '403');
+		//return Response::make('Access Forbidden', '403');
+		return Redirect::to('/')->with('message', 'You are not authorized to view this.');
 	}
 });
 /*

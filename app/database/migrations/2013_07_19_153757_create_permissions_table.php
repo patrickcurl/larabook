@@ -12,11 +12,15 @@ class CreatePermissionsTable extends Migration {
      */
     public function up()
     {
-        Schema::create('permissions', function(Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 100)->index();
-			$table->string('description', 255)->nullable();
-            $table->timestamps();
+        Schema::create('permissions', function(Blueprint $t) {
+            // We'll need to ensure that MySQL uses the InnoDB engine to
+            // support the indexes, other engines aren't affected.
+            $t->engine = 'InnoDB';
+            $t->increments('id');
+            $t->string('name', 100)->index();
+			$t->string('description', 255)->nullable();
+            $t->timestamps();
+
         });
     }
 

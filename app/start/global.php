@@ -52,6 +52,12 @@ Log::useDailyFiles(storage_path().'/logs/'.$logFile);
 App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
+ $data = array('exception' => $exception, 'code' => $code);
+  Mail::send('emails.error', $data, function($m) use($data){
+    $m->from('patrick@recycleabook.com', 'RecycleABook')->to('patrickwcurl@gmail.com', 'Patrick Curl')->subject(substr($data['exception'], 9, 80));
+  });
+ // return Redirect::to('/')->with('error', 'Error detected, please try again!');
+
 });
 
 /*

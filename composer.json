@@ -9,7 +9,9 @@
 		"cartalyst/sentry": "2.0.*",
 		"way/generators": "dev-master",
 		"juy/profiler" : "dev-master",
-		"cviebrock/eloquent-sluggable": "1.0.*"
+		"cviebrock/eloquent-sluggable": "1.0.*",
+		"intervention/validation": "dev-master",
+		"liebig/cron": "dev-master"
 
 	},
 	"autoload": {

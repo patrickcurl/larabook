@@ -10,10 +10,25 @@
     </title>
      <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
- <style type="text/css">
+
+    <link href="{{ URL::asset('css/bootstrap-responsive.css') }}" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Syncopate' rel='stylesheet' type='text/css'>
+     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+    <!-- Fav and touch icons -->
+    <?php /*
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="../assets/ico/favicon.png"> */ ?>
+      <style type="text/css">
       body {
         padding-top: 40px;
         padding-bottom: 60px;
+
       }
 
       /* Custom container */
@@ -27,7 +42,7 @@
 
       /* Main marketing message and sign up button */
       .jumbotron {
-        margin: 80px 0;
+        margin: 10px 0;
         text-align: center;
       }
       .jumbotron h1 {
@@ -88,18 +103,32 @@
       .dropdown-menu li a:hover{
         color: white;
       }
+
+      .home-blocks{ margin-top:40px; }
+      .home-blocks .home-block-1 .block-content, .home-blocks .home-block-2 .block-content{
+        border-left: 1px solid #d9e5e9;
+        padding: 20px 0px 20px 20px;
+
+      }
+      .home-blocks .home-block-3 .block-content{
+        border-left: 1px solid #d9e5e9;
+        padding: 20px;
+        border-right: 1px solid #d9e5e9;
+      }
+      .home-blocks h3{
+        font-size: 30px;
+        color: #1b4c5d;
+        font-weight: normal;
+      }
+
+      .home-blocks p{
+        color: #4dafd3;
+        font-size: 20px;
+        line-height: 20px;
+
+      }
+
     </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
     @section('head')
     @show
 </head>
@@ -107,42 +136,6 @@
 <body @section('body')
       @show >
 
-	<!-- <div class=""><nav class="top-bar" >
-		<ul class="title-area">
-			<li class="name"><h1><a href="{{{ URL::to('') }}}">home</a></h1></li>
-			<li class="toggle-topbar menu-icon">
-				<a href="#">
-					<span>menu</span>
-				</a>
-			</li>
-		</ul>
-
-		<section class="top-bar-section">
-			<ul class="right">
-
-				@if (Auth::check())
-				<li><a href="{{{ URL::to('account') }}}">Account</a></li>
-				<li><a href="{{{ URL::to('account/logout') }}}">Logout</a></li>
-				@else
-				<li class="divider"></li>
-				<li class="{{{ (Request::is('account/login') ? 'active' : '') }}}"><a href="{{{ URL::to('account/login') }}}">Login</a></li>
-				<li class="divider"></li>
-				<li class="{{{ (Request::is('account/register') ? 'active' : '') }}}"><a href="{{{ URL::to('account/register') }}}">Register</a></li>
-				@endif
-
-			</ul>
-		</section>
-	</nav>
-</div>
--->
-
-	<!-- <div class="row" style="margin-top:50px;">
-		<div class="large-12">
-			<img src="{{{ asset('img/topbookprices.png') }}}" />
-
-		</div>
-	</div>
--->
 
 <div class="navbar navbar-fixed-top">
               <div class="navbar-inner">
@@ -156,7 +149,7 @@
                   <div class="nav-collapse collapse navbar-responsive-collapse">
                     <ul class="nav ">
                       <li class="active"><a href="{{ URL::to('/') }}">Home</a></li>
-                      <li><a href="#">Link</a></li>
+
 
 
                     </ul>
@@ -164,14 +157,15 @@
                     <ul class="nav ">
 
                       <li class="divider-vertical"></li>
-                      <li class="dropdown">
+
+                     <?php /* <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
                         <ul class="dropdown-menu" style="padding-left:20px; padding-right:20px; padding: 5px 20px 20px 20px">
                         	@if (Sentry::check())
                           <?php $currentUser = Sentry::getUser(); ?>
 
                           <li><a href="{{ URL::to('/users/edit/' . $currentUser->id) }}">Edit Profile</a></li>
-                          <li><a href="{{ URL::to('/users/orders/' . $currentUser->id) }}">View Orders</a></li>
+                          <!-- <li><a href="<?php //echo URL::to('/users/orders/' . $currentUser->id); ?>">View Orders</a></li> -->
                           <li class="divider"></li>
                           <li><a href="{{ URL::to('/users/logout') }}">Logout</a></li>
                           @else
@@ -187,19 +181,20 @@
                           @endif
 
                         </ul>
-                      </li>
+                      </li> */ ?><!--
                       <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Book Bag({{Cart::count() }})<b class="caret"></b></a>
                         <ul class="dropdown-menu">
 
-                          <li><a href="{{ URL::to('/cart') }}">View Cart</a></li>
-                          <li><a href="{{ URL::to('/empty_cart') }}">Empty Cart</a></li>
-                          <li><a href="{{ URL::to('/checkout') }}">Checkout</a></li>
+                          <li><a href="{{ URL::to('/cart/view') }}">View Cart</a></li>
+                          <li><a href="{{ URL::to('/cart/empty-cart') }}">Empty Cart</a></li>
+                          <li><a href="{{ URL::to('/cart/checkout') }}">Checkout</a></li>
                           <li class="divider"></li>
                            <li><p class="navbar-text" style="padding-left:20px;">Cart Total: ${{Cart::total()}}</p></li>
                         </ul>
                       </li>
-                      {{ Form::open(array('action'=>'BooksController@getLookup', 'method' => 'get', 'class' =>'navbar-search input-append pull-right')) }}
+                      -->
+                      {{ Form::open(array('url'=> 'book/isbn', 'method' => 'post', 'class' =>'navbar-search input-append pull-right')) }}
 
                         <input class="span2" name="isbn" placeholder="Enter ISBN #" id="appendedInputButton" type="text">
                         <button class="btn" type="submit">Get Prices</button>
@@ -210,7 +205,7 @@
                     @if (Sentry::check())
                       <?php $currentUser = Sentry::getUser(); ?>
                     @if ($currentUser->hasAccess('admin'))
-                    <ul class="nav"><li><a href="{{ URL::to('/admin') }}"><strong>Admin</strong></a></li></ul>
+                    <ul class="nav"><li><a href="{{ URL::to('admin') }}"><strong>Admin</strong></a></li></ul>
                     @endif
                     @endif
                   </div><!-- /.nav-collapse -->
@@ -248,15 +243,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="{{ URL::asset('js/vendor/jquery.js') }}"></script>
     <script src="{{ URL::asset('js/bootstrap.js') }}"></script>
-    <script>
-$('#myTab a').click(function (e) {
-  e.preventDefault();
-  $(this).tab('show');
-})
 
-$('#myTab a[href="#buy"]').tab('show');
-
-  </script>
   @section('footer')
   @show
   </body>

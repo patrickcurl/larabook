@@ -1,0 +1,28 @@
+1375830651s:719:"<?xml version="1.0" encoding="UTF-8"?>
+<product>
+ <product-code>9780071317030</product-code>
+ 
+ <sale-offer>
+ <price>44.73</price>
+ <condition>Good</condition>
+ <alternate-edition>true</alternate-edition>
+ <link>http://www.valorebooks.com/listing?product_id=20980161&amp;sellerMarket_id=1044719857&amp;a_listing=false&amp;site_id=s1pI8Z</link>
+ <quantity>1</quantity>
+ <shipping-options>
+ <shipping>
+ <method>Standard</method>
+ <price-first>3.95</price-first>
+ </shipping>
+ <shipping>
+ <method>Expedited</method>
+ <price-first>6.95</price-first>
+ </shipping>
+ </shipping-options>
+ </sale-offer>
+ 
+ <buy-offer>
+ <item-price>19.50</item-price>
+ <condition>Good</condition>
+ <quantity>4</quantity>
+ </buy-offer></product>
+";

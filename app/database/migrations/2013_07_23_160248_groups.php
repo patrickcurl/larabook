@@ -12,16 +12,17 @@ class Groups extends Migration {
      */
     public function up()
     {
-        Schema::create('groups', function(Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->text('permissions')->nullable();
-            $table->timestamps();
-
+        Schema::create('groups', function(Blueprint $t) {
             // We'll need to ensure that MySQL uses the InnoDB engine to
             // support the indexes, other engines aren't affected.
-            $table->engine = 'InnoDB';
-            $table->unique('name');
+            $t->engine = 'InnoDB';
+            $t->increments('id');
+            $t->string('name');
+            $t->text('permissions')->nullable();
+            $t->timestamps();
+
+
+            $t->unique('name');
         });
     }
 

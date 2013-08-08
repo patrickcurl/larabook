@@ -1,0 +1,28 @@
+1375486399s:717:"<?xml version="1.0" encoding="UTF-8"?>
+<product>
+ <product-code>9781111111113</product-code>
+ 
+ <sale-offer>
+ <price>0.01</price>
+ <condition>Good</condition>
+ <alternate-edition>false</alternate-edition>
+ <link>http://www.valorebooks.com/listing?product_id=4754347&amp;sellerMarket_id=973797338&amp;a_listing=false&amp;site_id=s1pI8Z</link>
+ <quantity>1</quantity>
+ <shipping-options>
+ <shipping>
+ <method>Standard</method>
+ <price-first>3.95</price-first>
+ </shipping>
+ <shipping>
+ <method>Expedited</method>
+ <price-first>6.95</price-first>
+ </shipping>
+ </shipping-options>
+ </sale-offer>
+ 
+ <buy-offer>
+ <item-price>10.26</item-price>
+ <condition>Good</condition>
+ <quantity>1</quantity>
+ </buy-offer></product>
+";

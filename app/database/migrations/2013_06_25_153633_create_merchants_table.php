@@ -14,6 +14,9 @@ class CreateMerchantsTable extends Migration {
 	{
 		Schema::create('merchants', function(Blueprint $t)
 		{
+			// We'll need to ensure that MySQL uses the InnoDB engine to
+      // support the indexes, other engines aren't affected.
+      $t->engine = 'InnoDB';
 			$t->increments('id');
 			$t->string('name');
 			$t->string('slug')->unique();

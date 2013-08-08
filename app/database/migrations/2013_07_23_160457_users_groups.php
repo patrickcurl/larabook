@@ -12,13 +12,15 @@ class UsersGroups extends Migration {
      */
     public function up()
     {
-        Schema::create('users_groups', function(Blueprint $table) {
-            $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->unsigned();
+        Schema::create('users_groups', function(Blueprint $t) {
             // We'll need to ensure that MySQL uses the InnoDB engine to
             // support the indexes, other engines aren't affected.
-            $table->engine = 'InnoDB';
-            $table->primary(array('user_id', 'group_id'));
+            $t->engine = 'InnoDB';
+            $t->increments('id');
+            $t->unsignedInteger('user_id')->index();
+            $t->unsignedInteger('group_id')->index();
+
+            //$t->primary(array('user_id', 'group_id'));
 
 
         });

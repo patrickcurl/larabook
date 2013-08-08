@@ -35,9 +35,9 @@
 					</tr>
 					@endforeach
 					<tr><td colspan="4"><div style="text-align:right;">
-						<a href="{{ URL::to('cart') }}"><button type="button" name="edit_cart" class="btn btn-success">Edit Cart</button></a>
-						<a href="{{ URL::to('edit_profile') }}"><button type="button" name="edit_profile" class="btn btn-success">Edit Profile</button></a>
-						<a href="{{ URL::to('checkout_complete') }}"><button type="button" name="checkout_complete" class="btn btn-success">Complete Checkout</button></a>
+						<a href="{{ URL::to('cart') }}"><button type="button" name="edit_cart" class="btn btn-success">View Cart</button></a>
+						<a href="{{ URL::to('users/edit') }}"><button type="button" name="edit_profile" class="btn btn-success">Edit Profile</button></a>
+						<a href="{{ URL::to('cart/checkout-complete') }}"><button type="button" name="checkout_complete" class="btn btn-success">Complete Checkout</button></a>
 
 					</div></td></tr>
 				</tbody>

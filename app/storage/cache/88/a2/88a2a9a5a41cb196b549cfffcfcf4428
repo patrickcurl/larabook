@@ -1,13 +1,13 @@
-1375303514s:1351:"<?xml version="1.0"?>
+1376017154s:1351:"<?xml version="1.0"?>
 <response><book>
   <info>
     <isbn13>9780133061819</isbn13>
     <isbn10>0133061817</isbn10>
   </info>
   <prices>
-    <rental_price term="FALL" days="90" id="1">$77.15</rental_price>
-    <rental_price term="SPRING" days="125" id="2">$82.96</rental_price>
-    <rental_price term="SUMMER" days="60" id="3">$72.17</rental_price>
+    <rental_price term="FALL" days="90" id="1">$75.88</rental_price>
+    <rental_price term="SPRING" days="125" id="2">$81.59</rental_price>
+    <rental_price term="SUMMER" days="60" id="3">$70.98</rental_price>
     <purchase_price condition="new">$229.54</purchase_price>
   </prices>
   <lowest_shipping_price>$0.00</lowest_shipping_price>

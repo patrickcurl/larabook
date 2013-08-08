@@ -14,6 +14,9 @@ class CreatePricesTable extends Migration {
 	{
 		Schema::create('prices', function(Blueprint $t)
 		{
+			// We'll need to ensure that MySQL uses the InnoDB engine to
+      // support the indexes, other engines aren't affected.
+      $t->engine = 'InnoDB';
 			$t->increments('id');
 			$t->integer('book_id')->unsigned();
 			$t->integer('merchant_id')->unsigned();
@@ -28,8 +31,9 @@ class CreatePricesTable extends Migration {
 			$t->string('url_ebook')->nullable();
 			$t->string('url_buyback')->nullable();
 			$t->timestamps();
-			$t->foreign('book_id')->references('id')->on('books');
-			$t->foreign('merchant_id')->references('id')->on('merchants');
+			$t->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+			$t->foreign('merchant_id')->references('id')->on('merchants')->onDelete('cascade');
+
 		});
 
 	}

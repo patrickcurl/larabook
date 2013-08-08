@@ -12,16 +12,20 @@ class CreateItemsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('items', function(Blueprint $table)
+		Schema::create('items', function(Blueprint $t)
 		{
-			$table->increments('id');
-			$table->integer('book_id')->unsigned();
-			$table->integer('order_id')->unsigned();
-			$table->integer('qty');
-			$table->integer('price');
-			$table->timestamps();
-			$table->foreign('book_id')->references('id')->on('books');
-			$table->foreign('order_id')->references('id')->on('orders');
+			// We'll need to ensure that MySQL uses the InnoDB engine to
+      // support the indexes, other engines aren't affected.
+      $t->engine = 'InnoDB';
+			$t->increments('id');
+			$t->unsignedInteger('book_id')->index();
+			$t->unsignedInteger('order_id')->index();
+			$t->integer('qty');
+			$t->integer('price');
+			$t->timestamps();
+			$t->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+			$t->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+
 		});
 	}
 

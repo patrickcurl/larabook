@@ -1,0 +1,3 @@
+1375737052s:715:"<?xml version="1.0"?>
+<ArrayOfPriceResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><PriceResult><AuditTrail i:nil="true"/><BasePeriods xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays" i:nil="true"/><BuyOutPrice i:nil="true"/><Cost i:nil="true"/><CustomPeriods xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays" i:nil="true"/><InventoryCount i:nil="true"/><Key>9780073379203</Key><Price130>19.00</Price130><Price55>19.00</Price55><Price85>19.00</Price85><PriceSemester>19.00</PriceSemester><SemesterDaysLeft>138</SemesterDaysLeft><SemesterDueDate>12/21/2013</SemesterDueDate><Shipping>0.00</Shipping><ValidBinding>true</ValidBinding></PriceResult></ArrayOfPriceResult>
+";

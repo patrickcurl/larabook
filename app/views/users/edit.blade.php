@@ -101,8 +101,8 @@ Profile</h4>
 </div>
 <h4 class="offset1">Payment Method</h4>
 <div class="well">
-		<form class="form-horizontal" action="{{ URL::to('users/changepassword') }}/{{ $user->id }}" method="post">
-
+		<form class="form-horizontal" action="{{ URL::to('users/edit') }}/{{ $user->id }}/payment" method="post">
+      {{ Form::token() }}
 			<div class="control-group offset2">
 					<label class="control-label" for="payment_method">Payment Method:</label>
 					<div class="controls">
@@ -148,7 +148,7 @@ Profile</h4>
 
 <h4 class="offset1">Change Password</h4>
 <div class="well">
-	<form class="form-horizontal" action="{{ URL::to('users/changepassword') }}/{{ $user->id }}" method="post">
+	<form class="form-horizontal" action="{{ URL::to('users/edit') }}/{{ $user->id }}/password" method="post">
         {{ Form::token() }}
 
         <div class="control-group offset1 {{ $errors->has('oldPassword') ? 'error' : '' }}" for="oldPassword">
@@ -159,19 +159,19 @@ Profile</h4>
     		</div>
     	</div>
 
-        <div class="control-group offset1 {{ $errors->has('newPassword') ? 'error' : '' }}" for="newPassword">
-        	<label class="control-label" for="newPassword">New Password</label>
+        <div class="control-group offset1 {{ $errors->has('password') ? 'error' : '' }}" for="password">
+        	<label class="control-label" for="password">New Password</label>
     		<div class="controls">
-				<input name="newPassword" value="" type="password" class="input-xlarge" placeholder="New Password">
-    			{{ ($errors->has('newPassword') ?  $errors->first('newPassword') : '') }}
+				<input name="password" value="" type="password" class="input-xlarge" placeholder="New Password">
+    			{{ ($errors->has('password') ?  $errors->first('password') : '') }}
     		</div>
     	</div>
 
-    	<div class="control-group  offset1 {{ $errors->has('newPassword_confirmation') ? 'error' : '' }}" for="newPassword_confirmation">
-        	<label class="control-label" for="newPassword_confirmation">Confirm New Password</label>
+    	<div class="control-group  offset1 {{ $errors->has('password_confirmation') ? 'error' : '' }}" for="password_confirmation">
+        	<label class="control-label" for="password_confirmation">Confirm New Password</label>
     		<div class="controls">
-				<input name="newPassword_confirmation" value="" type="password" class="input-xlarge" placeholder="New Password Again">
-    			{{ ($errors->has('newPassword_confirmation') ? $errors->first('newPassword_confirmation') : '') }}
+				<input name="password_confirmation" value="" type="password" class="input-xlarge" placeholder="New Password Again">
+    			{{ ($errors->has('password_confirmation') ? $errors->first('password_confirmation') : '') }}
     		</div>
     	</div>
 

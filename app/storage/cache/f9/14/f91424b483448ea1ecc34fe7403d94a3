@@ -1,0 +1,21 @@
+1375833201s:1310:"<?xml version="1.0"?>
+<response><book>
+  <info>
+    <isbn13>9780323170079</isbn13>
+    <isbn10>0323170072</isbn10>
+  </info>
+  <prices>
+    <rental_price term="FALL" days="90" id="1">$55.88</rental_price>
+    <rental_price term="SPRING" days="125" id="2">$60.09</rental_price>
+    <rental_price term="SUMMER" days="60" id="3">$52.28</rental_price>
+  </prices>
+  <lowest_shipping_price>$0.00</lowest_shipping_price>
+  <availability>In Stock</availability>
+  <book_url>http://www.bookrenter.com/api/product/mosby-s-2014-nursing-drug-reference-27e-skidmore-nursing-drug-reference-np-0323170072-9780323170079?developer_key=QDz1rdEMKgvnuqIvD1hsRhparmZ6L0Z8</book_url>
+  <book_image_https>https://images.bookrenter.com/images/I/51fLD7CT5aL._SL160_.jpg</book_image_https>
+  <book_image_http>http://images.bookrenter.com/images/I/51fLD7CT5aL._SL160_.jpg</book_image_http>
+  <add_to_cart_url>http://www.bookrenter.com/api/add_to_cart?developer_key=QDz1rdEMKgvnuqIvD1hsRhparmZ6L0Z8&amp;items[][isbn]=9780323170079&amp;items[][rental_period]=RENTAL_PERIOD</add_to_cart_url>
+  <shareasale_url>http://www.shareasale.com/r.cfm?u=&amp;b=96706&amp;m=14293&amp;urllink=www.bookrenter.com%2Fmosby-s-2014-nursing-drug-reference-27e-skidmore-nursing-drug-reference-np-0323170072-9780323170079</shareasale_url>
+</book>
+</response>
+";

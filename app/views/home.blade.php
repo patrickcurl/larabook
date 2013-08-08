@@ -1,23 +1,60 @@
 @extends('layouts.master')
+
 @section('content')
  <div class="jumbotron">
-        <h2>Compare TextBook Prices</h2>
-        <p style="text-align:left;">I don't have to tell you how expensive college text-books can be, that's why we created this nifty thrifty college textbook pricing tool.</p>
-<p style="text-align:left;">Get up-to-the-minute price quotes on thousands of text-books simply enter the ISBN# below! Our mission is to help more people go to college, buy lowering the costs, we can show you how you can save hundreds by price-comparing at EVERY major text-book supplier on the market!</p>
-<p style="text-align:left;">Don't buy a textbook till you check TopBookPrices.com!</p>
-             {{ Form::open(array('action' => 'BooksController@getLookup', 'method' => 'get', 'class' => 'form-search')) }}
+<div class="row-fluid" style="color:#4dafd3;font-size:24px;font-weight: 400;line-height:24px;font-family: 'Syncopate', sans-serif;">
+  <div class="span3 offset2">
+    <span style="font-size: 36px;line-height: 49px;vertical-align: middle;" /> 1</span>
+    <span style="vertical-align:middle;line-height:27px;">Search </span>
+    <img src="{{{ asset('img/search-icon.png') }}}"    />
+  </div>
+  <div class="span3">
+    <span style="font-size: 36px;line-height: 49px;vertical-align: middle;" /> 2</span>
+    <span style="vertical-align:middle;">Compare </span>
+    <img src="{{{ asset('img/compare-icon.png') }}}"    />
+  </div>
+  <div class="span3">
+    <span style="font-size: 36px;line-height: 49px;vertical-align: middle;" /> 3</span>
+    <span style="vertical-align:middle;">Save </span>
+    <img src="{{{ asset('img/save-icon.png') }}}"    />
+  </div>
+
+  </div>
+  <div class="row-fluid">
+  <div class="span12">
+             {{ Form::open(array('url'=> 'book/isbn', 'method' => 'post', 'class' => 'form-search')) }}
 
              {{ Form::token() }}
 
                   <div class='input-append'>
-                    <input type="text" name="isbn" placeholder="Enter your ISBN #" class="span4 search-query" />
+                    <input type="text" name="isbn" placeholder="Enter your ISBN #" class="span11 search-query" />
                     <button type="submit" class="btn">Get Prices</button>
                   </div>
 
                   {{ Form::close() }}
-
+</div>
       </div>
-
+      </div>
+<div class="row-fluid home-blocks">
+  <div class="span4 home-block-1">
+    <div class="block-content">
+    <h3>Buy Textbooks</h3>
+    <p>Get the lowest prices on new textbooks. Save Hundreds by buying cheap used textbooks or discounted eBook textbooks. </p>
+    </div>
+  </div>
+  <div class="span4 home-block-2">
+    <div class="block-content">
+    <h3>Rent Textbooks</h3>
+    <p>Renting textbooks is one of the easiest ways to save money on textbooks. Rent them for the semester and return them when you're done.</p>
+    </div>
+  </div>
+  <div class="span4 home-block-3">
+    <div class="block-content">
+    <h3>Sell Textbooks</h3>
+    <p>Got old textbooks laying around? Turn them into cold hard cash. Featuring the best buyback rates online!</p>
+    </div>
+  </div>
+  </div>
       <hr>
 
       <!-- Example row of columns -->
@@ -27,14 +64,20 @@
 <img src="http://www.ftjcfx.com/image-7171865-11398628" width="300" height="250" alt="" border="0"/></a>
         </div>
         <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
+         <a href="http://www.anrdoezrs.net/click-7205117-10577310" target="_top">
+<img src="http://www.awltovhc.com/image-7205117-10577310" width="270" height="155" alt="Click here to save with Student Advantage!" border="0"/></a>
+
+<div class="row-fluid" style="text-align:center;margin-top:15px;">
+<div class="span5" style="margin-left:5px;"><a href="http://www.jdoqocy.com/click-7205117-11236383" target="_top">
+<img src="http://www.ftjcfx.com/image-7205117-11236383" width="120" height="60" alt="" border="0"/></a>
+</div><div class="span5"><a href="http://www.tkqlhce.com/click-7205117-11136286" target="_top">
+<img src="http://www.awltovhc.com/image-7205117-11136286" width="120" height="60" alt="" border="0"/></a></div>
+</div>
        </div>
         <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
+
+          <a href="http://www.dpbolvw.net/click-7205117-10494111" target="_top">
+<img src="http://www.tqlkg.com/image-7205117-10494111" width="300" height="250" alt="I signed up on Tuesday" border="0"/></a>
         </div>
       </div>
 

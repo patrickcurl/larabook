@@ -13,9 +13,13 @@ class CreatePasswordRemindersTable extends Migration {
 	{
 		Schema::create('password_reminders', function($t)
 		{
+			// We'll need to ensure that MySQL uses the InnoDB engine to
+      // support the indexes, other engines aren't affected.
+      $t->engine = 'InnoDB';
 			$t->string('email');
 			$t->string('token');
 			$t->timestamp('created_at');
+
 		});
 	}
 

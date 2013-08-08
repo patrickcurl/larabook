@@ -12,20 +12,21 @@ class Throttle extends Migration {
      */
     public function up()
     {
-        Schema::create('throttle', function(Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->string('ip_address')->nullable();
-            $table->integer('attempts')->default(0);
-            $table->boolean('suspended')->default(0);
-            $table->boolean('banned')->default(0);
-            $table->timestamp('last_attempt_at')->nullable();
-            $table->timestamp('suspended_at')->nullable();
-            $table->timestamp('banned_at')->nullable();
-
+        Schema::create('throttle', function(Blueprint $t) {
             // We'll need to ensure that MySQL uses the InnoDB engine to
             // support the indexes, other engines aren't affected.
-            $table->engine = 'InnoDB';
+            $t->engine = 'InnoDB';
+            $t->increments('id');
+            $t->integer('user_id')->unsigned();
+            $t->string('ip_address')->nullable();
+            $t->integer('attempts')->default(0);
+            $t->boolean('suspended')->default(0);
+            $t->boolean('banned')->default(0);
+            $t->timestamp('last_attempt_at')->nullable();
+            $t->timestamp('suspended_at')->nullable();
+            $t->timestamp('banned_at')->nullable();
+
+
         });
     }
 

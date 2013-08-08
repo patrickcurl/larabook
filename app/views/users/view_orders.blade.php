@@ -100,7 +100,7 @@
 							Order Date: {{$order['created_at']->format("n/d/Y") }}
 							<br />Received Date: @if($order['received_date']) {{ date("n/d/Y", strtotime($order['received_date'])) }} @else Pending @endif
 							<br />Payment Date:  @if($order['paid_date']) {{ date("n/d/Y", strtotime($order['paid_date'])) }} @else Pending @endif
-              <br /><a href="{{URL::to('/print_label') }}/?order_id={{$order['id']}}">Print Shipping Label</a>
+               <!-- <br /><a href="<?php // URL::to('/print_label') ?>/?order_id=<?php // $order['id'] ?>">Print Shipping Label</a> -->
               <br ?
 						<br />{{ $order['comments'] }}</td>
 		</tr>

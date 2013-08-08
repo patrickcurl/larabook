@@ -14,6 +14,9 @@ class CreateBooksTable extends Migration {
 	{
 		Schema::create('books', function(Blueprint $t)
 		{
+			// We'll need to ensure that MySQL uses the InnoDB engine to
+      // support the indexes, other engines aren't affected.
+      $t->engine = 'InnoDB';
 			$t->increments('id');
 			$t->string('title');
 			$t->string('author')->nullable();
@@ -26,6 +29,9 @@ class CreateBooksTable extends Migration {
 			$t->integer('num_of_pages')->nullable();
 			$t->float('list_price')->nullable();
 			$t->float('weight')->nullable();
+			$t->text('editorial_review')->nullable();
+			$t->text('customer_reviews')->nullable();
+			$t->string('slug')->unique();
 			$t->timestamps();
 
 		});

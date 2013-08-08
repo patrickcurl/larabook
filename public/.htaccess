@@ -1,3 +1,4 @@
+# AddType application/x-httpd-php54 .php
 <IfModule mod_rewrite.c>
 	Options -MultiViews
 	RewriteEngine On
@@ -5,4 +6,4 @@
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ index.php [L]
 </IfModule>
-php_value date.timezone "America/New_York"
+# php_value date.timezone "America/New_York"

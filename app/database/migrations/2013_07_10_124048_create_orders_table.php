@@ -12,17 +12,22 @@ class CreateOrdersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('orders', function(Blueprint $table)
+		Schema::create('orders', function(Blueprint $t)
 		{
-			$table->increments('id');
-			$table->integer('user_id')->unsigned();
-			$table->string('tracking_number')->nullable();
-			$table->text('ups_label')->nullable();
-			$table->float('total_amount');
-			$table->date('received_date')->nullable();
-			$table->date('paid_date')->nullable();
-			$table->text('comments')->nullable();
-			$table->timestamps();
+			// We'll need to ensure that MySQL uses the InnoDB engine to
+      // support the indexes, other engines aren't affected.
+      $t->engine = 'InnoDB';
+			$t->engine = 'InnoDB';
+			$t->increments('id');
+			$t->integer('user_id')->unsigned();
+			$t->string('tracking_number')->nullable();
+			$t->text('ups_label')->nullable();
+			$t->float('total_amount');
+			$t->date('received_date')->nullable();
+			$t->date('paid_date')->nullable();
+			$t->text('comments')->nullable();
+			$t->timestamps();
+
 		});
 	}
 

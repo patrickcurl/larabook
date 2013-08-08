@@ -228,127 +228,276 @@ catch (Cartalyst\Sentry\Throttling\UserBannedException $e)
 		return Redirect::to('/')->with('message', 'Successfully Logged Out');
 	}
 
-public function getEdit($id){
-	if (Sentry::check())
-	{
-		try
-		{
-		    //Get the current user's id.
-
-			$currentUser = Sentry::getUser();
-
-		   	//Do they have admin access?
-			if ( $currentUser->hasAccess('admin'))
-			{
-				$data['user'] = Sentry::getUserProvider()->findById($id);
-				$data['userGroups'] = $data['user']->getGroups();
-				$data['allGroups'] = Sentry::getGroupProvider()->findAll();
-				return View::make('users.edit')->with($data);
-			}
-			elseif ($currentUser->getId() == $id)
-			{
-				//They are not an admin, but they are viewing their own profile.
-				$data['user'] = Sentry::getUserProvider()->findById($id);
-				$data['userGroups'] = $data['user']->getGroups();
-				return View::make('users.edit')->with($data);
-			} else {
-				Session::flash('error', 'You don\'t have access to that user.');
-				return Redirect::to("/users/edit/{$currentUser->getId()}");
-			}
-
-		}
-		catch (Cartalyst\Sentry\UserNotFoundException $e)
-		{
-		    Session::flash('error', 'There was a problem accessing your account.');
-			return Redirect::to('/');
-		}
-	}	else {
+public function getEdit($id=0){
+	if($id==0){
+		$currentUser = Sentry::getUser();
+		if ($currentUser){
+			return Redirect::to("/users/edit/{$currentUser->getId()}");
+		} else {
 			Session::flash('error', 'You must be logged in to access this area.');
-		return Redirect::to('users/login');
-	}
-	}
-
-public function postEdit($id) {
-		// Gather Sanitized Input
-		$input = array(
-			'first_name' => Input::get('first_name'),
-			'last_name' => Input::get('last_name'),
-			'email' => Input::get('email'),
-			'phone' => Input::get('phone'),
-			'address' => Input::get('address'),
-			'city' => Input::get('city'),
-			'state' => Input::get('state'),
-			'zip' => Input::get('zip'),
-
-			);
-
-		// Set Validation Rules
-		$rules = array (
-			"first_name" => "alpha",
-			"last_name" => "alpha",
-			"email" => "Required|Between:3,255|Email|unique:users,email,{$id}",
-
-			);
-
-		//Run input validation
-		$v = Validator::make($input, $rules);
-
-		if ($v->fails())
-		{
-			// Validation has failed
-			return Redirect::to('users/edit/' . $id)->withErrors($v)->withInput();
+			return Redirect::to('users/login');
 		}
-		else
+	} else {
+		if (Sentry::check())
 		{
 			try
 			{
-				//Get the current user's id.
-				Sentry::check();
+			    //Get the current user's id.
+
 				$currentUser = Sentry::getUser();
 
 			   	//Do they have admin access?
-				if ( $currentUser->hasAccess('admin')  || $currentUser->getId() == $id)
+				if ( $currentUser->hasAccess('admin'))
 				{
-					// Either they are an admin, or they are changing their own password.
-					// Find the user using the user id
-					$user = Sentry::getUserProvider()->findById($id);
-
-				    // Update the user details
-				    $user->first_name = $input['first_name'];
-				    $user->last_name = $input['last_name'];
-
-				    // Update the user
-				    if ($user->save())
-				    {
-				        // User information was updated
-				        Session::flash('success', 'Profile updated.');
-						return Redirect::to('users/show/'. $id);
-				    }
-				    else
-				    {
-				        // User information was not updated
-				        Session::flash('error', 'Profile could not be updated.');
-						return Redirect::to('users/edit/' . $id);
-				    }
-
+					$data['user'] = Sentry::getUserProvider()->findById($id);
+					$data['userGroups'] = $data['user']->getGroups();
+					$data['allGroups'] = Sentry::getGroupProvider()->findAll();
+					return View::make('users.edit')->with($data);
+				}
+				elseif ($currentUser->getId() == $id)
+				{
+					//They are not an admin, but they are viewing their own profile.
+					$data['user'] = Sentry::getUserProvider()->findById($id);
+					$data['userGroups'] = $data['user']->getGroups();
+					return View::make('users.edit')->with($data);
 				} else {
 					Session::flash('error', 'You don\'t have access to that user.');
-					return Redirect::to('/');
+					return Redirect::to("/users/edit/{$currentUser->getId()}");
 				}
+
 			}
-			catch (Cartalyst\Sentry\Users\UserExistsException $e)
+			catch (Cartalyst\Sentry\UserNotFoundException $e)
 			{
-			    Session::flash('error', 'User already exists.');
-				return Redirect::to('users/edit/' . $id);
+			    Session::flash('error', 'There was a problem accessing your account.');
+				return Redirect::to('/');
 			}
-			catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
-			{
-			    Session::flash('error', 'User was not found.');
-				return Redirect::to('users/edit/' . $id);
-			}
+		}	else {
+				Session::flash('error', 'You must be logged in to access this area.');
+			return Redirect::to('users/login');
 		}
 	}
+	}
 
+public function postEdit($id, $type="profile") {
+		// Gather Sanitized Input
+		$input = array(
+				'first_name' => Input::get('first_name'),
+				'last_name' => Input::get('last_name'),
+				'email' => Input::get('email'),
+				'phone' => Input::get('phone'),
+				'address' => Input::get('address'),
+				'city' => Input::get('city'),
+				'state' => Input::get('state'),
+				'zip' => Input::get('zip'),
+				'payment_method' => Input::get('payment_method'),
+				'paypal_email' => Input::get('paypal_email'),
+				'name_on_cheque' => Input::get('name_on_cheque'),
+				'oldPassword' => Input::get('oldPassword'),
+				'password' => Input::get('password'),
+				'password_confirmation' => Input::get('password_confirmation')
+				);
+
+
+		if($type=="profile"){
+
+
+			// Set Validation Rules
+			$rules = array (
+				"first_name" => "alpha",
+				"last_name" => "alpha",
+				"email" => "Required|Between:3,255|Email|unique:users,email,{$id}",
+
+				);
+
+			//Run input validation
+			$v = Validator::make($input, $rules);
+
+			if ($v->fails())
+			{
+				// Validation has failed
+				return Redirect::to('users/edit/' . $id)->withErrors($v)->withInput();
+			}
+			else
+			{
+				try
+				{
+					//Get the current user's id.
+					Sentry::check();
+					$currentUser = Sentry::getUser();
+
+				   	//Do they have admin access?
+					if ( $currentUser->hasAccess('admin')  || $currentUser->getId() == $id)
+					{
+						// Either they are an admin, or they are changing their own password.
+						// Find the user using the user id
+						$user = Sentry::getUserProvider()->findById($id);
+
+					    // Update the user details
+					    $user->first_name = $input['first_name'];
+					    $user->last_name = $input['last_name'];
+
+					    // Update the user
+					    if ($user->save())
+					    {
+					        // User information was updated
+					        Session::flash('success', 'Profile updated.');
+							return Redirect::to('users/show/'. $id);
+					    }
+					    else
+					    {
+					        // User information was not updated
+					        Session::flash('error', 'Profile could not be updated.');
+							return Redirect::to('users/edit/' . $id);
+					    }
+
+					} else {
+						Session::flash('error', 'You don\'t have access to that user.');
+						return Redirect::to('/');
+					}
+				}
+				catch (Cartalyst\Sentry\Users\UserExistsException $e)
+				{
+				    Session::flash('error', 'User already exists.');
+					return Redirect::to('users/edit/' . $id);
+				}
+				catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+				{
+				    Session::flash('error', 'User was not found.');
+					return Redirect::to('users/edit/' . $id);
+				}
+			}
+		}
+
+		if($type == "payment"){
+			try
+				{
+					//Get the current user's id.
+					Sentry::check();
+					$currentUser = Sentry::getUser();
+
+				   	//Do they have admin access?
+					if ( $currentUser->hasAccess('admin')  || $currentUser->getId() == $id)
+					{
+						// Either they are an admin, or they are changing their own password.
+						// Find the user using the user id
+						$user = Sentry::getUserProvider()->findById($id);
+
+					    // Update the user details
+					    $user->payment_method = $input['payment_method'];
+					    $user->paypal_email = $input['paypal_email'];
+					    $user->name_on_cheque = $input['name_on_cheque'];
+
+					    // Update the user
+					    if ($user->save())
+					    {
+					        // User information was updated
+					        Session::flash('success', 'Profile updated.');
+							return Redirect::to('users/show/'. $id);
+					    }
+					    else
+					    {
+					        // User information was not updated
+					        Session::flash('error', 'Profile could not be updated.');
+							return Redirect::to('users/edit/' . $id);
+					    }
+
+					} else {
+						Session::flash('error', 'You don\'t have access to that user.');
+						return Redirect::to('/');
+					}
+				}
+				catch (Cartalyst\Sentry\Users\UserExistsException $e)
+				{
+				    Session::flash('error', 'User already exists.');
+					return Redirect::to('users/edit/' . $id);
+				}
+				catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+				{
+				    Session::flash('error', 'User was not found.');
+					return Redirect::to('users/edit/' . $id);
+				}
+
+		}
+
+				if($type=="password"){
+					$rules = array (
+						'password' => 'different:oldPassword,confirmed'
+					);
+
+					//Run input validation
+					$v = Validator::make($input, $rules);
+
+					if ($v->fails())
+					{
+						// Validation has failed
+						return Redirect::to('users/edit/' . $id)->withErrors($v)->withInput();
+					}		else
+					{
+						try
+							{
+								//Get the current user's id.
+								Sentry::check();
+								$currentUser = Sentry::getUser();
+
+								//Do they have admin access?
+								if ( $currentUser->hasAccess('admin')  || $currentUser->getId() == $id)
+								{
+									// Either they are an admin, or they are changing their own password.
+									// Find the user using the user id
+									$user = Sentry::getUserProvider()->findById($id);
+									// Update the user details
+										if($user->checkPassword($input['oldPassword'])){
+											if($input['password'] == $input['password_confirmation']){
+												$user->password = $input['password'];
+												if ($user->save())
+												{
+													// User information was updated
+													Session::flash('success', 'Profile updated.');
+													return Redirect::to('users/show/'. $id);
+												}
+												else
+												{
+													// User information was not updated
+													Session::flash('error', 'Profile could not be updated.');
+													return Redirect::to('users/edit/' . $id);
+												}
+											} else {
+												Session::flash('error', "Password and Password confirmation do not match!");
+												return Redirect::to('users/edit/' . $id);
+											}
+										} else {
+											Session::flash('error', "Old password does not match current password.");
+											return Redirect::to('users/edit/' . $id);
+										}
+											// Update the user
+
+
+									} else {
+										Session::flash('error', 'You don\'t have access to that user.');
+										return Redirect::to('/');
+									}
+								}
+							catch (Cartalyst\Sentry\Users\UserExistsException $e)
+							{
+							    Session::flash('error', 'User already exists.');
+								return Redirect::to('users/edit/' . $id);
+							}
+							catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+							{
+							    Session::flash('error', 'User was not found.');
+								return Redirect::to('users/edit/' . $id);
+							}
+				}
+
+				// Set Validation Rules
+		}
+
+	}
+
+	public function postEditPassword($id){
+
+	}
+/*
 		public function postUpdateProfile(){
 			$user = Sentry::getUser();
 			$id = $user->id;
@@ -395,7 +544,7 @@ public function postEdit($id) {
 			$errors = $v->messages();
 			return Redirect::to('edit_profile')->withErrors($v);
 		}
-	}
+	} */
 
 	public function getOrders($id){
 		if (Sentry::check()){
@@ -582,6 +731,7 @@ public function postEdit($id) {
 
 
 	}
+
 
 /**
 	 * Generate password - helper function

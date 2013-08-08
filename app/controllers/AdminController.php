@@ -2,7 +2,7 @@
 
 class AdminController extends BaseController {
     public function __construct(){
-        $this->beforeFilter("admin-auth");
+        $this->beforeFilter("admin_auth");
     }
        /**
      * Display a listing of the resource.
@@ -35,25 +35,25 @@ class AdminController extends BaseController {
 
             // grab Order object.
             $o = Order::where('id', '=', $order['id'])->first();
-            
+
             // grab User object.
             $u = User::where('id', '=', $o->user_id)->first();
-            
+
 
             // Received Date
             // check of Received date is set, and not empty. If empty/notset do nothing else update.
             if (isset($order['received_date']) && !empty($order['received_date'])){
-               
+
                 // convert received date to date object;
                 $received_date = date('Y-m-d', strtotime($order['received_date']));
-                
+
                 // check if old_received_date exists
                 if (isset($order['old_received_date'])){
                     //if old_received_date exists convert to date object.
                     $old_received_date = date('Y-m-d', strtotime($order['old_received_date']));
 
                     // if received date does not match old received date...ie the record is updated, not the same.
-                    if ($received_date != $old_received_date){  
+                    if ($received_date != $old_received_date){
                         // update value
                         $o->received_date = $received_date;
                     }
@@ -69,22 +69,22 @@ class AdminController extends BaseController {
                         $m->from('patrick@recycleabook.com', 'RecycleABook')->to($data['email'])->subject('Shipment Received @ TopBookPrices.com');
                     });
                 }
-            } 
+            }
 
 
             // Paid Date
             if (isset($order['paid_date']) && !empty($order['paid_date'])){
-               
+
                 // convert paid date to date object;
                 $paid_date = date('Y-m-d', strtotime($order['paid_date']));
-                
+
                 // check if old_paid_date exists
                 if (isset($order['old_paid_date'])){
                     //if old_paid_date exists convert to date object.
                     $old_paid_date = date('Y-m-d', strtotime($order['old_paid_date']));
 
                     // if paid date does not match old paid date...ie the record is updated, not the same.
-                    if ($paid_date != $old_paid_date){  
+                    if ($paid_date != $old_paid_date){
                         // update value
                         $o->paid_date = $paid_date;
                     }
@@ -100,21 +100,21 @@ class AdminController extends BaseController {
                         $m->from('patrick@recycleabook.com', 'RecycleABook')->to($data['email'])->subject('Payment Received from TopBookPrices.com');
                     });
                 }
-            } 
+            }
              /*
             if ($paid_date != $order['old_paid_date']){
               $o->paid_date = $paid_date;
 
-            } 
+            }
             */
             $o->comments = $order['comments'];
             $o->save();
 
-            
+
         }
         return Redirect::back()->with('message', 'Update successful');
     }
-    
+
 
 
     /**

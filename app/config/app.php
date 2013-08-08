@@ -118,7 +118,8 @@ return array(
 		'Cartalyst\Sentry\SentryServiceProvider',
 		'Juy\Profiler\Providers\ProfilerServiceProvider',
 		'Cviebrock\EloquentSluggable\SluggableServiceProvider',
-
+		'Intervention\Validation\ValidationServiceProvider',
+		'Liebig\Cron\CronServiceProvider',
 	),
 
 	/*
