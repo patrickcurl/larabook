@@ -58,8 +58,6 @@ return array(
 			'database'  => 'larabook',
 			'username'  => Config::get('env_vars.dbUser'),
 			'password'  => Config::get('env_vars.dbPass'),
-			'username'  => 'root',
-			'password'  => '',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

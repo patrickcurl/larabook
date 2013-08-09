@@ -12,8 +12,10 @@
 		"cviebrock/eloquent-sluggable": "1.0.*",
 		"intervention/validation": "dev-master",
 		"liebig/cron": "dev-master"
-
 	},
+	"require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
 	"autoload": {
 		"classmap": [
 			"app/commands",
@@ -44,7 +46,8 @@
 		]
 	},
 	"config": {
-		"preferred-install": "dist"
+		"preferred-install": "dist",
+		"bin-dir": "C:/App/Php/larabook/vendor/bin"
 	},
 	"minimum-stability": "dev"
 }
