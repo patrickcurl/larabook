@@ -271,7 +271,8 @@ class Book extends Eloquent {
 
 
 	public static function getPrices($book, $orderby="amount_used", $dir="DESC"){
-    $isbn = $book->isbn13;
+    	if ($book){
+    		$isbn = $book->isbn13;
 		$xml_valore = self::cache_xml($isbn, "valore", "http://prices.valorebooks.com/lookup-multiple-categories?SiteID=s1pI8Z&ProductCode=$isbn");
 		$xml_amazon = self::cache_xml($isbn, "amazon", amazonURL($isbn));
 		$xml_bookrenter = self::cache_xml($isbn, 'bookrenter', "http://www.bookrenter.com/api/fetch_book_info?developer_key=QDz1rdEMKgvnuqIvD1hsRhparmZ6L0Z8&version=2011-02-01&isbn=$isbn");
@@ -293,95 +294,92 @@ class Book extends Eloquent {
 		foreach($merchants as $m){
 			$merchant[$m->slug] = $m;
 			}
-	if ($xml_recycleabook){
+		if ($xml_recycleabook){
 			self::newPrice($book, $merchant["recycleabook"], "buyback", "http://www.recycleabook.com/isbn-results/?isbn=9780131367739", $xml_recycleabook->details->buyback);
-	}
-	if ($buyback101) {
-		$bb101link = "http://www.buyback101.com/bb101api.php?a=".Config::get('env_vars.bb101_aff')."&akey=".Config::get('env_vars.bb101_key')."&isbn=$isbn&view=link";
-		self::newPrice($book, $merchant["buyback101"], "buyback",  $bb101link, number_format($buyback101, 2));
-	}
-
-	if ($sellbackbooks){
-		$sbbbuylink = "http://www.shareasale.com/r.cfm?B=186456&U=421178&M=13388&urllink=www.sellbackbooks.com/bbsearchresult.aspx?ISBN=$isbn";
-		self::newPrice($book, $merchant["sellbackbooks"], "buyback",  $sbbbuylink, number_format($sellbackbooks, 2));
-	}
-
-	if ($xml_amazon){
-		self::newPrice($book, $merchant['amazon'], 'new', $xml_amazon->Items->Item->DetailPageURL, number_format($xml_amazon->Items->Item->OfferSummary->LowestNewPrice->Amount/100,2));
-		self::newPrice($book, $merchant['amazon'], 'used', $xml_amazon->Items->Item->Offers->MoreOffersUrl, number_format($xml_amazon->Items->Item->OfferSummary->LowestUsedPrice->Amount/100,2));
-		self::newPrice($book, $merchant['amazon'], 'buyback', $xml_amazon->Items->Item->DetailPageURL, number_format($xml_amazon->Items->Item->ItemAttributes->TradeInValue->Amount/100,2));
-	}
-
-	if ($xml_valore){
-		self::newPrice($book, $merchant['valore'], 'used', $xml_valore->{'sale-offer'}->link, $xml_valore->{'sale-offer'}->price);
-		self::newPrice($book, $merchant['valore'], 'rental', $xml_valore->{'rental-offer'}->link, $xml_valore->{'rental-offer'}->{'semester-price'});
-	}
-
-	if ($xml_bookrenter){
-		if ($xml_bookrenter->book->availability != "Backordered"){
-			$br_link = "http://www.dpbolvw.net/click-7171865-10920299?url=" . urlencode($xml_bookrenter->book->book_url);
-			$br_new_price = $xml_bookrenter->xpath("//purchase_price[contains(@condition, 'new')]");
-			if($br_new_price){
-				$br_new_price = floatval(ltrim($br_new_price[0], "$"));
-				self::newPrice($book, $merchant['bookrenter'], 'new', $br_link, $br_new_price);
-			}
-
-			$br_used_price = $xml_bookrenter->xpath("//purchase_price[contains(@condition, 'used')]");
-			if(!empty($br_used_price[0])){
-				$br_used_price = floatval(ltrim($br_used_price[0], "$"));
-				self::newPrice($book, $merchant['bookrenter'], 'used', $br_link, $br_used_price);
-			}
-
-			$br_rental_price = $xml_bookrenter->xpath("//rental_price[contains(@days, '90')]");
-			if($br_rental_price){
-				$br_rental_price = floatval(ltrim($br_rental_price[0], "$"));
-				self::newPrice($book, $merchant['bookrenter'], 'rental', $br_link, $br_rental_price);
-			}
-
-
+		}
+		if ($buyback101) {
+			$bb101link = "http://www.buyback101.com/bb101api.php?a=".Config::get('env_vars.bb101_aff')."&akey=".Config::get('env_vars.bb101_key')."&isbn=$isbn&view=link";
+			self::newPrice($book, $merchant["buyback101"], "buyback",  $bb101link, number_format($buyback101, 2));
 		}
 
+		if ($sellbackbooks){
+			$sbbbuylink = "http://www.shareasale.com/r.cfm?B=186456&U=421178&M=13388&urllink=www.sellbackbooks.com/bbsearchresult.aspx?ISBN=$isbn";
+			self::newPrice($book, $merchant["sellbackbooks"], "buyback",  $sbbbuylink, number_format($sellbackbooks, 2));
+		}
 
+		if ($xml_amazon){
+			self::newPrice($book, $merchant['amazon'], 'new', $xml_amazon->Items->Item->DetailPageURL, number_format($xml_amazon->Items->Item->OfferSummary->LowestNewPrice->Amount/100,2));
+			self::newPrice($book, $merchant['amazon'], 'used', $xml_amazon->Items->Item->Offers->MoreOffersUrl, number_format($xml_amazon->Items->Item->OfferSummary->LowestUsedPrice->Amount/100,2));
+			self::newPrice($book, $merchant['amazon'], 'buyback', $xml_amazon->Items->Item->DetailPageURL, number_format($xml_amazon->Items->Item->ItemAttributes->TradeInValue->Amount/100,2));
+		}
 
+		if ($xml_valore){
+			self::newPrice($book, $merchant['valore'], 'used', $xml_valore->{'sale-offer'}->link, $xml_valore->{'sale-offer'}->price);
+			self::newPrice($book, $merchant['valore'], 'rental', $xml_valore->{'rental-offer'}->link, $xml_valore->{'rental-offer'}->{'semester-price'});
+		}
 
-		//Commission Junction baseurl: http://www.dpbolvw.net/click-7171865-10920299?url=
+		// If the xml worked and we have a bookrenter object
+		if ($xml_bookrenter){
+			//Check if book is backordered.
+			if ($xml_bookrenter->book->availability != "Backordered"){
+				$br_link = "http://www.dpbolvw.net/click-7171865-10920299?url=" . urlencode($xml_bookrenter->book->book_url);
 
+				$br_new_price = $xml_bookrenter->xpath("//purchase_price[contains(@condition, 'new')]");
+				// Check if we have a new price.
+				if($br_new_price){
+					$br_new_price = floatval(ltrim($br_new_price[0], "$"));
+					self::newPrice($book, $merchant['bookrenter'], 'new', $br_link, $br_new_price);
+				} //End check if $br_new_price exists
 
+				$br_used_price = $xml_bookrenter->xpath("//purchase_price[contains(@condition, 'used')]");
+				// Check if we have a used price.
+				if(!empty($br_used_price[0])){
+					$br_used_price = floatval(ltrim($br_used_price[0], "$"));
+					self::newPrice($book, $merchant['bookrenter'], 'used', $br_link, $br_used_price);
+				} //End check if $br_used_price exists
 
-	}
+				$br_rental_price = $xml_bookrenter->xpath("//rental_price[contains(@days, '90')]");
+				// Check if we have a rental price.
+				if($br_rental_price){
+					$br_rental_price = floatval(ltrim($br_rental_price[0], "$"));
+					self::newPrice($book, $merchant['bookrenter'], 'rental', $br_link, $br_rental_price);
+				} //End check if $br_rental_price exists
+			} // End Check if availability is not Backordered.
+				//Commission Junction baseurl: http://www.dpbolvw.net/click-7171865-10920299?url=
+		}
 
-	if ($powells){
-		if(isset($powells['used'])){
-			if($powells['used']['price'] > 0.01){
-				if (!empty($powells['used']['url'])){
-					self::newPrice($book, $merchant['powells'], 'used', $powells['used']['url'], $powells['used']['price']);
+		if ($powells){
+			if(isset($powells['used'])){
+				if($powells['used']['price'] > 0.01){
+					if (!empty($powells['used']['url'])){
+						self::newPrice($book, $merchant['powells'], 'used', $powells['used']['url'], $powells['used']['price']);
+					}
+				}
+			}
+			if(isset($powells['new'])){
+				if($powells['new']['price'] > 0.01){
+					if (!empty($powells['new']['url'])){
+						self::newPrice($book, $merchant['powells'], 'new', $powells['new']['url'], $powells['new']['price']);
+					}
 				}
 			}
 		}
-		if(isset($powells['new'])){
-			if($powells['new']['price'] > 0.01){
-				if (!empty($powells['new']['url'])){
-					self::newPrice($book, $merchant['powells'], 'new', $powells['new']['url'], $powells['new']['price']);
-				}
-			}
+
+		if ($xml_biggerbooks){
+			$bb_url = "http://www.dpbolvw.net/click-7171865-9467039?isbn=$isbn";
+			$bb_new = floatval(ltrim($xml_biggerbooks->NewPrice, "$"));
+			$bb_used = floatval(ltrim($xml_biggerbooks->UsedPrice, "$"));
+			$bb_ebook = floatval(ltrim($xml_biggerbooks->eBookPrice, "$"));
+			self::newPrice($book, $merchant['biggerbooks'], 'new', $bb_url, $bb_new);
+			self::newPrice($book, $merchant['biggerbooks'], 'used', $bb_url, $bb_used);
+			self::newPrice($book, $merchant['biggerbooks'], 'ebook', $bb_url, $bb_ebook);
 		}
-	}
 
-	if ($xml_biggerbooks){
-		$bb_url = "http://www.dpbolvw.net/click-7171865-9467039?isbn=$isbn";
-		$bb_new = floatval(ltrim($xml_biggerbooks->NewPrice, "$"));
-		$bb_used = floatval(ltrim($xml_biggerbooks->UsedPrice, "$"));
-		$bb_ebook = floatval(ltrim($xml_biggerbooks->eBookPrice, "$"));
-		self::newPrice($book, $merchant['biggerbooks'], 'new', $bb_url, $bb_new);
-		self::newPrice($book, $merchant['biggerbooks'], 'used', $bb_url, $bb_used);
-		self::newPrice($book, $merchant['biggerbooks'], 'ebook', $bb_url, $bb_ebook);
-	}
-
-	if ($xml_campusbookrentals){
-		$cbr_url = urlencode("http://www.kqzyfj.com/click-7205117-10722272?url=http://www.campusbookrentals.com/textbook/$isbn");
-		$cbr_rental = ($xml_campusbookrentals->PriceResult->PriceSemester);
-		self::newPrice($book, $merchant['campusbookrentals'], 'rental', $cbr_url, $cbr_rental);
-	}
+		if ($xml_campusbookrentals){
+			$cbr_url = urlencode("http://www.kqzyfj.com/click-7205117-10722272?url=http://www.campusbookrentals.com/textbook/$isbn");
+			$cbr_rental = ($xml_campusbookrentals->PriceResult->PriceSemester);
+			self::newPrice($book, $merchant['campusbookrentals'], 'rental', $cbr_url, $cbr_rental);
+		}
 
 		if ($xml_chegg){
 			$ref = "CJGATEWAY";
@@ -397,12 +395,15 @@ class Book extends Eloquent {
 
 
 		}
-		//$prices = Book::find($book->id)->prices()->orderBy($orderby, $dir)->get();
 		$prices = DB::table('prices')
                 ->join('merchants', function($join){
                   $join->on('prices.merchant_id', '=', 'merchants.id');
-                })->where('prices.book_id', '=', 1)->get();
+                })->where('prices.book_id', '=', $book->id)->get();
 		return $prices;
+    	} else {
+    		return NULL;
+    	}
+
   }
 
   public static function amazon_buyback($id){

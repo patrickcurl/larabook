@@ -226,6 +226,20 @@
       @if (Session::has('error'))
     {{ trans(Session::get('reason')) }}
 @endif
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="{{URL::to('admin')}}">Dashboard</a>
+    <ul class="nav">
+      <li><a href="{{URL::to('admin/merchants-features')}}">Merchants & Features</a></li>
+      <li><a href="#">Users</a></li>
+      <li><a href="#">Stats</a></li>
+
+    </ul>
+    <ul class="nav pull-right">
+      <li><p class="navbar-text pull-right">Total Users: {{{ $data['totalUsers'] }}} | Online:  {{{ $data['onlineUsers'] }}} | Guests:  {{{ $data['onlineGuests'] }}}</p></li>
+    </ul>
+  </div>
+</div>
 	    @yield('content')
       <!-- Jumbotron -->
 

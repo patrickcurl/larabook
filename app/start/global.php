@@ -20,6 +20,9 @@ ClassLoader::addDirectories(array(
 
 ));
 
+Blade::extend(function($value) {
+    return preg_replace('/\{\?(.+)\?\}/', '<?php ${1} ?>', $value);
+});
 /*
 |--------------------------------------------------------------------------
 | Application Error Logger
@@ -51,10 +54,13 @@ Log::useDailyFiles(storage_path().'/logs/'.$logFile);
 
 App::error(function(Exception $exception, $code)
 {
-	Log::error($exception);
- $data = array('exception' => $exception, 'code' => $code);
+  Log::error($exception);
+  Log::warning($exception);
+  Log::info($exception);
+  $url = Request::url();
+  $data = array('exception' => $exception, 'code' => $code, 'url' => $url, 'inputs' => Input::all());
   Mail::send('emails.error', $data, function($m) use($data){
-    $m->from('patrick@recycleabook.com', 'RecycleABook')->to('patrickwcurl@gmail.com', 'Patrick Curl')->subject(substr($data['exception'], 9, 80));
+    $m->from('patrick@topbookprices.com', 'TopBookPrices')->to('patrickwcurl@gmail.com', 'Patrick Curl')->subject(substr($data['exception'], 9, 80));
   });
  // return Redirect::to('/')->with('error', 'Error detected, please try again!');
 

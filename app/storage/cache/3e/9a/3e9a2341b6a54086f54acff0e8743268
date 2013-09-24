@@ -1,14 +1,14 @@
-1376100460s:1296:"<?xml version="1.0" encoding="UTF-8"?>
+1379984698s:1270:"<?xml version="1.0" encoding="UTF-8"?>
 <product>
  <product-code>9780131367739</product-code>
  
  <rental-offer>
- <condition>Good</condition>
- <ninty-day-price>39.90</ninty-day-price> 
+ <condition>Very Good</condition>
+ <ninty-day-price>49.62</ninty-day-price> 
  <alternate-edition>false</alternate-edition>
- <quantity>1</quantity>
- <semester-price>42.53</semester-price>
- <link>http://www.valorebooks.com/rental-listing?product_id=9464911&amp;listing_id=298327700&amp;site_id=s1pI8Z&amp;sellerMarket_id=1100416030</link>
+ <quantity>7</quantity>
+ <semester-price>53.94</semester-price>
+ <link>http://www.valorebooks.com/rental-listing?product_id=9464911&amp;listing_id=599917670&amp;site_id=s1pI8Z</link>
  <shipping-options>
  <shipping>
  <method>Standard</method>
@@ -26,7 +26,7 @@
  <condition>New</condition>
  <alternate-edition>true</alternate-edition>
  <link>http://www.valorebooks.com/listing?product_id=9464911&amp;sellerMarket_id=852867764&amp;a_listing=false&amp;site_id=s1pI8Z</link>
- <quantity>34</quantity>
+ <quantity>69</quantity>
  <shipping-options>
  <shipping>
  <method>Standard</method>
@@ -40,7 +40,7 @@
  </sale-offer>
  
  <buy-offer>
- <item-price>83.00</item-price>
+ <item-price>75.42</item-price>
  <condition>Good</condition>
  <quantity>1</quantity>
  </buy-offer></product>

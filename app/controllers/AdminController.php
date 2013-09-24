@@ -3,6 +3,12 @@
 class AdminController extends BaseController {
     public function __construct(){
         $this->beforeFilter("admin_auth");
+        $online = new SentryUsersOnline;
+        $data = array();
+        $data['totalUsers'] = DB::table('users')->count();
+        $data['onlineUsers'] = $online->getUsersCount();
+        $data['onlineGuests'] = $online->getGuestsCount();
+        View::share("data", $data);
     }
        /**
      * Display a listing of the resource.
@@ -16,7 +22,7 @@ class AdminController extends BaseController {
         $users = DB::table('users')->paginate(2);
         $totalUsers = DB::table('users')->count();
         $online = new SentryUsersOnline;
-        $onlineUsers = $online->getUsersCount();
+
         //return var_dump($orders);
         return View::make('admin.dashboard', array( 'orders' => $orders,
                                                     'totalUsers' => $totalUsers,
@@ -26,7 +32,151 @@ class AdminController extends BaseController {
                                                   ));
         //return View::make('cart.index', array('cart' => $cart));
     }
+    public function getMerchantsFeatures(){
+      //$merchants = DB::table('merchants');
+      $merch_features = DB::table('features')->get();
+      $features = array();
+      $feats = array();
+      foreach($merch_features as $index => $feature){
+        $features[$index]['id'] = $feature->id;
+        $feats[$index]['id'] = $feature->id;
+        $features[$index]['name'] = $feature->name;
+        $feats[$index]['name'] = $feature->name;
+        $features[$index]['descr'] = $feature->description;
+        $features[$index]['icon'] = $feature->icon_url;
+      }
 
+      $merchants = Merchant::with('features')->paginate(15);
+      return View::make('admin.merchants_and_features', array('merchants' => $merchants,
+                                                              'features' => $features,
+                                                              'feats' => $feats
+                                                        ));
+    }
+
+    public function postAddFeature(){
+      $feature = Input::get('feature');
+      $f = new Feature;
+
+      $file = Input::file('file');
+      $extension =$file->getClientOriginalExtension();
+      $destinationPath = 'img/';
+      $filename = $file->getClientOriginalName();
+      $filename = explode('.', $filename);
+      $filename = $filename[0]  . "_" . str_random(5) . '.' . $extension;
+
+
+      $uploadSuccess = $file->move($destinationPath, $filename);
+      $file = URL::to($destinationPath . $filename);
+
+      if( $uploadSuccess ) {
+        $f->icon_url = $file;
+      }
+
+      $f->name = $feature['name'];
+      $f->description = $feature['description'];
+      //$f->icon_url = $feature['icon_url'];
+      $f->save();
+      return Redirect::to('admin/merchants-features');
+    }
+
+    public function postUpdateFeatures(){
+      $features = Input::get('features');
+      $files = Input::file('files');
+      //return var_dump(Input::all());
+       //$files = Input::file('file[]');
+       // return var_dump($_FILES);
+      foreach($features as $i => $feature){
+        // Grab feature object.
+        //return var_dump($feature);
+        $file = $files[$i];
+        if (isset($feature['id'])){
+
+          $f = Feature::where('id', '=', $feature['id'])->first();
+
+          if (isset($feature['name']) && $feature['name'] != $f->name){
+            $f->name = $feature['name'];
+          }
+
+          if (isset($file) && $file != null){
+
+            // does file exist?
+            $extension = $file->getClientOriginalExtension(); //init file extension
+            $destinationPath = 'img/'; // set the img path
+
+            // Gemerate a unique filename with extension
+            $filename = $file->getClientOriginalName();
+            $filename = explode('.', $filename);
+            $filename = $filename[0]  . "_" . str_random(5) . '.' . $extension;
+
+            // Upload and move file
+            $uploadSuccess = $file->move($destinationPath, $filename);
+            $file = URL::to($destinationPath . $filename);
+
+            // if upload succeeded set the icon url var to the url of the file.
+            if( $uploadSuccess ) {
+              $f->icon_url = $file;
+            }
+          }
+
+
+          if (isset($feature['description']) && $feature['description'] != $f->description){
+            $f->description = $feature['description'];
+          }
+          $f->save();
+        }
+      }
+      return Redirect::to('admin/merchants-features')->with('message', 'Updated Successfully');
+
+    }
+    public function postUpdateMerchants(){
+      $merchants = Input::get('merchants');
+      $files = Input::file('files');
+
+      foreach($merchants as $i => $merchant){
+       // return var_dump(array_keys($merchant['features']));
+        $file = $files[$i];
+        $m = Merchant::find($merchant['id']);
+
+        if(isset($merchant['name']) && $merchant['name'] != $m->name){
+          $m->name = $merchant['name'];
+        }
+
+        if (isset($file) && $file != null){
+
+            // does file exist?
+            $extension = $file->getClientOriginalExtension(); //init file extension
+            $destinationPath = 'img/'; // set the img path
+
+            // Gemerate a unique filename with extension
+            $filename = $file->getClientOriginalName();
+            $filename = explode('.', $filename);
+            $filename = $filename[0]  . "_" . str_random(5) . '.' . $extension;
+
+            // Upload and move file
+            $uploadSuccess = $file->move($destinationPath, $filename);
+            $file = URL::to($destinationPath . $filename);
+
+            // if upload succeeded set the icon url var to the url of the file.
+            if( $uploadSuccess ) {
+              $m->logo_url = $file;
+            }
+          }
+
+          if(isset($merchant['description']) && $merchant['description'] != $m->description ){
+            $m->description = $merchant['description'];
+          }
+
+
+          if(isset($merchant['features'])){
+            $m->features()->sync(array_keys($merchant['features']));
+          } else {
+            $m->features()->sync(array());
+          }
+          $m->save();
+
+      }
+      return Redirect::to('admin/merchants-features')->with('message', 'Updated Successfully');
+    }
     public function postUpdateOrders(){
       //return var_dump(Input::get('orders'));
       $orders = Input::get('orders');
@@ -152,6 +302,7 @@ class AdminController extends BaseController {
 
 
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -215,5 +366,7 @@ class AdminController extends BaseController {
     {
         //
     }
+
+
 
 }

@@ -22,7 +22,7 @@
   </div>
   <div class="row-fluid">
   <div class="span12">
-             {{ Form::open(array('url'=> 'book/isbn', 'method' => 'post', 'class' => 'form-search')) }}
+             {{ Form::open(array('url'=> 'books/isbn', 'method' => 'post', 'class' => 'form-search')) }}
 
              {{ Form::token() }}
 

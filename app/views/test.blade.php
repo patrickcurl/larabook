@@ -1,4 +1,97 @@
+{? $code = 'test'; ?}
+{{ $code }}
 <?php
+
+
+
+
+
+
+$features = DB::table('features')->get();
+
+foreach($features as $i => $f){
+  $feats[$i]['id'] = $f->id;
+  $feats[$i]['name'] = $f->name;
+}
+var_dump($feats);
+//e.g $feats[1][name] = 'paypal;'
+$merchants = Merchant::with('features')->get();
+
+
+foreach($merchants as $m){
+  $mFeats = array();
+  foreach($m->features as $i=>$f){
+    $mFeats[$i]['id'] = $f->id;
+    $mFeats[$i]['name'] = $f->name;
+  }
+  var_dump($mFeats);
+  foreach($feats as $f){ ?>
+    <label class="checkbox">
+    <input type="checkbox" <?php if(in_array($f, $mFeats)){
+      echo "checked='checked'";
+    } ?> > <?php echo $f['name']; ?>
+  </label>
+<?php
+
+  }
+}
+
+
+// foreach($features as $i => $f){
+//   $f_array[$i]['name'] = $f->name;
+// }
+// $merchFeats = array();
+// foreach($merchants as $m){
+//   $merchFeats['merchId'] = $m->id;
+
+//   foreach($features as $f){
+//     $merchFeats['feature'] = $f->id;
+//     $merchFeats['feature'][$f->id]['checked'] = false;
+//     $merchFeats['feature'][$f->id]['name'] = $f->name;
+//     $merchFeats['feature'][$f->id]['description'] = $f->description;
+//   }
+
+//   foreach($m->features as $mf){
+//     $merchFeats['feature'] = $mf->id;
+//     $merchFeats['feature'][$f->id]['checked'] = true;
+//     $merchFeats['feature'][$f->id]['name'] = $f->name;
+//     $merchFeats['feature'][$f->id]['description'] = $f->description;
+//   }
+
+// }
+// var_dump($merchFeats);
+
+//   echo $m->name . "<br />";
+//   foreach($features as $f){
+//     $myFeatures = array($m->id[$f->id]);
+//     var_dump($myFeatures);
+//     foreach($m->features as $mf){
+//       if ($f->name == $mf->name){
+//         $checked = true;
+//       }
+//       if($checked == true){
+//         echo $f->name . "- checked<br />";
+//       } else{
+//         echo $f->name . "<br />";
+//       }
+
+//       }
+
+//     }
+
+
+// echo "<br />";
+
+
+//   }
+
+//   $mFeatures = array(
+//                      'merchId' => 1,
+//                      'features' => ['Paypal' => 1, 'Check' => 0, 'Shipping' => 1 ]
+//                      );
+// var_dump($mFeatures);
+
+
 
 
 
@@ -40,7 +133,7 @@ foreach ($n as $b){
 //$test = Book::getPowell('9780140237207');
 //var_dump($test);
 //$price =Book::curlPrice("http://www.sellbackbooks.com/bbsearchresult.aspx?ISBN=978013136773", "<p class=\"price\"", "</p>", "p");
-$prices = DB::table('prices')
+/*$prices = DB::table('prices')
                 ->join('merchants', function($join){
                   $join->on('prices.merchant_id', '=', 'merchants.id');
                 })->where('prices.book_id', '=', 1)->get();
@@ -141,7 +234,11 @@ var_dump($best);
                 // ->join('merchants', 'merchants.id', '=', 'prices.merchants_id')
                 // ->select('prices.amount_used', 'merchants.slug')
                 // ->where('book_id', '=', 1 );
+*/
 
+
+// $a = "printf";
+// $a("hello");
 // $isbn = "0133084043";
 // $book = Book::find_or_create($isbn);
 // $prices = Book::getPrices($book);

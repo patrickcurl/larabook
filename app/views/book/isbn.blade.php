@@ -1,6 +1,16 @@
 @extends('layouts.master')
 @section('title')
-Top TextBook Price : {{ $book->title }}
+<?php $title = "Best Textbook Price: " . $book->title;
+
+        $title = substr($title, 0, 90);
+
+?>
+{{ $title }}
+@stop
+@section('head')
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "cc29f52c-3cdb-433a-affd-c4e20d9c6f43", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 @stop
 @section('content')
 
@@ -12,89 +22,44 @@ Top TextBook Price : {{ $book->title }}
 
   @endif
   <div class="span4 muted">
-    <img src="<?php if ($book->image_url) {echo $book->image_url; } else {echo URL::asset('img/no_image.png'); } ?>" width="300"><br />
+    <img src="<?php if ($book->image_url) {echo $book->image_url; } else {echo URL::asset('img/no_image.png'); } ?>" style="width:275px;"><br />
 
   </div>
-  <div class="span6">
-
-    <dl class="dl-horizontal">
-    <dt>Author:</dt><dd>{{  $book->author }}</dd> <br />
-    <dt>Publisher:</dt><dd>{{  $book->publisher }} <br /></h4>
-    <dt>Edition:</dt><dd>{{  $book->edition }} <br />
-    <dt>Number of Pages:</dt><dd>{{ $book->num_of_pages }} <br />
-    <dt>Weight:</dt><dd>{{ number_format($book->weight, 2) }} lbs<br />
-    <dt>List Price:</dt><dd>{{ $book->list_price }} <br />
-    <dt>ISBN:</dt><dd>{{ $book->isbn10 }} / {{ $book->isbn13 }} <br />
-
-    <a href="{{ $book->amazon_url }}" target="_blank">View Book Details on Amazon</a>
-
-  </div>
-
   <div class="span7">
-   <table class="table table-condensed">
-          <thead>
-            <tr><td colspan='5'><h1 class="text-center">Best Prices</h1></td></tr>
-            <tr>
-              <th>Used</th>
-              <th>New</th>
-              <th>Rental</th>
-              <th>eBook</th>
-              <th>BuyBack</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                @if (!empty($best['used']))
-                  <img src="{{ $best['used']['logo'] }}" width="100" height="25"/>
-                 <h3>${{ number_format($best['used']['price'], 2) }}</h3>
-                 <a href="{{$best['used']['url']}}" class="btn btn-danger">Buy Now</a>
-                @endif
-              </td>
-              <td>
-                @if (!empty($best['new']))
-                  <img src="{{ $best['new']['logo'] }}" width="100" height="25"/>
-                 <h3>${{ number_format($best['new']['price'], 2) }}</h3>
-                 <a href="{{$best['new']['url']}}" class="btn btn-danger">Buy Now</a>
-                @endif
-              </td>
-              <td>
+Best Textbook Price : Using Econometrics: A Practical Guide (6th Edition) (Pearson Series in Economics) http://shar.es/iP2Nc via @sharethis
+    <dl class="dl-horizontal">
+    <dt>Author:</dt><dd>{{  $book->author }}</dd>
+    <dt>Publisher:</dt><dd>{{  $book->publisher }}</dd>
+    <dt>Edition:</dt><dd>{{  $book->edition }}</dd>
+    <dt>Number of Pages:</dt><dd>{{ $book->num_of_pages }}</dd>
+    <dt>Weight:</dt><dd>{{ number_format($book->weight, 2) }} lbs</dd>
+    <dt>List Price:</dt><dd>{{ $book->list_price }}</dd>
+    <dt>ISBN:</dt><dd>{{ $book->isbn10 }} / {{ $book->isbn13 }}</dd>
+    <dt></dt><dd><a href="{{ $book->amazon_url }}" target="_blank">View Book Details on Amazon</a></dd>
+    </dl>
+    <br />
+     <span class='st_twitter_vcount' displayText='Tweet' st_via='topbookprices'></span>
 
-                @if (!empty($best['rental']['price']))
 
-                  <img src="{{ $best['rental']['logo'] }}" width="100" height="25"/>
-                 <h3>${{ number_format($best['rental']['price'], 2) }}</h3>
-                 <a href="{{$best['rental']['url']}}" class="btn btn-danger">Buy Now</a>
-                @else
-                  <h2 class="text-center">N/A</h2>
-                @endif
-              </td>
-              <td>
-                @if (!empty($best['ebook']['price']))
-                  <img src="{{ $best['ebook']['logo'] }}" width="100" height="25"/>
-                 <h3>${{ number_format($best['ebook']['price'], 2) }}</h3>
-                 <a href="{{$best['ebook']['url']}}" class="btn btn-danger">Buy Now</a>
-                 @else
-                  <h2 class="text-center">N/A</h2>
-                @endif
-              </td>
-              <td>
-                @if (!empty($best['buyback']))
-                  <img src="{{ $best['buyback']['logo'] }}" width="100" height="25"/>
-                 <h3>${{ number_format($best['buyback']['price'], 2) }}</h3>
-                 <a href="{{$best['buyback']['url']}}" class="btn btn-success">Sell Now</a>
-                @endif
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <span class='st_facebook_vcount' displayText='Facebook'></span>
+    <span class='st_pinterest_vcount' displayText='Pinterest'></span>
+    <span class='st_email_vcount' displayText='Email'></span>
+    <span class='st_fblike_vcount' displayText='Facebook Like'></span>
+    <span class='st_plusone_vcount' displayText='Google +1'></span>
+    <br /><span class='st_twitterfollow_vcount' displayText='Twitter Follow' st_username='topbookprices'></span>
+  </div>
+
+  <div class="span12">
+
+
     <ul class="nav nav-tabs" id="myTab">
-      <li class="<?php if($activeTab=="buy" or empty($activeTab)) {echo "active"; } ?>"><a href="#buy">Buy / Rent Textbooks</a></li>
-      <li class="<?php if($activeTab=="sell") {echo "active"; } ?>"><a href="#sell">Sell Textbooks</a></li>
+      <li class="<?php if($activeTab=="sell" || empty($activeTab)) {echo "active"; } ?>"><a href="#sell">Sell Textbooks</a></li>
+      <li class="<?php if($activeTab=="buy") {echo "active"; } ?>"><a href="#buy">Buy / Rent Textbooks</a></li>
+
     </ul>
 
     <div class="tab-content">
-      <div class="tab-pane <?php if($activeTab=="buy" or empty($activeTab)) {echo "active"; } ?>" id="buy">
+      <div class="tab-pane <?php if($activeTab=="buy") {echo "active"; } ?>" id="buy">
 
         <table class="table table-striped">
         <thead>
@@ -170,7 +135,7 @@ Top TextBook Price : {{ $book->title }}
           @endforeach
         </table>
       </div>
-            <div class="tab-pane <?php if($activeTab=="sell") {echo "active"; } ?>" id="sell" >
+            <div class="tab-pane <?php if($activeTab=="sell" || empty($activeTab)) {echo "active"; } ?>" id="sell" >
         <table class="table table-striped">
           <thead>
             <tr>
@@ -215,7 +180,7 @@ Top TextBook Price : {{ $book->title }}
         </div>
         <div class="span9">
           <dl class="dl-horizontal">
-              <dt>Title:</dt><dd><a href="<?php echo URL::to("book/$b->slug"); ?>">{{$b->title}}</a></dd>
+              <dt>Title:</dt><dd><a href="<?php echo URL::to("books/$b->slug"); ?>">{{$b->title}}</a></dd>
               <dt>ISBN:</dt><dd>{{ $b->isbn10 }} / {{$b->isbn13}}</dd>
               <dt>Author:</dt><dd>{{ $b->author }}</dd>
               <dt>Publisher:</dt><dd>{{ $b->publisher }}</dd>
@@ -239,9 +204,9 @@ $('#myTab a').click(function (e) {
   e.preventDefault();
   $(this).tab('show');
 })
-@if ($activeTab == "sell")
+@if ($activeTab == "sell" || empty($activeTab))
 $('#myTab a[href="#sell"]').tab('show');
-@elseif ($activeTab == "buy" || empty($activeTab))
+@elseif ($activeTab == "buy")
 $('#myTab a[href="#buy"]').tab('show');
 @else
 $('#myTab a[href="#buy"]').tab('show');

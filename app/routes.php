@@ -17,8 +17,8 @@
 //-- Books Contoller Methods -- //
 Route::get('login', 'UsersController@getLogin');
 // Route::post('lookup', 'BooksController@postLookup');
-Route::post('book/isbn', 'BookController@getIsbn');
-Route::controller('book', 'BookController');
+Route::post('books/isbn', 'BookController@getIsbn');
+Route::controller('books', 'BookController');
 Route::controller('users', 'UsersController');
 Route::controller('cart', 'CartController');
 Route::controller('orders', 'OrdersController');
