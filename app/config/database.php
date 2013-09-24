@@ -64,7 +64,7 @@ return array(
 		),
 
 		'pgsql' => array(
-			'driver'   => 'pgsql3',
+			'driver'   => 'pgsql',
 			'host'     => 'localhost',
 			'database' => 'database',
 			'username' => 'root',
